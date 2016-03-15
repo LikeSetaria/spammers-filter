@@ -56,26 +56,7 @@ public class FileFilter {
 					e.printStackTrace();
 					} finally{
 				   LineIterator.closeQuietly(it);
-			}
-				  
-				    
-//					try {
-//						filewriter=new FileWriter(new File("D:\\my.txt"),true);
-//						pw=new PrintWriter(filewriter);
-//						for (String result:results) {
-//							
-//							pw.print(result);
-//							pw.println();
-//							
-//						}
-//						pw.flush();
-//						filewriter.flush();
-//					} catch (IOException e1) {
-//						// TODO Auto-generated catch block
-//						e1.printStackTrace();
-//					} 
-//		    		 
-				  
+			}			  
 	    	 return ;
 	     }
 }
