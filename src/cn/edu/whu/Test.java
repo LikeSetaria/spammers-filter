@@ -53,7 +53,7 @@ public class Test {
 		
 		//System.out.println(utils.writeToFile("e:\\test.txt", "hhhhhh"));
 		//System.out.println(utils.readFile("e:\\test.txt"));
-		filter.Filter_V("D:\\Whuer\\Major\\weibo\\weibo_users.txt");
+		//filter.Filter_V("D:\\Whuer\\Major\\weibo\\weibo_users.txt");
 	}
 	
 

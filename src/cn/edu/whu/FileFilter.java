@@ -22,12 +22,12 @@ import cn.edu.whu.utils.Utils;
  *过滤weibo_users.csv中的微博认证用户，包括蓝V、黄V、媒体认证V
  */
 public class FileFilter {
-	 private static String RESULT_PATH="D:\\Whuer\\Major\\weibo\\RESULT\\weibo_users.txt";
+	 
 	Utils utils=new Utils();
 	
 	   @SuppressWarnings("resource")
-	public   void Filter_V(String filePath){
-	    	 File file=new File(filePath);
+	public   void Filter_V(String sourceFilePath,String saveTargetPath){
+	    	 File file=new File(sourceFilePath);
 	    	 LineIterator it=null;
 	    	 String line=null;
 	    	// List<String> results=new LinkedList<>();
@@ -36,8 +36,8 @@ public class FileFilter {
 			 PrintWriter pw=null;
 				  try {
 					it = FileUtils.lineIterator(file, "UTF-8");
-					Utils.deleteFile(RESULT_PATH);
-					filewriter=new FileWriter(new File(RESULT_PATH),true);
+					Utils.deleteFile(saveTargetPath);
+					filewriter=new FileWriter(new File(saveTargetPath),true);
 					pw=new PrintWriter(filewriter);
 					while(it.hasNext()){
 						 line=it.nextLine();
@@ -59,4 +59,43 @@ public class FileFilter {
 			}			  
 	    	 return ;
 	     }
+	   
+	   
+	   /**
+	    * 提取所有的用户名
+	    */
+	   @SuppressWarnings("resource")
+	public void  extractUserName(String sourceFilePath,String saveTargetPath){
+		   File file=new File(sourceFilePath);
+	    	 LineIterator it=null;
+	    	 String line=null;
+	    	// List<String> results=new LinkedList<>();
+	    	 
+	    	 FileWriter filewriter=null;
+			 PrintWriter pw=null;
+				  try {
+					it = FileUtils.lineIterator(file, "GBK");
+					Utils.deleteFile(saveTargetPath);
+					filewriter=new FileWriter(new File(saveTargetPath),true);
+					pw=new PrintWriter(filewriter);
+					while(it.hasNext()){
+						 line=it.nextLine();
+						 String [] strArray=line.split(","); 
+						 System.out.println(strArray[1]);
+						// System.out.println(line);
+						 pw.print(strArray[1]);
+					     pw.println(); 	 					
+					}
+					 
+					pw.flush();
+					filewriter.flush();
+				
+					} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					} finally{
+				   LineIterator.closeQuietly(it);
+			}			  
+	    	 return ;
+	   }
 }
