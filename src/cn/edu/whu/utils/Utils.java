@@ -10,12 +10,15 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileSystemUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 
+ 
 /**
  * @author 宝超
  *工具类
@@ -178,6 +181,61 @@ public class Utils {
              }
          }
          return flag;
+     }
+     /**保存链表到磁盘
+      *@author bczhang
+      *@param d 待保存链表
+      * @param saveFilePath 保存到的目录地址
+      */
+     public void saveResultByList(List<String> d,String saveFilePath){
+     	File file=new File(saveFilePath);
+     	StringBuffer str=new StringBuffer();
+     	int cou=0;
+     	for(String res:d){
+     		cou++;
+     		str.append(res.toString());
+     		if(cou%10==0)
+     			str.append("\n");
+     	}
+     	String content=str.toString();
+     	try {
+ 			org.apache.commons.io.FileUtils.writeStringToFile(file,"\n"+ content, "utf-8");
+ 		} catch (IOException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		} 
+     	
+     	
+     }
+     /**保存Map数据到磁盘
+      *@author bczhang
+      *@param d 待保存map
+      * @param saveFilePath 保存到的目录地址
+      */
+     public static void saveResultByHashMap(HashMap<String,Integer> map,String saveFilePath){
+    	 File file=new File(saveFilePath);
+      	 StringBuffer str=new StringBuffer();
+      	 int cou=0;
+         Iterator<?> it =map.entrySet().iterator();
+         while(it.hasNext()){
+        	 cou++;
+        	 @SuppressWarnings("rawtypes")
+			Map.Entry entry=(Map.Entry) it.next();
+        	 Object key=entry.getKey();
+        	 str.append(key.toString()+" ");
+        	 Object val=entry.getValue();
+        	 str.append(val.toString()+"  ");
+        	 if(cou%30==0)
+        		 str.append("\n");
+        	
+         }
+         try {
+			FileUtils.writeStringToFile(file, str.toString(), "utf-8");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         //System.out.println(str.toString());
      }
      
 }

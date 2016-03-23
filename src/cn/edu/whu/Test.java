@@ -54,6 +54,9 @@ public class Test {
 		//System.out.println(utils.writeToFile("e:\\test.txt", "hhhhhh"));
 		//System.out.println(utils.readFile("e:\\test.txt"));
 		//filter.Filter_V("D:\\Whuer\\Major\\weibo\\weibo_users.txt");
+		filter.onlyChinese("D:/DOWNLOAD/BaiduYunDownload/weibo_users_name.txt","E:/temp/data/777.txt");
+		 
+				
 	}
 	
 
