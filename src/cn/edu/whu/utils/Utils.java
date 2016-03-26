@@ -54,7 +54,7 @@ public class Utils {
       * 利用 org.apache.commons.io.FileUtils快速读写文件
       * @return 把文件返回为字符串
       */
-     public static String readFile(String filePath)  {
+     public static String readFileToString(String filePath)  {
     	 File file =new File(filePath);
     	 String fileContent="";
     	 try {
