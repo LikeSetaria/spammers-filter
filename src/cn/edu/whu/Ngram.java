@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.edu.whu.utils.Utils;
+
 public class Ngram
 {
     private class result
@@ -38,9 +40,10 @@ public class Ngram
     }
  public static void main(String[] args){
 	 Ngram nrgram=new Ngram();
-	 
-	 double sim =nrgram.getSimilarity("小神万里",
-			 "",2);
+	 Utils utils=new Utils();
+	 String str1=utils.readFileToString("D:/Whuer/Major/weibo/RESULT/weibo_users_name.txt");
+	 //System.out.println(str1);
+	double sim =nrgram.getSimilarity("小神万里", str1,2);
     System.out.println(sim);
  }
  
