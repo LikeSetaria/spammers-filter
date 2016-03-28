@@ -24,7 +24,7 @@ public class Bigram {
 	private static String USER_NAME_FILE_PATH="D:/Whuer/Major/weibo/RESULT/weibo_users_name.txt";
 	//未排序 Bigram结果保存位置
 	private static String USER_NAME_BIGRAM_RESULTS="E:\\temp\\result\\BigramReaults.txt";
-	private static String USER_NAME_TriGRAM_RESULTS="E:\\temp\\result\\gramReaults.txt";
+	private static String USER_NAME_TriGRAM_RESULTS="E:\\temp\\result\\TrigramReaults.txt";
 	//保存所有用户名的Ngram切割后的词，方便后面比较  makeNgramsByLine()
 	static HashMap<String,Integer > gramMap=new HashMap<String,Integer>();
 	//保存每一个用户名到map，方便后面计算用户在总的相似度    makeNgramsByLine()
@@ -33,6 +33,7 @@ public class Bigram {
 	static  Map<String,Integer> userNameNgramResults=new TreeMap<String,Integer>();
  	//打开用户明文件
 	public static void main(String[] args){
+		Utils utils=new Utils();
 		 
 //		String str2="";
 //		 try {
@@ -57,9 +58,14 @@ public class Bigram {
 //		}
 //		System.out.print( makeNgrams(content,2));
  		//saveResultByHashMap(makeNgramsByLine(USER_NAME_FILE_PATH,2),"");
- 		makeNgramsByLine(USER_NAME_FILE_PATH,3);
- 		saveResultByHashMap(userNameNgramResults,USER_NAME_BIGRAM_RESULTS);
+		//Bigram对用户名进行划分并统计次数
+		makeNgramsByLine(USER_NAME_FILE_PATH,2);	 
+ 		saveResultByHashMap(utils.sortMapByValue(userNameNgramResults),USER_NAME_BIGRAM_RESULTS);
 		
+		//Trigram对用户名进行划分并统计次数
+// 		makeNgramsByLine(USER_NAME_FILE_PATH,3);
+// 		saveResultByHashMap(utils.sortMapByValue(userNameNgramResults),USER_NAME_TriGRAM_RESULTS);
+//		
  		 
 	}
     public  static HashMap<String,Integer> makeNgrams(String  text,int nGramSize) {
@@ -110,11 +116,14 @@ public class Bigram {
 				String[] str=formGrams(line,nGramSize);
 				for(String s:str){
 		    		Integer cou;
-		    		if(s.matches("^[a-zA-Z0-9\u4e00-\u9fa5]+$")){
+		    		//过滤出中英文数字外的特殊字符
+		    		//if(s.matches("^[a-zA-Z0-9\u4e00-\u9fa5]+$")){
+		    		//过滤特殊字符，英文字符，只有数字和中文的词才加入map
+		    		 if(s.matches("^[0-9\u4e00-\u9fa5]+$")){
 		    		 cou=gramMap.get(s);
 		    		 gramMap.put(s, cou == null?1:cou+1);
 		    		 totalGram++;
-		    		}
+		    		 }
 		    		
 		    	}
 				}
@@ -153,18 +162,24 @@ public class Bigram {
      * @return
      */
      private static String[] formGrams(String text,int ng){
+    	 text="%"+text;
     	 int len=text.length();
+    	 
     	 String[] res=null;
-    	 //处理长度小于3的情况
-    	 res=new String[len-ng+1];
+//    	  if(len-ng+1>0){
     	 
-    	 
+    	 res=new String[len-ng+1];   
+    	  
     	 for(int i=0;i<len-ng+1;i++){
-    		  	res[i]=text.substring(i,i+ng);
-    		  	
+    		  	res[i]=text.substring(i,i+ng);		  	
     	 }
-    	
-    		 
+    	 
+//    	 }
+//    	  else 
+//    		  res=new String[1];
+//    	      res[0]=text;
+//    	  
+    	 //  System.out.println(res[0]);
     	 return res;
     	 
      }    

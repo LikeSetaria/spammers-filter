@@ -9,8 +9,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.KeyStore.Entry;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +34,7 @@ public class Utils {
      * @param path
      * @return
      */
-     public static Map<String, File> getFileList(String filePath)
+     public   Map<String, File> getFileList(String filePath)
      {
     	 Map<String, File> map=new HashMap<>();
     	 File file=new File(filePath);
@@ -54,7 +59,7 @@ public class Utils {
       * 利用 org.apache.commons.io.FileUtils快速读写文件
       * @return 把文件返回为字符串
       */
-     public static String readFileToString(String filePath)  {
+     public   String readFileToString(String filePath)  {
     	 File file =new File(filePath);
     	 String fileContent="";
     	 try {
@@ -71,7 +76,7 @@ public class Utils {
       * 使用apache commons包中的IO工具类读取大文件
       * 在方法中需要进行相应的业务处理
       */
-     public  static void readBigFile(String filePath){
+     public    void readBigFile(String filePath){
     	 File file=new File(filePath);
     	 LineIterator it=null;
     	 
@@ -96,7 +101,7 @@ public class Utils {
       * 换行，追加字符串到文件尾部
      * @return 
       */
-     public static boolean writeToFile(  String filePath ,String content){
+     public   boolean writeToFile(  String filePath ,String content){
     	  File file=new File(filePath);
     	  try { 
     	   org.apache.commons.io.FileUtils.writeStringToFile(file,"\n"+ content, "utf-8"); 
@@ -111,7 +116,7 @@ public class Utils {
       * @param fileTo String 复制后路径 如：d:/abc.txt
       * @return boolean
       */
-     public static boolean copyFile(String fileFrom,String fileTo){
+     public   boolean copyFile(String fileFrom,String fileTo){
     	 try{
     		 FileInputStream in =new java.io.FileInputStream(fileFrom);
     		 File file=new File(fileTo);//如果目标路径不存在则创建目录
@@ -135,14 +140,14 @@ public class Utils {
      /**
       * 删除文件
       */
-     public static void deleteFile(String filePath) {
+     public   void deleteFile(String filePath) {
          File file = new File(filePath);
          if (file.exists()) {
              file.delete();
          }
      }
 
-     public static void deleteByFolder(String folderPath) {
+     public   void deleteByFolder(String folderPath) {
          try {
              deleteAllFile(folderPath); //删除完里面所有内容
              String filePath = folderPath;
@@ -154,7 +159,7 @@ public class Utils {
          }
      }
 
-     public static boolean deleteAllFile(String path) {
+     public   boolean deleteAllFile(String path) {
          boolean flag = false;
          File file = new File(path);
          if (!file.exists()) {
@@ -212,7 +217,7 @@ public class Utils {
       *@param d 待保存map
       * @param saveFilePath 保存到的目录地址
       */
-     public static void saveResultByHashMap(HashMap<String,Integer> map,String saveFilePath){
+     public   void saveResultByHashMap(HashMap<String,Integer> map,String saveFilePath){
     	 File file=new File(saveFilePath);
       	 StringBuffer str=new StringBuffer();
       	 int cou=0;
@@ -236,6 +241,27 @@ public class Utils {
 			e.printStackTrace();
 		}
          //System.out.println(str.toString());
+     }
+     /**
+      * 对HashMap根据value进行排序
+      * @return HashMap
+      * @param HashMap
+      */
+     public   Map<String,Integer> sortMapByValue(Map<String,Integer> map ){
+    	 
+    	 ArrayList<Map.Entry<String ,Integer>> list=new ArrayList<Map.Entry<String,Integer>>(map.entrySet());
+    	 Collections.sort(list,new Comparator<Map.Entry<String ,Integer>>(){    		 
+			@Override
+			public int compare(java.util.Map.Entry<String, Integer> arg0, java.util.Map.Entry<String, Integer> arg1) {
+				// TODO Auto-generated method stub
+				return arg0.getValue() - arg1.getValue();  
+			}    		 
+    	 });
+    	    HashMap newMap = new LinkedHashMap();  
+            for (int i = 0; i < list.size(); i++) {  
+                newMap.put(list.get(i).getKey(), list.get(i).getValue());  
+            }  
+            return newMap; 
      }
      
 }
