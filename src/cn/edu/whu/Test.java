@@ -54,10 +54,36 @@ public class Test {
 		//System.out.println(utils.writeToFile("e:\\test.txt", "hhhhhh"));
 		//System.out.println(utils.readFile("e:\\test.txt"));
 		//filter.Filter_V("D:\\Whuer\\Major\\weibo\\weibo_users.txt");
-		filter.onlyChinese("D:/DOWNLOAD/BaiduYunDownload/weibo_users_name.txt","E:/temp/data/777.txt");
-		 
-				
+		//filter.onlyChinese("D:/DOWNLOAD/BaiduYunDownload/weibo_users_name.txt","E:/temp/data/777.txt");
+		 Map<String ,Integer> myMap=new HashMap<String,Integer>();
+		 myMap.put("1", 1);  
+	        myMap.put("2", 4);  
+	        myMap.put("3", 3);  
+	        myMap.put("4", 9);  
+	        myMap.put("5", 6);  
+	        myMap.put("6", 2);  
+	          
+	        
+	        System.out.println(myMap);
+	        myMap = utils.sortMapByValue(myMap) ;  
+	        System.out.println(myMap);
+	          
+	       
 	}
+	   private static String[] formGrams(String text,int ng){
+	    	 int len=text.length();
+	    	 String[] res=null;
+	    	   
+	    	 res=new String[len-ng+1];   	  	 
+	    	 for(int i=0;i<len-ng+1;i++){
+	    		  	res[i]=text.substring(i,i+ng);		  	
+	    	 }
+	    	 
+	    	 
+	    	  
+	    	 return res;
+	    	 
+	     } 
 	
 
 }

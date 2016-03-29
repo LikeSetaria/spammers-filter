@@ -40,7 +40,7 @@ public class FileFilter {
 			 PrintWriter pw=null;
 				  try {
 					it = FileUtils.lineIterator(file, "UTF-8");
-					Utils.deleteFile(saveTargetPath);
+					utils.deleteFile(saveTargetPath);
 					filewriter=new FileWriter(new File(saveTargetPath),true);
 					pw=new PrintWriter(filewriter);
 					while(it.hasNext()){
@@ -77,7 +77,7 @@ public class FileFilter {
 			 int count =1;
 		 	 try {
 					it = FileUtils.lineIterator(file, "UTF-8");
-					Utils.deleteFile(saveTargetPath);
+					utils.deleteFile(saveTargetPath);
 					filewriter=new FileWriter(new File(saveTargetPath),true);
 					pw=new PrintWriter(filewriter);
 					while(it.hasNext()){
@@ -116,7 +116,7 @@ public class FileFilter {
 			 PrintWriter pw=null;
 				  try {
 					it = FileUtils.lineIterator(file, "GBK");
-					Utils.deleteFile(saveTargetPath);
+					utils.deleteFile(saveTargetPath);
 					filewriter=new FileWriter(new File(saveTargetPath),true);
 					pw=new PrintWriter(filewriter);
 					while(it.hasNext()){
