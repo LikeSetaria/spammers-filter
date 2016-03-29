@@ -20,18 +20,18 @@ import cn.edu.whu.utils.Utils;
  *
  */
 public class Bigram {
-	//Î¢²©ÓÃ»§ÃûÎÄ¼ş
+	//å¾®åšç”¨æˆ·åæ–‡ä»¶
 	private static String USER_NAME_FILE_PATH="D:/Whuer/Major/weibo/RESULT/weibo_users_name.txt";
-	//Î´ÅÅĞò Bigram½á¹û±£´æÎ»ÖÃ
+	//æœªæ’åº Bigramç»“æœä¿å­˜ä½ç½®
 	private static String USER_NAME_BIGRAM_RESULTS="E:\\temp\\result\\BigramReaults.txt";
 	private static String USER_NAME_TriGRAM_RESULTS="E:\\temp\\result\\TrigramReaults.txt";
-	//±£´æËùÓĞÓÃ»§ÃûµÄNgramÇĞ¸îºóµÄ´Ê£¬·½±ãºóÃæ±È½Ï  makeNgramsByLine()
+	//ä¿å­˜æ‰€æœ‰ç”¨æˆ·åçš„Ngramåˆ‡å‰²åçš„è¯ï¼Œæ–¹ä¾¿åé¢æ¯”è¾ƒ  makeNgramsByLine()
 	static HashMap<String,Integer > gramMap=new HashMap<String,Integer>();
-	//±£´æÃ¿Ò»¸öÓÃ»§Ãûµ½map£¬·½±ãºóÃæ¼ÆËãÓÃ»§ÔÚ×ÜµÄÏàËÆ¶È    makeNgramsByLine()
+	//ä¿å­˜æ¯ä¸€ä¸ªç”¨æˆ·ååˆ°mapï¼Œæ–¹ä¾¿åé¢è®¡ç®—ç”¨æˆ·åœ¨æ€»çš„ç›¸ä¼¼åº¦    makeNgramsByLine()
 	 static HashMap<String ,Integer> userNameMap=new HashMap<String,Integer>();
-	 //±£´æ×îºóµÄÓÃ»§¼°³öÏÖµÄ³öÏÖµÄÆµ¶È£¬²»²ÉÓÃHashMap,ÒòÎªºóÃæÒª¶ÔÆäÅÅĞò£¬TreeMap¶ÔÅÅĞòĞ§ÂÊ¸ü¸ß  makeNgramsByLine()
+	//ä¿å­˜æœ€åçš„ç”¨æˆ·åŠå‡ºç°çš„å‡ºç°çš„é¢‘åº¦ï¼Œä¸é‡‡ç”¨HashMap,å› ä¸ºåé¢è¦å¯¹å…¶æ’åºï¼ŒTreeMapå¯¹æ’åºæ•ˆç‡æ›´é«˜  makeNgramsByLine()
 	static  Map<String,Integer> userNameNgramResults=new TreeMap<String,Integer>();
- 	//´ò¿ªÓÃ»§Ã÷ÎÄ¼ş
+	//æ‰“å¼€ç”¨æˆ·æ˜æ–‡ä»¶
 	public static void main(String[] args){
 		Utils utils=new Utils();
 		 
@@ -42,12 +42,12 @@ public class Bigram {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-//		String str="Ğ¡ÀÖÀÖ°®ÂÃÓÎ";
+//		String str="å°ä¹ä¹çˆ±æ—…æ¸¸";
 		
 		
 		
 		
- 		// System.out.println(makeNgrams(",ÄÇ,Ğ©sfgds,sgdgsd,ÄÇĞ©ÄÇĞ©ÄÇĞ©ÄÇĞ©ÄÇĞ©ÄêÎÒÃÇ·¢¹ıµÄÎ¢²©ÍøÂçÓªÏúÉÙË§ÑÏ¸Õ",2));
+ 		// System.out.println(makeNgrams(",é‚£,äº›sfgds,sgdgsd,é‚£äº›é‚£äº›é‚£äº›é‚£äº›é‚£äº›å¹´æˆ‘ä»¬å‘è¿‡çš„å¾®åšç½‘ç»œè¥é”€å°‘å¸…ä¸¥",2));
 	//	File file =new File("D:\\DOWNLOAD\\BaiduYunDownload\\Major\\weibo\\RESULT\\weibo_users_name.txt");
 //		String content="";
 //		 try {
@@ -58,11 +58,12 @@ public class Bigram {
 //		}
 //		System.out.print( makeNgrams(content,2));
  		//saveResultByHashMap(makeNgramsByLine(USER_NAME_FILE_PATH,2),"");
-		//Bigram¶ÔÓÃ»§Ãû½øĞĞ»®·Ö²¢Í³¼Æ´ÎÊı
+		//Bigramå¯¹ç”¨æˆ·åè¿›è¡Œåˆ’åˆ†å¹¶ç»Ÿè®¡æ¬¡æ•°
 		makeNgramsByLine(USER_NAME_FILE_PATH,2);	 
  		saveResultByHashMap(utils.sortMapByValue(userNameNgramResults),USER_NAME_BIGRAM_RESULTS);
 		
-		//Trigram¶ÔÓÃ»§Ãû½øĞĞ»®·Ö²¢Í³¼Æ´ÎÊı
+
+ 		//Trigramå¯¹ç”¨æˆ·åè¿›è¡Œåˆ’åˆ†å¹¶ç»Ÿè®¡æ¬¡æ•°
 // 		makeNgramsByLine(USER_NAME_FILE_PATH,3);
 // 		saveResultByHashMap(utils.sortMapByValue(userNameNgramResults),USER_NAME_TriGRAM_RESULTS);
 //		
@@ -84,41 +85,41 @@ public class Bigram {
     	
 }
     /**
-     * ¶ÔmakeNgrams·½·¨½øĞĞÀ©Õ¹£¬ÒÔÃ¿ĞĞ½øĞĞNgram ÇĞ·ÖÍ³¼Æ
-     * @param USER_NAME_FILE_PATH ´ıÇĞ·ÖµÄÎÄ¼ş
+     * å¯¹makeNgramsæ–¹æ³•è¿›è¡Œæ‰©å±•ï¼Œä»¥æ¯è¡Œè¿›è¡ŒNgram åˆ‡åˆ†ç»Ÿè®¡
+     * @param USER_NAME_FILE_PATH å¾…åˆ‡åˆ†çš„æ–‡ä»¶
      * @param nGramSize
      * @return
      */
     public  static void makeNgramsByLine(String  USER_NAME_FILE_PATH,int nGramSize) {
-    	   //±£´æËùÓĞÓÃ»§ÃûµÄNgramÇĞ¸îºóµÄ´Ê£¬·½±ãºóÃæ±È½Ï
+    	//ä¿å­˜æ‰€æœ‰ç”¨æˆ·åçš„Ngramåˆ‡å‰²åçš„è¯ï¼Œæ–¹ä¾¿åé¢æ¯”è¾ƒ
     	//HashMap<String,Integer > gramMap=new HashMap<String,Integer>();
-    	   //±£´æÃ¿Ò»¸öÓÃ»§Ãûµ½map£¬·½±ãºóÃæ¼ÆËãÓÃ»§ÔÚ×ÜµÄÏàËÆ¶È  
+    	//ä¿å­˜æ¯ä¸€ä¸ªç”¨æˆ·ååˆ°mapï¼Œæ–¹ä¾¿åé¢è®¡ç®—ç”¨æˆ·åœ¨æ€»çš„ç›¸ä¼¼åº¦  
     	//Map<String ,Integer> userNameMap=new HashMap<String,Integer>();
-    	   //±£´æ×îºóµÄÓÃ»§¼°³öÏÖµÄ³öÏÖµÄÆµ¶È£¬²»²ÉÓÃHashMap,ÒòÎªºóÃæÒª¶ÔÆäÅÅĞò£¬TreeMap¶ÔÅÅĞòĞ§ÂÊ¸ü¸ß
+    	//ä¿å­˜æœ€åçš„ç”¨æˆ·åŠå‡ºç°çš„å‡ºç°çš„é¢‘åº¦ï¼Œä¸é‡‡ç”¨HashMap,å› ä¸ºåé¢è¦å¯¹å…¶æ’åºï¼ŒTreeMapå¯¹æ’åºæ•ˆç‡æ›´é«˜
     	//Map<String,Integer> userNameNgramResults=new TreeMap<String,Integer>();
     	 
-     	//´ò¿ªÓÃ»§Ã÷ÎÄ¼ş
+    	//æ‰“å¼€ç”¨æˆ·æ˜æ–‡ä»¶
     	File file=new File(USER_NAME_FILE_PATH);
-    	//ÀûÓÃApache common °üÖĞµÄ·â×°µÄ¹¤¾ß£¬³õÊ¼»¯Ò»¸ö±éÀúÆ÷£¬ÖğĞĞ±éÀúÎÄ¼ş
+    	//åˆ©ç”¨Apache common åŒ…ä¸­çš„å°è£…çš„å·¥å…·ï¼Œåˆå§‹åŒ–ä¸€ä¸ªéå†å™¨ï¼Œé€è¡Œéå†æ–‡ä»¶
     	LineIterator it=null;
-    	//Í³¼ÆËùÓĞÓÃ»§Ã÷Ngramºó²úÉúµÄ´ÊÊı
+    	//Í³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ngramï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
     	int totalGram=0;
     	
-    	
+    	//ç»Ÿè®¡æ‰€æœ‰ç”¨æˆ·æ˜Ngramåäº§ç”Ÿçš„è¯æ•°
     	try {
 			it=FileUtils.lineIterator(file, "UTF-8");
-			//ÖğĞĞ±éÀúÎÄ¼ş£¬²¢½øĞĞNgram´¦Àí£¬NgramºóµÄ´Ê×é·Åµ½gramMaPÖĞ
+			//é€è¡Œéå†æ–‡ä»¶ï¼Œå¹¶è¿›è¡ŒNgramå¤„ç†ï¼ŒNgramåçš„è¯ç»„æ”¾åˆ°gramMaPä¸­
 			while(it.hasNext()){
 				String line=it.next();
-				//Í¬Ê±±£´æÃ¿Ò»ĞĞµ½Ò»¸öMapÖĞ£¬·½±ãºóÃæ²Ù×÷
+				//åŒæ—¶ä¿å­˜æ¯ä¸€è¡Œåˆ°ä¸€ä¸ªMapä¸­ï¼Œæ–¹ä¾¿åé¢æ“ä½œ
 				userNameMap.put(line, 1);
-				//¶ÔÃ¿Ò»¸öÓÃ»§Ã÷½øĞĞNgram ·Åµ½Ò»¸ö×Ö·ûÊı×éÖĞ£¬Öğ¸ö¶ÔÆä±È½Ï´ÎÊı
+				//å¯¹æ¯ä¸€ä¸ªç”¨æˆ·æ˜è¿›è¡ŒNgram æ”¾åˆ°ä¸€ä¸ªå­—ç¬¦æ•°ç»„ä¸­ï¼Œé€ä¸ªå¯¹å…¶æ¯”è¾ƒæ¬¡æ•°
 				String[] str=formGrams(line,nGramSize);
 				for(String s:str){
 		    		Integer cou;
-		    		//¹ıÂË³öÖĞÓ¢ÎÄÊı×ÖÍâµÄÌØÊâ×Ö·û
+		    		//è¿‡æ»¤å‡ºä¸­è‹±æ–‡æ•°å­—å¤–çš„ç‰¹æ®Šå­—ç¬¦
 		    		//if(s.matches("^[a-zA-Z0-9\u4e00-\u9fa5]+$")){
-		    		//¹ıÂËÌØÊâ×Ö·û£¬Ó¢ÎÄ×Ö·û£¬Ö»ÓĞÊı×ÖºÍÖĞÎÄµÄ´Ê²Å¼ÓÈëmap
+		    		//è¿‡æ»¤ç‰¹æ®Šå­—ç¬¦ï¼Œè‹±æ–‡å­—ç¬¦ï¼Œåªæœ‰æ•°å­—å’Œä¸­æ–‡çš„è¯æ‰åŠ å…¥map
 		    		 if(s.matches("^[0-9\u4e00-\u9fa5]+$")){
 		    		 cou=gramMap.get(s);
 		    		 gramMap.put(s, cou == null?1:cou+1);
@@ -133,10 +134,10 @@ public class Bigram {
 				Map.Entry entry=(Map.Entry) iter.next();
 				Object key=entry.getKey();
 				//String oneUserName=it.next();
-				//µÃµ½Ò»¸öÓÃ»§ÃûÖĞµÄËùÓĞµÄNgram£¬
+				//å¾—åˆ°ä¸€ä¸ªç”¨æˆ·åä¸­çš„æ‰€æœ‰çš„Ngramï¼Œ
 				String[] userNameArr=formGrams(key.toString(),nGramSize);
 				for(String ss:userNameArr){
-					//ÈçÓÃ»§Ãû£ºĞ¡ÉñÍòÀï,BigramµÃµ½£ºĞ¡Éñ¡¢ÉñÍò¡¢ÍòÀï£¬ÔòÄÃµÃµ½BigramÈ¥ËùÓĞµÄÓÃ»§Ã÷ÖĞÈ¥Æ¥ÅäÍ³¼Æ³öÏÖ´ÊÊı
+					//å¦‚ç”¨æˆ·åï¼šå°ç¥ä¸‡é‡Œ,Bigramå¾—åˆ°ï¼šå°ç¥ã€ç¥ä¸‡ã€ä¸‡é‡Œï¼Œåˆ™æ‹¿å¾—åˆ°Bigramå»æ‰€æœ‰çš„ç”¨æˆ·æ˜ä¸­å»åŒ¹é…ç»Ÿè®¡å‡ºç°è¯æ•°
 					if(gramMap.containsKey(ss))
 					{
 						keyCount=keyCount+gramMap.get(ss);
@@ -144,10 +145,10 @@ public class Bigram {
 				}
 				userNameNgramResults.put(key.toString(), keyCount);
 				
-				//System.out.println("ÓÃ»§ÃûÎª£º"+key.toString()+"    ÏàÓ¦µÄÆµ¶ÈÎª£º"+keyCount);
+				//System.out.println("ç”¨æˆ·åä¸ºï¼š"+key.toString()+"    ç›¸åº”çš„é¢‘åº¦ä¸ºï¼š"+keyCount);
 			}
 			//System.out.println(userNameNgramResults);
-			System.out.println("×ÜµÄ·Ö´ÊÊıÎª"+totalGram);
+			System.out.println("æ€»çš„åˆ†è¯æ•°ä¸º"+totalGram);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -156,7 +157,7 @@ public class Bigram {
     	
 }
     /**
-     * Bigram ÇĞ¸î´Ê
+     * Bigram ï¿½Ğ¸ï¿½ï¿½
      * @param text
      * @param ng
      * @return
@@ -188,7 +189,7 @@ public class Bigram {
       	 StringBuffer str=new StringBuffer();
       	 int cou=0;
          Iterator<?> it =map.entrySet().iterator();
-         //¶ÔmapÖĞµÄÄÚÈİ½øĞĞ¸ñÊ½»¯´¦Àí
+         //å¯¹mapä¸­çš„å†…å®¹è¿›è¡Œæ ¼å¼åŒ–å¤„ç†
          while(it.hasNext()){
         	 cou++;
         	 @SuppressWarnings("rawtypes")
