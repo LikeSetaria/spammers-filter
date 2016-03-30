@@ -64,9 +64,9 @@ public class Bigram {
 		
 
  		//Trigram对用户名进行划分并统计次数
-// 		makeNgramsByLine(USER_NAME_FILE_PATH,3);
-// 		saveResultByHashMap(utils.sortMapByValue(userNameNgramResults),USER_NAME_TriGRAM_RESULTS);
-//		
+ 		makeNgramsByLine(USER_NAME_FILE_PATH,3);
+ 		saveResultByHashMap(utils.sortMapByValue(userNameNgramResults),USER_NAME_TriGRAM_RESULTS);
+		
  		 
 	}
     public  static HashMap<String,Integer> makeNgrams(String  text,int nGramSize) {
@@ -120,11 +120,13 @@ public class Bigram {
 		    		//过滤出中英文数字外的特殊字符
 		    		//if(s.matches("^[a-zA-Z0-9\u4e00-\u9fa5]+$")){
 		    		//过滤特殊字符，英文字符，只有数字和中文的词才加入map
-		    		 if(s.matches("^[0-9\u4e00-\u9fa5]+$")){
+		    		 //if(s.matches("^[0-9\u4e00-\u9fa5]+$")){
+		    		//匹配中英文及数字
+		    		//if(s.matches("^[\u4e00-\u9fa5_a-zA-Z0-9]+$")){	 
 		    		 cou=gramMap.get(s);
 		    		 gramMap.put(s, cou == null?1:cou+1);
 		    		 totalGram++;
-		    		 }
+		    		// }
 		    		
 		    	}
 				}
@@ -163,11 +165,15 @@ public class Bigram {
      * @return
      */
      private static String[] formGrams(String text,int ng){
+    	 //对字符串进行切分处理时，对于重复的特殊字符合并看做一个来处理，降低它们出现的概率
+    	
+    	//对于非中文、英文、数字外的特殊字符进行过滤替换，看做一个整体统计其出现次数
+    	 text=text.replaceAll("[^\u4e00-\u9fa5a-zA-Z0-9]+", "%");
     	 text="%"+text;
     	 int len=text.length();
     	 
     	 String[] res=null;
-//    	  if(len-ng+1>0){
+  	  if(len-ng+1>0){
     	 
     	 res=new String[len-ng+1];   
     	  
@@ -175,12 +181,12 @@ public class Bigram {
     		  	res[i]=text.substring(i,i+ng);		  	
     	 }
     	 
-//    	 }
-//    	  else 
-//    		  res=new String[1];
-//    	      res[0]=text;
-//    	  
-    	 //  System.out.println(res[0]);
+    	 }
+    	  else {
+    		  res=new String[1];
+    	      res[0]=text;
+    	  }
+    	//   System.out.println(res[0]);
     	 return res;
     	 
      }    

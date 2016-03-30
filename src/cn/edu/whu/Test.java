@@ -14,18 +14,20 @@ import org.apache.log4j.Logger;
 import cn.edu.whu.utils.Utils;
 
 /**
- * @author ±¦³¬
- *²âÊÔ·½·¨Àà
+ * @author ï¿½ï¿½ï¿½ï¿½
+ *ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 public class Test {
 	 private static String WEIBO_USER_FILEPATH="D:\\Whuer\\Major\\Refs4Spammers";
 	 private final static Logger logger = Logger.getLogger(Test.class);
+	
 	@SuppressWarnings({ "static-access" })
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Utils utils=new Utils();
 		FileFilter filter=new FileFilter();
-		/*//²âÊÔgetFileList()·½·¨
+		Test test=new Test();
+		/*//ï¿½ï¿½ï¿½ï¿½getFileList()ï¿½ï¿½ï¿½ï¿½
       
       Map<String, File> map=utils.getFileList(WEIBO_USER_FILEPATH);
       for(Iterator i = map.keySet().iterator(); i.hasNext();){
@@ -37,50 +39,58 @@ public class Test {
     	  System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
       }*/
 		
-		//²âÊÔcopyFile()·½·¨
+		//ï¿½ï¿½ï¿½ï¿½copyFile()ï¿½ï¿½ï¿½ï¿½
 		/*
 		utils.copyFile("c:\\unintall.log", "d:\\unintall.log");
 		*/
 		
 		
-		//²âÊÔ¶ÁÈ¡´óÎÄ¼þ
+		//ï¿½ï¿½ï¿½Ô¶ï¿½È¡ï¿½ï¿½ï¿½Ä¼ï¿½
 		/*
-		logger.info("´óÎÄ¼þ²âÊÔ");
+		logger.info("ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½");
 	//	utils.readBigFile("D:\\Whuer\\Major\\weibo\\weibo_users.csv");
 		*/
-		//²âÊÔ¶ÁÈ¡Ò»°ãÎÄ¼þ
+		//ï¿½ï¿½ï¿½Ô¶ï¿½È¡Ò»ï¿½ï¿½ï¿½Ä¼ï¿½
 		//utils.readFile("e:test.txt");
 		
 		//System.out.println(utils.writeToFile("e:\\test.txt", "hhhhhh"));
 		//System.out.println(utils.readFile("e:\\test.txt"));
 		//filter.Filter_V("D:\\Whuer\\Major\\weibo\\weibo_users.txt");
 		//filter.onlyChinese("D:/DOWNLOAD/BaiduYunDownload/weibo_users_name.txt","E:/temp/data/777.txt");
-		 Map<String ,Integer> myMap=new HashMap<String,Integer>();
-		 myMap.put("1", 1);  
-	        myMap.put("2", 4);  
-	        myMap.put("3", 3);  
-	        myMap.put("4", 9);  
-	        myMap.put("5", 6);  
-	        myMap.put("6", 2);  
-	          
-	        
-	        System.out.println(myMap);
-	        myMap = utils.sortMapByValue(myMap) ;  
-	        System.out.println(myMap);
+		 String str ="ä¸ä¸º";
+		// System.out.println(str.replaceAll("[^\u4e00-\u9fa5a-zA-Z0-9]+", "#"));
+     	String[] temp= test.formGrams(str,3);
+//		 for (String s:temp){
+//			 System.out.println(s);
+//		 }
 	          
 	       
 	}
-	   private static String[] formGrams(String text,int ng){
+	  public    String[] formGrams(String text,int ng){
+		 
+		  //å¯¹å­—ç¬¦ä¸²è¿›è¡Œåˆ‡åˆ†å¤„ç†æ—¶ï¼Œå¯¹äºŽé‡å¤çš„ç‰¹æ®Šå­—ç¬¦åˆå¹¶çœ‹åšä¸€ä¸ªæ¥å¤„ç†ï¼Œé™ä½Žå®ƒä»¬å‡ºçŽ°çš„æ¦‚çŽ‡
+	    	
+	    	//å¯¹äºŽéžä¸­æ–‡ã€è‹±æ–‡ã€æ•°å­—å¤–çš„ç‰¹æ®Šå­—ç¬¦è¿›è¡Œè¿‡æ»¤æ›¿æ¢ï¼Œçœ‹åšä¸€ä¸ªæ•´ä½“ç»Ÿè®¡å…¶å‡ºçŽ°æ¬¡æ•°
+	    	 text=text.replaceAll("[^\u4e00-\u9fa5a-zA-Z0-9]+", "%");
+	    	 text="%"+text;
 	    	 int len=text.length();
+	    	 
 	    	 String[] res=null;
-	    	   
-	    	 res=new String[len-ng+1];   	  	 
+	  	  if(len-ng+1>0){
+	    	 
+	    	 res=new String[len-ng+1];   
+	    	  
 	    	 for(int i=0;i<len-ng+1;i++){
-	    		  	res[i]=text.substring(i,i+ng);		  	
+	    		  	res[i]=text.substring(i,i+ng);	
+	    		  	System.out.println(res[i]);
 	    	 }
 	    	 
-	    	 
-	    	  
+	    	 }
+	    	  else {
+	    		  res=new String[1];
+	    	      res[0]=text;
+	    	  }
+	    	//   System.out.println(res[0]);
 	    	 return res;
 	    	 
 	     } 
