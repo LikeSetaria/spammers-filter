@@ -9,8 +9,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,8 +26,8 @@ import org.apache.log4j.chainsaw.Main;
 import cn.edu.whu.utils.Utils;
  
 /**
- * @author ±¦³¬
- *¹ıÂËweibo_users.csvÖĞµÄÎ¢²©ÈÏÖ¤ÓÃ»§£¬°üÀ¨À¶V¡¢»ÆV¡¢Ã½ÌåÈÏÖ¤V
+ * @author ï¿½ï¿½ï¿½ï¿½
+ *ï¿½ï¿½ï¿½ï¿½weibo_users.csvï¿½Ğµï¿½Î¢ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Vï¿½ï¿½ï¿½ï¿½Vï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½Ö¤V
  */
 public class FileFilter {
 	 
@@ -64,8 +68,8 @@ public class FileFilter {
 	    	 return ;
 	     }
 	   /*
-	    * ¶ÔÎÄ±¾ÎÄ¼ş½øĞĞÔ¤´¦Àí
-	    * ÖğĞĞÈ¥³ı·ÇÖĞÎÄ×Ö·û£¬¶ÔÓÚ·ÇÖĞÎÄ×Ö·ûÓÃ¿Õ×Ö·û´®½øĞĞÌæ»»
+	    * ï¿½ï¿½ï¿½Ä±ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½
+	    * ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ã¿ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ»»
 	    * 
 	    */
 		public   void onlyChinese(String sourceFilePath,String saveTargetPath){
@@ -81,10 +85,10 @@ public class FileFilter {
 					filewriter=new FileWriter(new File(saveTargetPath),true);
 					pw=new PrintWriter(filewriter);
 					while(it.hasNext()){
-						 //ÖğĞĞ¶ÁÈ¡½øĞĞ´¦Àí
+						 //ï¿½ï¿½ï¿½Ğ¶ï¿½È¡ï¿½ï¿½ï¿½Ğ´ï¿½ï¿½ï¿½
 						count++;
 						 line=it.nextLine(); 
-						 //·ÇÖĞÎÄ×Ö·ûÓÃ¿Õ×Ö·û´®Ìæ»»
+						 //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ã¿ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½æ»»
 						pw.print(line.replaceAll("[^\u4e00-\u9fa5]", "")+"   ");
 						 if(count%10==0)
 							 pw.println();
@@ -103,7 +107,7 @@ public class FileFilter {
 	   
 	   
 	   /**
-	    * ÌáÈ¡ËùÓĞµÄÓÃ»§Ãû
+	    * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ğµï¿½ï¿½Ã»ï¿½ï¿½ï¿½
 	    */
 	   @SuppressWarnings("resource")
 	public void  extractUserName(String sourceFilePath,String saveTargetPath){
@@ -138,5 +142,51 @@ public class FileFilter {
 				   LineIterator.closeQuietly(it);
 			}			  
 	    	 return ;
+	   }
+	   
+	   /** æ ¹æ®ç”¨æˆ·åæå–ç”¨æˆ·ID
+	    * @param userFilePath weibo_users.txtå¾®åšç”¨æˆ·æ–‡ä»¶
+	    * @param saveTargetPath æå–åçš„ç”¨æˆ·IDçš„ä¿å­˜è·¯å¾„
+	    * @param userNameFilePath å¾®åšç”¨æˆ·åæ–‡ä»¶
+	    * 
+	    */
+	   @SuppressWarnings("unchecked")
+	public void selectUidByUserName(String userFilePath,String saveTargetPath,String userNameFilePath ){
+		   File file =new File(userFilePath);
+		   File userNameFile=new File(userNameFilePath);
+		   //æŠŠæ‰€æœ‰ç”¨æˆ·çš„ç”¨æˆ·åã€ç”¨æˆ·IDåšä¸€ä¸ªæ˜ å°„ï¼Œæ”¾åˆ°Mapé‡Œé¢
+		   Map<String ,String > map=new HashMap<String,String>();
+		   //ä¿å­˜æ‰¾åˆ°çš„ç”¨æˆ·ID
+		   List<String> list=new LinkedList<String>();
+		   LineIterator it=null;
+		    Iterator userNameIt=map.entrySet().iterator();
+	    	 String line=null; 
+	    	 String line2=null;
+	    	 String str=null;
+	    	// Map.Entry<String,String> entry=(Map.Entry<String,String>)userNameIt.next(); 
+	    	 try {
+				it = FileUtils.lineIterator(file, "utf-8");
+				userNameIt=FileUtils.lineIterator(userNameFile, "utf-8");
+				while(it.hasNext()){
+					 line=it.nextLine();
+					 String [] strArray=line.split(","); 
+					 if(strArray.length>5)
+					 map.put(strArray[1],strArray[4]);
+					 //System.out.println(strArray[1]+"   "+strArray[4]);
+				}
+				while(userNameIt.hasNext()){
+					//entry=(Entry<String, String>) userNameIt.next();
+					line2=(String) userNameIt.next();
+					if(map.containsKey(line2)){ 
+						str=map.get(line2);
+						list.add(str);
+					}
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	 utils.saveResultByList(list, saveTargetPath);
+		   
 	   }
 }
