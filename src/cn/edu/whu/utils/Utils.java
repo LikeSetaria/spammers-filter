@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.commons.io.FileSystemUtils;
 import org.apache.commons.io.FileUtils;
@@ -199,12 +200,12 @@ public class Utils {
      	for(String res:d){
      		cou++;
      		str.append(res.toString());
-     		if(cou%10==0)
+     		//if(cou%10==0)
      			str.append("\n");
      	}
      	String content=str.toString();
      	try {
- 			org.apache.commons.io.FileUtils.writeStringToFile(file,"\n"+ content, "utf-8");
+ 			org.apache.commons.io.FileUtils.writeStringToFile(file, content, "utf-8");
  		} catch (IOException e) {
  			// TODO Auto-generated catch block
  			e.printStackTrace();
@@ -257,11 +258,37 @@ public class Utils {
 				return arg0.getValue() - arg1.getValue();  
 			}    		 
     	 });
-    	    HashMap newMap = new LinkedHashMap();  
+    	    HashMap<String ,Integer> newMap = new LinkedHashMap<String,Integer>();  
             for (int i = 0; i < list.size(); i++) {  
                 newMap.put(list.get(i).getKey(), list.get(i).getValue());  
             }  
             return newMap; 
      }
-     
+     /**
+      * 对HashMap根据value进行排序
+      * @return HashMap
+      * @param HashMap
+      */
+     public  static   Map<String,Double> sortMapByValue2(Map<String,Double> map ){
+    	 
+    	  List<Map.Entry<String ,Double>> list=new ArrayList<Map.Entry<String,Double>>(map.entrySet());
+    	 Collections.sort(list,new Comparator<Map.Entry<String ,Double>>(){    		 
+			@Override
+			public int compare(java.util.Map.Entry<String, Double> arg0, java.util.Map.Entry<String, Double> arg1) {
+				double result = arg0.getValue() - arg1.getValue();
+			      if(result > 0)
+			       return 1;
+			      else if(result == 0)
+			       return 0;
+			      else 
+			       return -1;
+			}    		 
+    	 });
+    	     Map<String,Double> newMap = new TreeMap<String,Double>();  
+            for (int i = 0; i < list.size(); i++) {  
+                newMap.put(list.get(i).getKey(), list.get(i).getValue());
+                System.out.println(list.get(i).getKey()+"   "+list.get(i).getValue());
+            }  
+            return newMap; 
+     }
 }

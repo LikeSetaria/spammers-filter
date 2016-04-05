@@ -57,13 +57,23 @@ public class Test {
 		//System.out.println(utils.readFile("e:\\test.txt"));
 		//filter.Filter_V("D:\\Whuer\\Major\\weibo\\weibo_users.txt");
 		//filter.onlyChinese("D:/DOWNLOAD/BaiduYunDownload/weibo_users_name.txt","E:/temp/data/777.txt");
-		 String str ="丁为";
-		// System.out.println(str.replaceAll("[^\u4e00-\u9fa5a-zA-Z0-9]+", "#"));
-     	String[] temp= test.formGrams(str,3);
+	 //String str ="丁为-V出现频次23";
+//		// System.out.println(str.replaceAll("[^\u4e00-\u9fa5a-zA-Z0-9]+", "#"));
+//     	String[] temp= test.formGrams(str,1);
 //		 for (String s:temp){
 //			 System.out.println(s);
 //		 }
-	          
+		Map<String,Double> map=new HashMap<String,Double>();
+		map.put("12",  3.2);
+		map.put("123",  7.2);
+		map.put("124",  20.);
+		map.put("125", 4.2);
+		map.put("126",  1.2);
+		utils.sortMapByValue2(map).entrySet();
+//	          for(Map.Entry<String, Double> ss:utils.sortMapByValue2(map).entrySet()){
+//	        	  System.out.println(  ss.getKey() + "  " + ss.getValue());
+//	          }
+		//filter.selectUidByUserName("D:/Whuer/Major/weibo/RESULT/weibo_user_test.txt", "E:/temp/uid.txt", "E:/userName.txt");
 	       
 	}
 	  public    String[] formGrams(String text,int ng){
@@ -71,7 +81,7 @@ public class Test {
 		  //对字符串进行切分处理时，对于重复的特殊字符合并看做一个来处理，降低它们出现的概率
 	    	
 	    	//对于非中文、英文、数字外的特殊字符进行过滤替换，看做一个整体统计其出现次数
-	    	 text=text.replaceAll("[^\u4e00-\u9fa5a-zA-Z0-9]+", "%");
+	    	 //text=text.replaceAll("[^\u4e00-\u9fa5a-zA-Z0-9]+", "%");
 	    	 text="%"+text;
 	    	 int len=text.length();
 	    	 
@@ -82,7 +92,7 @@ public class Test {
 	    	  
 	    	 for(int i=0;i<len-ng+1;i++){
 	    		  	res[i]=text.substring(i,i+ng);	
-	    		  	System.out.println(res[i]);
+	    		  //	System.out.println(res[i]);
 	    	 }
 	    	 
 	    	 }
