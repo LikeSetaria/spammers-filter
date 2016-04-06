@@ -29,8 +29,8 @@ public class Bigram {
 	//微博用户名文件
 	private static String USER_NAME_FILE_PATH="D:/Whuer/Major/weibo/RESULT/weibo_users_name.txt";
 	//未排序 Bigram结果保存位置
-	private static String USER_NAME_BIGRAM_RESULTS="E:\\temp\\result\\BigramReaults.txt";
-	private static String USER_NAME_TriGRAM_RESULTS="E:\\temp\\result\\22.txt";
+	private static String USER_NAME_BIGRAM_RESULTS="E:\\temp\\result\\BigramReaultsTestUserName.txt";
+	private static String USER_NAME_TriGRAM_RESULTS="E:\\temp\\result\\TrigramReaults.txt";
 	//保存所有用户名的Ngram切割后的词，方便后面比较  makeNgramsByLine()
 	static HashMap<String,Integer > gramMap=new HashMap<String,Integer>();
 	//保存每一个用户名到map，方便后面计算用户在总的相似度    makeNgramsByLine()
@@ -42,7 +42,7 @@ public class Bigram {
 	//统计每个词出现的次数
 	static Map<String ,Integer> wordMap=new HashMap<String,Integer>();
 	//打开用户明文件
-	static Map<String,Double> newMap = new TreeMap<String,Double>();  
+	static Map<String,Double> newMap = new HashMap<String,Double>();  
 	public static void main(String[] args){
 		Utils utils=new Utils();
 		 
@@ -55,12 +55,12 @@ public class Bigram {
 // 		makeNgramsByLine(USER_NAME_FILE_PATH,3);
 // 		saveResultByHashMap(utils.sortMapByValue(userNameNgramResults),USER_NAME_TriGRAM_RESULTS);
 		 //测试makeNgramsByLine2
-		makeNgramByLine2("E:/userName.txt",2);
+		makeNgramByLine2(USER_NAME_FILE_PATH,2);
  	// utils.sortMapByValue2(userNameNgramResults2);
 //		
 // 		 
 		 
-		saveResultByHashMap(sortMapByValue2(userNameNgramResults2),USER_NAME_TriGRAM_RESULTS);
+		 saveResultByHashMap(utils.sortMapByValue2(userNameNgramResults2),USER_NAME_BIGRAM_RESULTS);
 // 		for (Map.Entry<String, Double> entry : userNameNgramResults2.entrySet()) {
 // 		 System.out.println(  entry.getKey() + "  " + entry.getValue());
 // 		}
@@ -201,7 +201,7 @@ public class Bigram {
 				//w1、w2保存前后词的频度，根据他们算概率
 				int w1,w2=0;
 				//用以存储每个用户名算出的 概率
-				Double temp=0.00000;
+				Double temp=0.00;
 				Map.Entry entry=(Map.Entry) iter.next();
 				Object key=entry.getKey();
 				//String oneUserName=it.next();
@@ -224,9 +224,9 @@ public class Bigram {
 					}
 					 
 				}
-				 BigDecimal bg = new BigDecimal(temp);
-		            double f1 = bg.setScale(6, BigDecimal.ROUND_HALF_UP).doubleValue();
-				userNameNgramResults2.put(key.toString(), f1 );
+				 //BigDecimal bg = new BigDecimal(temp);
+		           // double f1 = bg.setScale(6, BigDecimal.ROUND_HALF_UP).doubleValue();
+				userNameNgramResults2.put(key.toString(), temp );
 				
 				//System.out.println("用户名为："+key.toString()+"    相应的频度为："+keyCount);
 			}
@@ -282,8 +282,8 @@ public class Bigram {
 			Map.Entry entry=(Map.Entry) it.next();
         	 Object key=entry.getKey();
         	 str.append(key.toString()+" ");
-        	 Object val=entry.getValue();
-        	 str.append(val.toString()+"  ");
+//        	 Object val=entry.getValue();
+//        	 str.append(val.toString()+"  ");
         	 //if(cou%30==0)
         		 str.append("\n");
         	
@@ -321,7 +321,7 @@ public class Bigram {
     	     
             for (int i = 0; i < list.size(); i++) {  
                 newMap.put(list.get(i).getKey(), list.get(i).getValue());
-                System.out.println(list.get(i).getKey()+"   "+list.get(i).getValue());
+                //System.out.println(list.get(i).getKey()+"   "+list.get(i).getValue());
             }  
             return newMap; 
      }

@@ -63,17 +63,17 @@ public class Test {
 //		 for (String s:temp){
 //			 System.out.println(s);
 //		 }
-		Map<String,Double> map=new HashMap<String,Double>();
-		map.put("12",  3.2);
-		map.put("123",  7.2);
-		map.put("124",  20.);
-		map.put("125", 4.2);
-		map.put("126",  1.2);
-		utils.sortMapByValue2(map).entrySet();
+//		Map<String,Double> map=new HashMap<String,Double>();
+//		map.put("12",  3.2);
+//		map.put("123",  7.2);
+//		map.put("124",  20.);
+//		map.put("125", 4.2);
+//		map.put("126",  1.2);
+//		//utils.sortMapByValue2(map).entrySet();
 //	          for(Map.Entry<String, Double> ss:utils.sortMapByValue2(map).entrySet()){
 //	        	  System.out.println(  ss.getKey() + "  " + ss.getValue());
 //	          }
-		//filter.selectUidByUserName("D:/Whuer/Major/weibo/RESULT/weibo_user_test.txt", "E:/temp/uid.txt", "E:/userName.txt");
+		filter.selectUidByUserName("D:/Whuer/Major/weibo/RESULT/weibo_users.txt", "E:/temp/uid.txt", "D:/Whuer/Major/weibo/RESULT/BigramReaultsTestUserName.txt");
 	       
 	}
 	  public    String[] formGrams(String text,int ng){

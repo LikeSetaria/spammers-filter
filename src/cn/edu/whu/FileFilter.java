@@ -159,26 +159,31 @@ public class FileFilter {
 		   //保存找到的用户ID
 		   List<String> list=new LinkedList<String>();
 		   LineIterator it=null;
-		    Iterator userNameIt=map.entrySet().iterator();
+		    
 	    	 String line=null; 
 	    	 String line2=null;
 	    	 String str=null;
 	    	// Map.Entry<String,String> entry=(Map.Entry<String,String>)userNameIt.next(); 
 	    	 try {
 				it = FileUtils.lineIterator(file, "utf-8");
-				userNameIt=FileUtils.lineIterator(userNameFile, "utf-8");
+				
 				while(it.hasNext()){
 					 line=it.nextLine();
 					 String [] strArray=line.split(","); 
-					 if(strArray.length>5)
+					 if(strArray.length>5){
 					 map.put(strArray[1],strArray[4]);
 					 //System.out.println(strArray[1]+"   "+strArray[4]);
+					 }
 				}
+				LineIterator userNameIt=null;
+				userNameIt=FileUtils.lineIterator(userNameFile, "utf-8");
 				while(userNameIt.hasNext()){
 					//entry=(Entry<String, String>) userNameIt.next();
-					line2=(String) userNameIt.next();
+					line2=(String) userNameIt.next().trim();
+					//System.out.println(line2);
 					if(map.containsKey(line2)){ 
 						str=map.get(line2);
+						//System.out.println(str);
 						list.add(str);
 					}
 				}

@@ -218,7 +218,7 @@ public class Utils {
       *@param d 待保存map
       * @param saveFilePath 保存到的目录地址
       */
-     public   void saveResultByHashMap(HashMap<String,Integer> map,String saveFilePath){
+     public   void saveResultByHashMap( Map<String,Integer> map,String saveFilePath){
     	 File file=new File(saveFilePath);
       	 StringBuffer str=new StringBuffer();
       	 int cou=0;
@@ -269,7 +269,7 @@ public class Utils {
       * @return HashMap
       * @param HashMap
       */
-     public  static   Map<String,Double> sortMapByValue2(Map<String,Double> map ){
+     public    Map<String,Double> sortMapByValue2(Map<String,Double> map ){
     	 
     	  List<Map.Entry<String ,Double>> list=new ArrayList<Map.Entry<String,Double>>(map.entrySet());
     	 Collections.sort(list,new Comparator<Map.Entry<String ,Double>>(){    		 
@@ -284,10 +284,10 @@ public class Utils {
 			       return -1;
 			}    		 
     	 });
-    	     Map<String,Double> newMap = new TreeMap<String,Double>();  
+    	     Map<String,Double> newMap = new LinkedHashMap<String,Double>();  
             for (int i = 0; i < list.size(); i++) {  
                 newMap.put(list.get(i).getKey(), list.get(i).getValue());
-                System.out.println(list.get(i).getKey()+"   "+list.get(i).getValue());
+               // System.out.println(list.get(i).getKey()+"   "+list.get(i).getValue());
             }  
             return newMap; 
      }
