@@ -8,12 +8,15 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
+
+import cn.edu.whu.pojo.Relation;
 
 /**
  * @author bczhang
@@ -128,7 +131,7 @@ public class PreprocessText {
 	  * @param filePath
 	  */
 	 
-     public    void readBigFile(String followsFilePath,String uidFilePath,String resultFilePath){
+     public    void extractPartOfRelation(String followsFilePath,String uidFilePath,String resultFilePath){
     	 File followFile=new File(followsFilePath);
     	 File uidFile =new File(uidFilePath);
     	 LineIterator it=null;
@@ -153,13 +156,12 @@ public class PreprocessText {
 				while(it.hasNext()){
 					str2=new StringBuilder(it.nextLine());
 					String[] arr=str2.toString().split(",");
-					if(set.contains(arr[0])||set.contains(arr[1])){
-//						temp.append(str2);
-//						temp.append("\n");
+					//if(set.contains(arr[0])||set.contains(arr[1])){
+						if(set.contains(arr[0])){
+
 						fw.write(str2.toString());
 						fw.write("\n");
-						//System.out.println(str2);
-						
+					
 					}
 					fw.flush();
 				
@@ -179,5 +181,41 @@ public class PreprocessText {
 	                }  
 		}
     	 return ;
+     }
+     
+     /**
+      * 提取关系，形式是:用户UID，他关注的用户的UID
+      */
+     public void extractFollows(){
+    	File file =new File("E:/test_follow_users.txt"); 
+    	HashMap<String ,List<String>> map=new HashMap<String,List<String>>();
+    	HashMap<String ,Relation>  hashmap=new HashMap<String,Relation>();
+    	LineIterator iter =null;
+    	String  line=null;
+    	Relation relation =new Relation();
+    	//Iterator it = map.entrySet().iterator();
+    	try {
+			iter=FileUtils.lineIterator(file, "utf-8");
+			while(iter.hasNext()){
+				line=iter.nextLine();
+				String[] arr=line.split(",");
+				if(hashmap.containsKey(arr[0])){
+					relation=hashmap.get(arr[0]);
+					relation.setFollowsByHe(arr[1]);
+					hashmap.put(arr[0],relation);
+				}else
+				{
+					//HashSet<String> set=new HashSet<String>();
+				Relation rel=	new Relation();
+				rel.setUser_UID(arr[0]);
+				rel.setFollowsByHe(arr[1]);
+				hashmap.put(arr[0], rel);
+				}
+				}
+			System.out.println(hashmap.get("1589002662"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
      }
 }
