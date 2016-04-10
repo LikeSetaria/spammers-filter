@@ -182,12 +182,14 @@ public class Bigram {
 				//对每一个用户明进行Ngram 放到一个字符数组中，逐个对其比较次数
 				String[] str=formGrams(line,nGramSize);
 				String[] strWord=formGrams(line,1);
+				if(str.length>3){
 				for(String s:str){
 		    		Integer cou; 
 		    		 cou=gramMap.get(s);
 		    		 gramMap.put(s, cou == null?1:cou+1);
 		    		 totalGram++;	
 		    	}
+				}
 				//统计每个字出现的次数，放入到wordMap中
 				for(String ss:strWord){
 					Integer k;
@@ -208,6 +210,7 @@ public class Bigram {
 				//得到一个用户名中的所有的Ngram，
 				String[] userNameArr=formGrams(key.toString(),nGramSize);
 				//System.out.println(key.toString());
+				if(userNameArr.length>3){
 				for(int i=0;i<userNameArr.length-1;i++){
 					//如用户名：小神万里,Bigram得到：小神、神万、万里，则拿得到Bigram去所有的用户明中去匹配统计出现词数
 					if(gramMap.containsKey(userNameArr[i]))
@@ -227,6 +230,7 @@ public class Bigram {
 				 //BigDecimal bg = new BigDecimal(temp);
 		           // double f1 = bg.setScale(6, BigDecimal.ROUND_HALF_UP).doubleValue();
 				userNameNgramResults2.put(key.toString(), temp );
+				}
 				
 				//System.out.println("用户名为："+key.toString()+"    相应的频度为："+keyCount);
 			}
@@ -282,8 +286,8 @@ public class Bigram {
 			Map.Entry entry=(Map.Entry) it.next();
         	 Object key=entry.getKey();
         	 str.append(key.toString()+" ");
-//        	 Object val=entry.getValue();
-//        	 str.append(val.toString()+"  ");
+        	 Object val=entry.getValue();
+        	 str.append(val.toString()+"  ");
         	 //if(cou%30==0)
         		 str.append("\n");
         	

@@ -5,19 +5,25 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 
 /**
  * @author bczhang
- *Ô¤´¦ÀíÎÄ±¾Àà
+ *Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½
  *
  */
 public class PreprocessText {
 	/*
-	 * ¶ÔÎÄ±¾½øĞĞÔ¤´¦Àí£¬È¥³ıËùÓĞµÄ·ÇÖĞÎÄ×Ö·û
-	 * ±£´æµ½
+	 * ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½ï¿½ĞµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½
+	 * ï¿½ï¿½ï¿½æµ½
 	 */
 	private static String savePath="E:/temp/data/";
 	public static void onlyChinese(String filePath){
@@ -68,53 +74,110 @@ public class PreprocessText {
 	 public static boolean createDir(String destDirName) {  
 	        File dir = new File(destDirName);  
 	        if (dir.exists()) {  
-	            System.out.println("´´½¨Ä¿Â¼" + destDirName + "Ê§°Ü£¬Ä¿±êÄ¿Â¼ÒÑ¾­´æÔÚ");  
+	            System.out.println("ï¿½ï¿½ï¿½ï¿½Ä¿Â¼" + destDirName + "Ê§ï¿½Ü£ï¿½Ä¿ï¿½ï¿½Ä¿Â¼ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½");  
 	            return false;  
 	        }  
 	        if (!destDirName.endsWith(File.separator)) {  
 	            destDirName = destDirName + File.separator;  
 	        }  
-	        //´´½¨Ä¿Â¼  
+	        //ï¿½ï¿½ï¿½ï¿½Ä¿Â¼  
 	        if (dir.mkdirs()) {  
-	            System.out.println("´´½¨Ä¿Â¼" + destDirName + "³É¹¦£¡");  
+	            System.out.println("ï¿½ï¿½ï¿½ï¿½Ä¿Â¼" + destDirName + "ï¿½É¹ï¿½ï¿½ï¿½");  
 	            return true;  
 	        } else {  
-	            System.out.println("´´½¨Ä¿Â¼" + destDirName + "Ê§°Ü£¡");  
+	            System.out.println("ï¿½ï¿½ï¿½ï¿½Ä¿Â¼" + destDirName + "Ê§ï¿½Ü£ï¿½");  
 	            return false;  
 	        }  
 	    } 
 	 public static boolean createFile(String destFileName) {  
 	        File file = new File(destFileName);  
 	        if(file.exists()) {  
-	            System.out.println("´´½¨µ¥¸öÎÄ¼ş" + destFileName + "Ê§°Ü£¬Ä¿±êÎÄ¼şÒÑ´æÔÚ£¡");  
+	            System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½" + destFileName + "Ê§ï¿½Ü£ï¿½Ä¿ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ñ´ï¿½ï¿½Ú£ï¿½");  
 	            return false;  
 	        }  
 	        if (destFileName.endsWith(File.separator)) {  
-	            System.out.println("´´½¨µ¥¸öÎÄ¼ş" + destFileName + "Ê§°Ü£¬Ä¿±êÎÄ¼ş²»ÄÜÎªÄ¿Â¼£¡");  
+	            System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½" + destFileName + "Ê§ï¿½Ü£ï¿½Ä¿ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ÎªÄ¿Â¼ï¿½ï¿½");  
 	            return false;  
 	        }  
-	        //ÅĞ¶ÏÄ¿±êÎÄ¼şËùÔÚµÄÄ¿Â¼ÊÇ·ñ´æÔÚ  
+	        //ï¿½Ğ¶ï¿½Ä¿ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Úµï¿½Ä¿Â¼ï¿½Ç·ï¿½ï¿½ï¿½ï¿½  
 	        if(!file.getParentFile().exists()) {  
-	            //Èç¹ûÄ¿±êÎÄ¼şËùÔÚµÄÄ¿Â¼²»´æÔÚ£¬Ôò´´½¨¸¸Ä¿Â¼  
-	            System.out.println("Ä¿±êÎÄ¼şËùÔÚÄ¿Â¼²»´æÔÚ£¬×¼±¸´´½¨Ëü£¡");  
+	            //ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Úµï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ú£ï¿½ï¿½ò´´½ï¿½ï¿½ï¿½Ä¿Â¼  
+	            System.out.println("Ä¿ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ú£ï¿½×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");  
 	            if(!file.getParentFile().mkdirs()) {  
-	                System.out.println("´´½¨Ä¿±êÎÄ¼şËùÔÚÄ¿Â¼Ê§°Ü£¡");  
+	                System.out.println("ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Â¼Ê§ï¿½Ü£ï¿½");  
 	                return false;  
 	            }  
 	        }  
-	        //´´½¨Ä¿±êÎÄ¼ş  
+	        //ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ä¼ï¿½  
 	        try {  
 	            if (file.createNewFile()) {  
-	                System.out.println("´´½¨µ¥¸öÎÄ¼ş" + destFileName + "³É¹¦£¡");  
+	                System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½" + destFileName + "ï¿½É¹ï¿½ï¿½ï¿½");  
 	                return true;  
 	            } else {  
-	                System.out.println("´´½¨µ¥¸öÎÄ¼ş" + destFileName + "Ê§°Ü£¡");  
+	                System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½" + destFileName + "Ê§ï¿½Ü£ï¿½");  
 	                return false;  
 	            }  
 	        } catch (IOException e) {  
 	            e.printStackTrace();  
-	            System.out.println("´´½¨µ¥¸öÎÄ¼ş" + destFileName + "Ê§°Ü£¡" + e.getMessage());  
+	            System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½" + destFileName + "Ê§ï¿½Ü£ï¿½" + e.getMessage());  
 	            return false;  
 	        }  
-	    } 
+	    }
+	 /**
+	  * é¢„å¤„ç†follows_user.csvæ–‡ä»¶ï¼Œä»ä¸­æå–æ½œåœ¨åƒåœ¾ç”¨æˆ·IDæ‰€æœ‰å¯¹åº”çš„ å…³ç³»
+	  * @param filePath
+	  */
+	 
+     public    void readBigFile(String followsFilePath,String uidFilePath,String resultFilePath){
+    	 File followFile=new File(followsFilePath);
+    	 File uidFile =new File(uidFilePath);
+    	 LineIterator it=null;
+    	 LineIterator iter=null;
+    	//è¿™é‡Œå¿…é¡»ä½¿ç”¨Hashä¸€ç±»çš„ï¼Œå› ä¸ºå¯¹äºfollow_user.csvä¸­çš„ä¸€è¡Œï¼Œéƒ½è¦å»è¿™ä¸ªé›†åˆä¸­æŸ¥æ‰¾æ˜¯å¦å‡ºç°ï¼Œ
+    	 //ä¸€å¼€å§‹æˆ‘ä½¿ç”¨çš„æ˜¯List ä½¿ç”¨containï¼ˆï¼‰æ–¹æ³•ï¼Œ å¯æƒ³è€ŒçŸ¥é€Ÿåº¦å¥‡æ…¢æ— æ¯”ï¼Œæ¯æ¡æ¯”è¾ƒéƒ½è¦éå†äºŒç™¾å¤šä¸‡æ¡æ•°æ®ï¼Œè€Œfollowæ–‡ä»¶æœ‰8Gbå¤§å°
+    	 //åæ¥ä½¿ç”¨HashSeté€Ÿåº¦æé«˜äº†ç™¾ä¸‡å€ ï¼Œä½“ä¼šHashåŸç†ï¼Œå¯¹äºæŸ¥æ‰¾çš„æ„ä¹‰ï¼Œä»¥åŠä¸ºä»€ä¹ˆä¼šè¿™ä¹ˆå¿«
+    	  HashSet<String> set=new HashSet<String>();
+    	  StringBuilder str1=null;
+    	  StringBuilder str2=new StringBuilder();
+    	 StringBuilder temp=new StringBuilder();
+    	 FileWriter fw=null;
+    	  Map<String,LinkedList<String>> map=new HashMap<String,LinkedList<String>>(); 
+			  try {
+			    fw = new FileWriter(resultFilePath,true); 
+				it = FileUtils.lineIterator(followFile, "UTF-8");
+				iter = FileUtils.lineIterator(uidFile, "UTF-8");
+				while(iter.hasNext()){
+					str1=new StringBuilder(iter.nextLine());
+					set.add(str1.toString());
+				}
+				while(it.hasNext()){
+					str2=new StringBuilder(it.nextLine());
+					String[] arr=str2.toString().split(",");
+					if(set.contains(arr[0])||set.contains(arr[1])){
+//						temp.append(str2);
+//						temp.append("\n");
+						fw.write(str2.toString());
+						fw.write("\n");
+						//System.out.println(str2);
+						
+					}
+					fw.flush();
+				
+				}
+				
+					 
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				} finally{
+			   LineIterator.closeQuietly(it);
+			   if (fw != null)  
+	                try {  
+	                    fw.close();  
+	                } catch (IOException e) {  
+	                    throw new RuntimeException("å…³é—­å¤±è´¥ï¼");  
+	                }  
+		}
+    	 return ;
+     }
 }

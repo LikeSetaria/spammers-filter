@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import cn.edu.whu.utils.PreprocessText;
 import cn.edu.whu.utils.Utils;
 
 /**
@@ -27,6 +28,7 @@ public class Test {
 		Utils utils=new Utils();
 		FileFilter filter=new FileFilter();
 		Test test=new Test();
+		PreprocessText process=new PreprocessText();
 		/*//����getFileList()����
       
       Map<String, File> map=utils.getFileList(WEIBO_USER_FILEPATH);
@@ -73,8 +75,10 @@ public class Test {
 //	          for(Map.Entry<String, Double> ss:utils.sortMapByValue2(map).entrySet()){
 //	        	  System.out.println(  ss.getKey() + "  " + ss.getValue());
 //	          }
-		filter.selectUidByUserName("D:/Whuer/Major/weibo/RESULT/weibo_users.txt", "E:/temp/uid.txt", "D:/Whuer/Major/weibo/RESULT/BigramReaultsTestUserName.txt");
-	       
+		//filter.selectUidByUserName("D:/Whuer/Major/weibo/RESULT/weibo_users.txt", "E:/temp/uid.txt", "D:/Whuer/Major/weibo/RESULT/BigramReaultsLenght_4.txt");
+//utils.readBigFile("F:/test/weibo_follows.csv");
+		process.readBigFile("D:/Whuer/FudanData/weibo_follows.csv", "E:/potential_spammers_all_uid.txt","E:/result.txt");
+
 	}
 	  public    String[] formGrams(String text,int ng){
 		 

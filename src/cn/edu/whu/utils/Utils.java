@@ -80,15 +80,16 @@ public class Utils {
      public    void readBigFile(String filePath){
     	 File file=new File(filePath);
     	 LineIterator it=null;
-    	 
+    	  
 			  try {
 				it = FileUtils.lineIterator(file, "UTF-8");
 				while(it.hasNext()){
 					String line=it.nextLine();
-					//System.out.println(line);
+					 System.out.println(line);
 					//。。。。对每一行进行相应操作
+					 
 				}
-					
+					 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
