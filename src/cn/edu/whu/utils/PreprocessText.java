@@ -142,32 +142,38 @@ public class PreprocessText {
     	  HashSet<String> set=new HashSet<String>();
     	  StringBuilder str1=null;
     	  StringBuilder str2=new StringBuilder();
-    	 StringBuilder temp=new StringBuilder();
     	 FileWriter fw=null;
-    	  Map<String,LinkedList<String>> map=new HashMap<String,LinkedList<String>>(); 
+    	 int total1=0;int total2=0;
+    	 // Map<String,LinkedList<String>> map=new HashMap<String,LinkedList<String>>(); 
 			  try {
 			    fw = new FileWriter(resultFilePath,true); 
 				it = FileUtils.lineIterator(followFile, "UTF-8");
 				iter = FileUtils.lineIterator(uidFile, "UTF-8");
 				while(iter.hasNext()){
+					total1++;
 					str1=new StringBuilder(iter.nextLine());
 					set.add(str1.toString());
 				}
 				while(it.hasNext()){
+					total2++;
 					str2=new StringBuilder(it.nextLine());
 					String[] arr=str2.toString().split(",");
+					//提取目标用户作为粉丝，和被关注者所有的关系信息
 					//if(set.contains(arr[0])||set.contains(arr[1])){
-						if(set.contains(arr[0])){
-
+					//提取目标用户仅作为粉丝，所有的关系
+					//	if(set.contains(arr[0])){
+					//提取目标用户仅作为被关注者的所有的关系信息
+					if(set.contains(arr[1])){
 						fw.write(str2.toString());
 						fw.write("\n");
 					
 					}
 					fw.flush();
-				
+			
 				}
 				
-					 
+				System.out.println("potential_spammers_4_uid_10w遍历的总行数为："+total1+
+						"   weibo_follows.csv的总行数是："+total2);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -186,36 +192,154 @@ public class PreprocessText {
      /**
       * 提取关系，形式是:用户UID，他关注的用户的UID
       */
-     public void extractFollows(){
-    	File file =new File("E:/test_follow_users.txt"); 
-    	HashMap<String ,List<String>> map=new HashMap<String,List<String>>();
+     public void extractFollows(String relationFilePath,String saveFilePath){
+    	File file =new File(relationFilePath); 
     	HashMap<String ,Relation>  hashmap=new HashMap<String,Relation>();
     	LineIterator iter =null;
     	String  line=null;
     	Relation relation =new Relation();
-    	//Iterator it = map.entrySet().iterator();
+    	//Iterator it = map.entrySet().iterator();  
+        int total=0;
     	try {
 			iter=FileUtils.lineIterator(file, "utf-8");
 			while(iter.hasNext()){
+				 total++;
 				line=iter.nextLine();
 				String[] arr=line.split(",");
 				if(hashmap.containsKey(arr[0])){
+					//relation 对象已经存在，更新其follows
 					relation=hashmap.get(arr[0]);
 					relation.setFollowsByHe(arr[1]);
 					hashmap.put(arr[0],relation);
-				}else
-				{
+				}
+				else
+				{  //relation对象不存在，创建对象然后加入到hashmap中
 					//HashSet<String> set=new HashSet<String>();
 				Relation rel=	new Relation();
 				rel.setUser_UID(arr[0]);
 				rel.setFollowsByHe(arr[1]);
 				hashmap.put(arr[0], rel);
 				}
+				 
 				}
-			System.out.println(hashmap.get("1589002662"));
+			System.out.println("从文件"+file.getName()+"遍历的总行数为："+total);
+			//System.out.println(hashmap.get("1589002662").toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally{
+			   LineIterator.closeQuietly(iter);
+		}	
+    	//hashmap持久化\
+    	System.out.println("Now to save the results");
+     	File savefile=new File(saveFilePath);
+   	 StringBuffer str=null;
+  	 int cou=0;
+     Iterator<?> it =hashmap.entrySet().iterator();
+     FileWriter filewriter=null;
+	 PrintWriter pw=null;
+	
+
+     try {
+    	 filewriter=new FileWriter(savefile,true);
+ 		pw=new PrintWriter(filewriter);
+ 	     while(it.hasNext()){
+ 	    	 cou++;
+ 	    	str=new StringBuffer();
+ 	    	 @SuppressWarnings("rawtypes")
+ 			Map.Entry entry=(Map.Entry) it.next();
+// 	    	 Object key=entry.getKey();
+// 	    	 str.append(key.toString()+" ");
+ 	    	 Object val=entry.getValue();
+ 	    	 str.append(val.toString());
+ 	    	 //if(cou%30==0)
+ 	    		// str.append("\n");
+ 	    		 pw.print(str);
+			     pw.println(); 
+ 	     }
+ 	    pw.flush();
+		filewriter.flush();
+		//FileUtils.writeStringToFile(file, str.toString(), "utf-8");
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} 
+     }
+     /**
+      * 待处理文件的格式
+      * follows_id     users_id
+      * 1051852951,1045604114
+        1092658523,1045604114
+        1178310055,1045604114
+      * 提取目标用户所有的粉丝提取的格式是：用户ID 粉丝id.....
+      * 文件太大如超过400Mb时程序会报错，又待改进，不过可以拆分文件分部分，先基本完成任务
+      */
+     public void extractFans(String followUsersFilePath ,String saveFilePath ){
+    	 File file=new File(followUsersFilePath);
+    	 LineIterator iter =null;     	 
+     	 Map<String,Relation> hashmap=new HashMap<String,Relation>();
+     	 String strb=null;
+     	 Relation relation=new Relation();
+     	 try {
+			iter=FileUtils.lineIterator(file);
+			while(iter.hasNext()){
+				strb=iter.next();
+				String[] arr=strb.split(",");
+				if(hashmap.containsKey(arr[1])){
+					//System.out.println("arr1wei: "+arr[1]);
+					relation=hashmap.get(arr[1]);
+					relation.setFollowsByHe(arr[0]);
+				    hashmap.put(arr[1], relation);
+				}else{
+					Relation rel=new Relation();
+					rel.setUser_UID(arr[1]);
+					rel.setFollowsByHe(arr[0]);
+					hashmap.put(arr[1], rel);
+					
+				}
+			}
+		//System.out.println(hashmap.get("1749866927").toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(strb);
+		}finally{
+			LineIterator.closeQuietly(iter);
 		}
+     	System.out.println("Now to save the results");
+     	File savefile=new File(saveFilePath);
+   	 StringBuffer str=null;
+  	 int cou=0;
+     Iterator<?> it =hashmap.entrySet().iterator();
+     FileWriter filewriter=null;
+	 PrintWriter pw=null;
+	
+
+     try {
+    	 filewriter=new FileWriter(savefile,true);
+ 		pw=new PrintWriter(filewriter);
+ 	     while(it.hasNext()){
+ 	    	 cou++;
+ 	    	str=new StringBuffer();
+ 	    	 @SuppressWarnings("rawtypes")
+ 			Map.Entry entry=(Map.Entry) it.next();
+// 	    	 Object key=entry.getKey();
+// 	    	 str.append(key.toString()+" ");
+ 	    	 Object val=entry.getValue();
+ 	    	 str.append(val.toString());
+ 	    	 //if(cou%30==0)
+ 	    		// str.append("\n");
+ 	    		 pw.print(str);
+			     pw.println(); 
+ 	     }
+ 	    pw.flush();
+		filewriter.flush();
+		//FileUtils.writeStringToFile(file, str.toString(), "utf-8");
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+    	 
+ 
      }
 }

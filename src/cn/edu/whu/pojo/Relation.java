@@ -23,7 +23,15 @@ public class Relation {
 	}
 	@Override
 	public  String toString(){
-		return user_UID+"  "+followsListByHe.toString();
+		StringBuilder strb=new StringBuilder();
+		for(String set:followsListByHe){
+			strb.append(set);
+			strb.append("\t");
+			
+		}
+		return user_UID+"\t"+strb.toString()+"\t";
+		//末尾记录 它关注的用户总数
+		//return user_UID+"\t"+strb.toString()+"\t"+followsListByHe.size();
 		
 	}
 	

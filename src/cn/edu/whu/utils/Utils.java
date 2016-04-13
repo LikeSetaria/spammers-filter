@@ -8,7 +8,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.security.KeyStore.Entry;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,15 +82,26 @@ public class Utils {
      public    void readBigFile(String filePath){
     	 File file=new File(filePath);
     	 LineIterator it=null;
-    	  
+    	 int i=0;
+    	 StringBuilder str2=new StringBuilder();
 			  try {
-				it = FileUtils.lineIterator(file, "UTF-8");
+				it = FileUtils.lineIterator(file);
 				while(it.hasNext()){
-					String line=it.nextLine();
-					 System.out.println(line);
+					i++;
+					
+					str2=new StringBuilder(it.nextLine());
+					String[] arr=str2.toString().split(",");
+					if(arr[0].equals("2506976754")){
+
+						System.out.println("找到有这样的2506976754是粉丝，有关注人"+"一共有行："+i);
+					
+					}
+					
+					// System.out.println(line);
 					//。。。。对每一行进行相应操作
 					 
 				}
+				System.out.println("没有找到2506976754是粉丝的记录"+"一共有行："+i);
 					 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -138,6 +151,41 @@ public class Utils {
     	 }catch(IOException ex){
     	 return false;
     	 }
+     }
+     /**
+      * 以行为单位复制文件
+      * 
+      */
+     @SuppressWarnings("resource")
+	public void copyFileByLine(String filefrom,String fileto,int copyLineNum){
+    	 File filef=new File(filefrom);
+    	 LineIterator iterf =null;  
+    	 StringBuilder strb=new StringBuilder();
+    	 FileWriter filewriter=null;
+    	 File savefile=new File(fileto);
+  	     PrintWriter pw=null; 
+  	     int count=0;
+    	 try {
+    		 filewriter=new FileWriter(savefile,true);
+    	 		pw=new PrintWriter(filewriter);
+			iterf=FileUtils.lineIterator(filef);
+			while(iterf.hasNext()){
+				count++;
+				strb=new StringBuilder(iterf.nextLine());
+				
+				
+				pw.println(strb);
+				if(count==copyLineNum)
+					break;
+				
+			}
+			pw.flush();
+			filewriter.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	 
      }
      /**
       * 删除文件
