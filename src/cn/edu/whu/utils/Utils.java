@@ -3,6 +3,7 @@
  */
 package cn.edu.whu.utils;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.security.KeyStore.Entry;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.io.FileSystemUtils;
@@ -237,12 +240,81 @@ public class Utils {
          }
          return flag;
      }
+     /**
+      *超大文件切分成N份小文件。
+      *将一个行数为fileLines的文本文件平均分为splitNum个小文本文件，其中换行符'r'是linux上的，windows的java换行符是'\r\n'：
+      *@author bczhang
+      *@param filePath 待处理文件位置
+      *@param splitNum要切割的小文件个数
+      *@param splitLines 文件的总共的行数
+      */
+     public void fileSpilt(String filePath,String outputFolderPath,int splitNums,int fileTotalLines){
+    	 int bufferSize = 20 * 1024 * 1024;//设读取文件的缓存为20MB   
+         //建立缓冲文本输入流   
+         File file = new File(filePath);     
+         int splitNum = splitNums-1;//要分割的块数减一   
+         int fileLines = fileTotalLines;//输入文件的行数   
+         long perSplitLines = fileLines / splitNum;//每个块的行数   
+         try{
+        	 FileInputStream fileInputStream = new FileInputStream(file);  
+             BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);  
+             InputStreamReader inputStreamReader = new InputStreamReader(bufferedInputStream);  
+             BufferedReader input = new BufferedReader(inputStreamReader, bufferSize);  
+         for (int i = 0; i <= splitNum; ++i)  
+         {  
+             //分割   
+             //每个块建立一个输出   
+             FileWriter output = new FileWriter(outputFolderPath+ i + ".txt");  
+             String line = null;  
+             //逐行读取，逐行输出   
+             for (long lineCounter = 0; lineCounter < perSplitLines && (line = input.readLine()) != null; ++lineCounter)  
+             {  
+                 output.append(line + "\r\n");  
+             }  
+             output.flush();  
+             output.close();  
+             output = null;  
+         }  
+         input.close(); }
+         catch (IOException e){
+        	 e.printStackTrace();
+         }
+          
+       
+     }  
+ 
+     
      /**保存链表到磁盘
       *@author bczhang
       *@param d 待保存链表
       * @param saveFilePath 保存到的目录地址
       */
      public void saveResultByList(List<String> d,String saveFilePath){
+     	File file=new File(saveFilePath);
+     	StringBuffer str=new StringBuffer();
+     	int cou=0;
+     	for(String res:d){
+     		cou++;
+     		str.append(res.toString());
+     		//if(cou%10==0)
+     			str.append("\n");
+     	}
+     	String content=str.toString();
+     	try {
+ 			org.apache.commons.io.FileUtils.writeStringToFile(file, content, "utf-8");
+ 		} catch (IOException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		} 
+     	
+     	
+     }
+     /**保存链表到磁盘
+      *@author bczhang
+      *@param d 待保存链表
+      * @param saveFilePath 保存到的目录地址
+      */
+     public void saveResultBySet(Set<String> d,String saveFilePath){
      	File file=new File(saveFilePath);
      	StringBuffer str=new StringBuffer();
      	int cou=0;

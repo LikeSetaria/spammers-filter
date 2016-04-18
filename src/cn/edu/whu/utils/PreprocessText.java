@@ -6,17 +6,22 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 
 import cn.edu.whu.pojo.Relation;
+import cn.edu.whu.pojo.User;
 
 /**
  * @author bczhang
@@ -29,6 +34,7 @@ public class PreprocessText {
 	 * ���浽
 	 */
 	private static String savePath="E:/temp/data/";
+	Utils utils=new Utils();
 	public static void onlyChinese(String filePath){
 		String[] tempsplit=filePath.split("/");
 		String prefileName=savePath+tempsplit[tempsplit.length-1];
@@ -68,12 +74,12 @@ public class PreprocessText {
 	}
 	
 	
-	public static  void main(String[] args){
-		PreprocessText preText=new PreprocessText();
-		String p="D:/DOWNLOAD/BaiduYunDownload/weibo_users_name.txt";
-		onlyChinese(p);
-	
-	}
+//	public static  void main(String[] args){
+//		PreprocessText preText=new PreprocessText();
+//		String p="D:/DOWNLOAD/BaiduYunDownload/weibo_users_name.txt";
+//		onlyChinese(p);
+//	
+//	}
 	 public static boolean createDir(String destDirName) {  
 	        File dir = new File(destDirName);  
 	        if (dir.exists()) {  
@@ -342,4 +348,153 @@ public class PreprocessText {
     	 
  
      }
+	  
+	  /**
+	   * 功能一：提取既关注别人，又有粉丝关注的用户UID，保存这个UID列表
+	   * 功能二：提取用户的粉丝数量，及其关注的用户的数量，并根据关注数进行降序排列 。形式是2589370790	32	20
+	   */
+	  public   void extractBoth(String isFollowedFilePath,String asFansFilePath,String saveFilePath){
+		  File fileIsFollowed=new File(isFollowedFilePath);
+		  File fileAsFans=new File(asFansFilePath);
+	    	 LineIterator iter =null;  
+	    	 LineIterator it =null;  
+	     	 Set<String> isFollowedset=new HashSet<String>();
+	     	Set<String> asFansset=new HashSet<String>();
+	     	 String strb=null;
+	     	 String str=null;
+	     	 User user=null;
+	     	Map<String ,User > userMap=new HashMap<String ,User>();
+	     	 Map<String ,User > result=new HashMap<String ,User>();
+	     	 
+	     	 try {
+				iter=FileUtils.lineIterator(fileAsFans);
+				while(iter.hasNext()){
+					user=new User();
+					strb=iter.next();
+					String[] arr=strb.split("\t");
+					user.setUID(arr[0]);
+					user.setFansNums(arr.length-1);
+					userMap.put(arr[0], user);
+					//功能一部分，保存列表
+					if(!isFollowedset.contains(arr[0])){
+						isFollowedset.add(arr[0]);
+					}
+				}
+				
+				System.out.println(" 现在做好一半了，这个集合一共有"+isFollowedset.size());
+				it=FileUtils.lineIterator(fileIsFollowed);
+				User ue=null;
+				while(it.hasNext()){
+				    
+					str=it.nextLine();
+					String[] arr2=str.split("\t");
+					ue=userMap.get(arr2[0]);
+				    //做非空处理
+					if(ue!=null){
+                    ue.setUID(arr2[0]);
+                    ue.setFollowNums(arr2.length-1);
+                    result.put(arr2[0], ue);
+                    }
+                    //System.out.println(ue);
+                    //功能一部分，保存UID
+					if(!asFansset.contains(arr2[0])){
+						asFansset.add(arr2[0]);
+					}
+				
+					
+				}
+				
+				//对结果map进行排序，这里是根据用户关注的用户数量进行排序，具体可以重写sortMapByValue中的相关代码
+				result=sortMapByValue(result);
+				//保存得到结果
+				saveResultByUserMap(result,saveFilePath);
+				for (Map.Entry<String, User> entry : result.entrySet()) {
+					   System.out.println(entry.getValue());
+					  }
+				System.out.println(" 现在另一半也做好了，这个集合一共有"+asFansset.size());
+				//isFollowedset.addAll(asFansset);
+				
+				Set<String> results=new HashSet<String>();
+				Iterator itt=asFansset.iterator();
+				while(itt.hasNext()){
+					
+					String temp=itt.next().toString();
+					if(isFollowedset.contains(temp)){
+						
+						results.add(temp);
+					}		
+				}
+				System.out.println("交集的大小为"+results.size());
+				/*控制台显示
+				int i=0;
+				for(String res:results){
+					
+					i++;
+				System.out.print(res+"\t");
+				
+				if(i%10==0)
+					
+					System.out.println();
+				
+				}*/
+				//功能一，保存UID列表
+				//utils.saveResultBySet(results, saveFilePath);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(strb);
+			}finally{
+				LineIterator.closeQuietly(iter);
+				LineIterator.closeQuietly(it);
+			}		  
+	  }
+	  
+	  
+	    public   Map<String,User> sortMapByValue(Map<String,User> map ){
+	    	 
+	    	 ArrayList<Map.Entry<String ,User>> list=new ArrayList<Map.Entry<String,User>>(map.entrySet());
+	    	 Collections.sort(list,new Comparator<Map.Entry<String ,User>>(){    		 
+				@Override
+				public int compare(java.util.Map.Entry<String, User> arg0, java.util.Map.Entry<String, User> arg1) {
+					// TODO Auto-generated method stub
+					User user1=arg0.getValue();
+					User user2=arg1.getValue();
+					
+					return user2.getFollowNums()- user1.getFollowNums();  
+				}    		 
+	    	 });
+	    	     Map<String ,User> newMap = new LinkedHashMap<String,User>();  
+	            for (int i = 0; i < list.size(); i++) {  
+	                newMap.put(list.get(i).getKey(), list.get(i).getValue());  
+	            }  
+	            return newMap; 
+	     }
+	    
+	    public   void saveResultByUserMap( Map<String,User> map,String saveFilePath){
+	    	 File file=new File(saveFilePath);
+	      	 StringBuffer str=new StringBuffer();
+	      	 int cou=0;
+	         Iterator<?> it =map.entrySet().iterator();
+	         while(it.hasNext()){
+	        	 cou++;
+	        	 @SuppressWarnings("rawtypes")
+				Map.Entry entry=(Map.Entry) it.next();
+	        	 Object key=entry.getKey();
+	        	// str.append(key.toString()+" ");
+	        	 Object val=entry.getValue();
+	        	 str.append(val.toString()+"  ");
+	        	// if(cou%30==0)
+	        		 str.append("\n");
+	        	
+	         }
+	         try {
+				FileUtils.writeStringToFile(file, str.toString(), "utf-8");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	         //System.out.println(str.toString());
+	     }
+     
+     
 }

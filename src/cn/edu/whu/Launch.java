@@ -43,7 +43,11 @@ public class Launch {
 		/*
 		 * 提取用户关注关系，第一个是用户ID，后面紧跟着的是他所关注的所有的uid
 		 */
-		process.extractFollows(FOLLOWS_USER_TXT,FOLLOWS_USER_RESULTS);
+		//process.extractFollows(FOLLOWS_USER_TXT,FOLLOWS_USER_RESULTS);
+		/*
+		 *提取既有关注别人，又有粉丝的用户ID 
+		 */
+		process.extractBoth("E:/users_his_fans_25W.txt","E:/relation_results_as_fans_25w.txt","F:coll.txt");
 	}
 
 }
