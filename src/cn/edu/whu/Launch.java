@@ -47,7 +47,7 @@ public class Launch {
 		/*
 		 *提取既有关注别人，又有粉丝的用户ID 
 		 */
-		process.extractBoth("E:/users_his_fans_25W.txt","E:/relation_results_as_fans_25w.txt","F:coll.txt");
+		process.extractBoth("E:/users_his_fans_25W.txt","E:/relation_results_as_fans_25w.txt","F:ordeByFriDivFolRate.txt");
 	}
 
 }

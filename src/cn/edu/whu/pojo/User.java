@@ -11,9 +11,39 @@ public class User {
 	private String userName;
 	 private String UID;
 	 //这个用户他的粉丝数量
-	 private int fansNums;
-	 //这个用户关注的用户的数量
 	 private int followNums;
+	//这个用户关注的用户的数量
+	 private int friendNums;
+    //关注数与粉丝数的比率
+	 private double friDivFolRate;
+	 //用户关注度=Nfriend/(Nfriend+Nfollow)
+	 private double friendsRate;
+	 public double getFriendsRate() {
+		return friendsRate;
+	}
+	public void setFriendsRate(double friendsRate) {
+		this.friendsRate = friendsRate;
+	}
+	public double getFriDivFolRate() {
+		return friDivFolRate;
+	}
+	public void setFriDivFolRate(double friDivFolRate) {
+		this.friDivFolRate = friDivFolRate;
+	}
+	public int getFollowNums() {
+		return followNums;
+	}
+	public void setFollowNums(int followNums) {
+		this.followNums = followNums;
+	}
+	public int getFriendNums() {
+		return friendNums;
+	}
+	public void setFriendNums(int friendNums) {
+		this.friendNums = friendNums;
+	}
+
+
  public String getUserName() {
 		return userName;
 	}
@@ -26,24 +56,13 @@ public class User {
 	public void setUID(String uID) {
 		UID = uID;
 	}
-	public int getFansNums() {
-		return fansNums;
-	}
-	public void setFansNums(int fansNums) {
-		this.fansNums = fansNums;
-	}
-	public int getFollowNums() {
-		return followNums;
-	}
-	public void setFollowNums(int followsNums) {
-		this.followNums = followsNums;
-	}
+	 
 	//控制台展示
 // public String  toString(){
 //	 return  "UID  is  "+UID+"  fansNums	is  "+fansNums+"  followNums  is   "+followNums;
 // }
  public String  toString(){
-	 return  UID+"\t"+fansNums +"\t"+followNums;
+	 return  UID+"\t"+followNums +"\t"+friendNums+"\t"+friDivFolRate+"\t"+friendsRate;
  }
  
 }

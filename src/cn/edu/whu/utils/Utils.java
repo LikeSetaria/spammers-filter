@@ -352,7 +352,7 @@ public class Utils {
         	 str.append(key.toString()+" ");
         	 Object val=entry.getValue();
         	 str.append(val.toString()+"  ");
-        	 if(cou%30==0)
+        	// if(cou%30==0)
         		 str.append("\n");
         	
          }
@@ -376,7 +376,8 @@ public class Utils {
 			@Override
 			public int compare(java.util.Map.Entry<String, Integer> arg0, java.util.Map.Entry<String, Integer> arg1) {
 				// TODO Auto-generated method stub
-				return arg0.getValue() - arg1.getValue();  
+				//在这里调整降序还是升序
+				return arg1.getValue() - arg0.getValue();  
 			}    		 
     	 });
     	    HashMap<String ,Integer> newMap = new LinkedHashMap<String,Integer>();  

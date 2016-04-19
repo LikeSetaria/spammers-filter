@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -373,7 +374,7 @@ public class PreprocessText {
 					strb=iter.next();
 					String[] arr=strb.split("\t");
 					user.setUID(arr[0]);
-					user.setFansNums(arr.length-1);
+					user.setFriendNums(arr.length-1);
 					userMap.put(arr[0], user);
 					//功能一部分，保存列表
 					if(!isFollowedset.contains(arr[0])){
@@ -384,6 +385,10 @@ public class PreprocessText {
 				System.out.println(" 现在做好一半了，这个集合一共有"+isFollowedset.size());
 				it=FileUtils.lineIterator(fileIsFollowed);
 				User ue=null;
+				BigDecimal   b   =   null;  
+				BigDecimal   c   =   null;  
+				
+			 
 				while(it.hasNext()){
 				    
 					str=it.nextLine();
@@ -393,6 +398,14 @@ public class PreprocessText {
 					if(ue!=null){
                     ue.setUID(arr2[0]);
                     ue.setFollowNums(arr2.length-1);
+                    //计算关注数除以粉丝数
+                    b=new BigDecimal((double)ue.getFriendNums()/(double)ue.getFollowNums());
+                    double   f1   =   b.setScale(3,   BigDecimal.ROUND_HALF_UP).doubleValue();  
+                    ue.setFriDivFolRate(f1);
+                    //计算用户的关注度，关注度=Nfriends/(Nfriends+Nfollows)
+                    c=new BigDecimal((double)ue.getFriendNums()/((double)(ue.getFollowNums()+ue.getFriendNums())));
+                    double   f2   =   c.setScale(3,   BigDecimal.ROUND_HALF_UP).doubleValue();  
+                    ue.setFriendsRate(f2);
                     result.put(arr2[0], ue);
                     }
                     //System.out.println(ue);
@@ -407,7 +420,7 @@ public class PreprocessText {
 				//对结果map进行排序，这里是根据用户关注的用户数量进行排序，具体可以重写sortMapByValue中的相关代码
 				result=sortMapByValue(result);
 				//保存得到结果
-				saveResultByUserMap(result,saveFilePath);
+			    saveResultByUserMap(result,saveFilePath);
 				for (Map.Entry<String, User> entry : result.entrySet()) {
 					   System.out.println(entry.getValue());
 					  }
@@ -459,8 +472,23 @@ public class PreprocessText {
 					// TODO Auto-generated method stub
 					User user1=arg0.getValue();
 					User user2=arg1.getValue();
+					//根据不同参数排序
+					//根据关注数降序排列
+					//int result=user2.getFriendNums()- user1.getFriendNums();
+					//根据粉丝数降序排列
+					//int result=user2.getFollowNums()- user1.getFollowNums();
 					
-					return user2.getFollowNums()- user1.getFollowNums();  
+					//根据关注数与粉丝数比例降序排列
+					double result=user2.getFriDivFolRate()- user1.getFriDivFolRate();
+					
+					//根据关注数与粉丝数比例降序排列
+					//double result=user2.getFriendNums()- user1.getFriendNums();	
+				      if(result > 0)
+				       return 1;
+				      else if(result == 0)
+				       return 0;
+				      else 
+				       return -1;
 				}    		 
 	    	 });
 	    	     Map<String ,User> newMap = new LinkedHashMap<String,User>();  
