@@ -61,8 +61,12 @@ public class User {
 // public String  toString(){
 //	 return  "UID  is  "+UID+"  fansNums	is  "+fansNums+"  followNums  is   "+followNums;
 // }
+	//以tab为分割
+// public String  toString(){
+//	 return  UID+"\t"+friendNums +"\t"+followNums+"\t"+friDivFolRate+"\t";//+friendsRate;
+// }
+	//以空格为分割
  public String  toString(){
-	 return  UID+"\t"+followNums +"\t"+friendNums+"\t"+friDivFolRate+"\t"+friendsRate;
+	 return  this.UID+" "+this.friendNums +" "+this.followNums;//+friendsRate;
  }
- 
 }

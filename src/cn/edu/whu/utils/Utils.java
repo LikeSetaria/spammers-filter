@@ -252,7 +252,7 @@ public class Utils {
     	 int bufferSize = 20 * 1024 * 1024;//设读取文件的缓存为20MB   
          //建立缓冲文本输入流   
          File file = new File(filePath);     
-         int splitNum = splitNums-1;//要分割的块数减一   
+         int splitNum = splitNums;//要分割的块数减一   
          int fileLines = fileTotalLines;//输入文件的行数   
          long perSplitLines = fileLines / splitNum;//每个块的行数   
          try{

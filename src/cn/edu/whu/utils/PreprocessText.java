@@ -1,7 +1,9 @@
  
 package cn.edu.whu.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -354,9 +356,9 @@ public class PreprocessText {
 	   * 功能一：提取既关注别人，又有粉丝关注的用户UID，保存这个UID列表
 	   * 功能二：提取用户的粉丝数量，及其关注的用户的数量，并根据关注数进行降序排列 。形式是2589370790	32	20
 	   */
-	  public   void extractBoth(String isFollowedFilePath,String asFansFilePath,String saveFilePath){
-		  File fileIsFollowed=new File(isFollowedFilePath);
-		  File fileAsFans=new File(asFansFilePath);
+	  public   void extractBoth(String uidfollowsFile,String uidfriendsFile,String saveFilePath){
+		  File fileIsFollowed=new File(uidfollowsFile);
+		  File fileAsFans=new File(uidfriendsFile);
 	    	 LineIterator iter =null;  
 	    	 LineIterator it =null;  
 	     	 Set<String> isFollowedset=new HashSet<String>();
@@ -372,7 +374,7 @@ public class PreprocessText {
 				while(iter.hasNext()){
 					user=new User();
 					strb=iter.next();
-					String[] arr=strb.split("\t");
+					String[] arr=strb.split(" ");
 					user.setUID(arr[0]);
 					user.setFriendNums(arr.length-1);
 					userMap.put(arr[0], user);
@@ -392,9 +394,9 @@ public class PreprocessText {
 				while(it.hasNext()){
 				    
 					str=it.nextLine();
-					String[] arr2=str.split("\t");
+					String[] arr2=str.split(" ");
 					ue=userMap.get(arr2[0]);
-				    //做非空处理
+				    //做非空处理,不为空就是意味着上面统计关注数量时有了这个对象
 					if(ue!=null){
                     ue.setUID(arr2[0]);
                     ue.setFollowNums(arr2.length-1);
@@ -420,11 +422,11 @@ public class PreprocessText {
 				//对结果map进行排序，这里是根据用户关注的用户数量进行排序，具体可以重写sortMapByValue中的相关代码
 				result=sortMapByValue(result);
 				//保存得到结果
-			    saveResultByUserMap(result,saveFilePath);
-				for (Map.Entry<String, User> entry : result.entrySet()) {
-					   System.out.println(entry.getValue());
-					  }
-				System.out.println(" 现在另一半也做好了，这个集合一共有"+asFansset.size());
+			  saveResultByUserMap(result,saveFilePath);
+//				for (Map.Entry<String, User> entry : result.entrySet()) {
+//					   System.out.println(entry.getValue());
+//					  }
+//				System.out.println(" 现在另一半也做好了，这个集合一共有"+asFansset.size());
 				//isFollowedset.addAll(asFansset);
 				
 				Set<String> results=new HashSet<String>();
@@ -476,10 +478,10 @@ public class PreprocessText {
 					//根据关注数降序排列
 					//int result=user2.getFriendNums()- user1.getFriendNums();
 					//根据粉丝数降序排列
-					//int result=user2.getFollowNums()- user1.getFollowNums();
+					int result=user2.getFollowNums()- user1.getFollowNums();
 					
 					//根据关注数与粉丝数比例降序排列
-					double result=user2.getFriDivFolRate()- user1.getFriDivFolRate();
+					//double result=user2.getFriDivFolRate()- user1.getFriDivFolRate();
 					
 					//根据关注数与粉丝数比例降序排列
 					//double result=user2.getFriendNums()- user1.getFriendNums();	
@@ -523,6 +525,101 @@ public class PreprocessText {
 			}
 	         //System.out.println(str.toString());
 	     }
+	    
+	    
+	    /**
+	     *根据ID抽取相关的条目。
+	     *参数输入：1、源文件，格式化文件（false,小神万里,m,湖北 武汉,44528425,农民
+                        false,咯咯spy,m,江苏 扬州,44550011,""）以行为分割
+                 2、条件文件，格式化文件（44550011
+                           44528425）
+                 3、输出结果，条件文件中指定的所有条目
+	     * @throws FileNotFoundException 
+	     */
+	    public  void extractItemByUID(String sourceFilePath,String needFilePath,String resultFilePath ) throws FileNotFoundException{
+	    	File sourceFile=new File(sourceFilePath);
+	    	File needFile=new File(needFilePath);
+	    	File resultFile=new File(resultFilePath);
+	    	if(!sourceFile.exists())
+	    		throw new FileNotFoundException();
+            LineIterator iter=null;
+            LineIterator it=null;
+            Set<String> needItemsSet=new HashSet<String>();
+            try {
+				iter=FileUtils.lineIterator(sourceFile);
+				it=FileUtils.lineIterator(needFile);
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            while(it.hasNext()){
+            	needItemsSet.add(it.nextLine());
+            }
+            LineIterator.closeQuietly(it);
+            String line;
+            StringBuffer strb=new StringBuffer();
+            System.out.println(needItemsSet.size());
+            Map<String,String> map=new HashMap<String,String>();
+            while(iter.hasNext()){
+            	line=iter.nextLine();
+            	String[] arr=line.split(",");
+            	map.put(arr[4], line);
+            	 
+//            	if(arr.length>5){
+//            		if(needItemsSet.contains(arr[4])){
+//            			strb.append(line);
+//            			strb.append("\n");
+//            		}
+//            		
+//            	}
+            }
+            LineIterator.closeQuietly(iter);
+          // System.out.println(map);
+            StringBuffer str= new StringBuffer();
+            for(String ss:needItemsSet){
+            	if(map.containsKey(ss)){
+            		str.append(map.get(ss));
+            	str.append("\n");}
+            }
+         
+			
+            try {
+				FileUtils.writeStringToFile(resultFile, str.toString(),"utf-8"); 
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
      
+	    /**
+	     * 统计简介情况
+	     */
+	    public void analyseProfile(String userFilePath){
+	    	File file =new File(userFilePath);
+	    	LineIterator it=null;
+	    	int count=0;
+	    	try {
+				it=FileUtils.lineIterator(file);
+				String line;
+				while(it.hasNext()){
+					line=it.nextLine();
+					String[] arr=line.split(",");
+//					if(arr[arr.length-1].equals("\"\"")){
+//						count++;
+//					}
+					if(arr[arr.length-1].toString().contains("http")){
+						count++;
+					}
+					
+				}
+				System.out.println(count);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				LineIterator.closeQuietly(it);
+			}
+	    }
      
 }
