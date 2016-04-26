@@ -7,9 +7,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -20,6 +25,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 
 import cn.edu.whu.pojo.Relation;
+import cn.edu.whu.pojo.User;
 import cn.edu.whu.utils.Utils;
 
 /**
@@ -600,6 +606,178 @@ public class ProProcess {
     
     	
     }
-    
+       /**
+	   * 功能一：提取既关注别人，又有粉丝关注的用户UID，保存这个UID列表
+	   * 功能二：提取用户的粉丝数量，及其关注的用户的数量，并根据关注数进行降序排列 。形式是2589370790	32	20
+	   */
+	  public   void extractBoth(String uidfollowsFile,String uidfriendsFile,String saveFilePath){
+		  File fileIsFollowed=new File(uidfollowsFile);
+		  File fileAsFans=new File(uidfriendsFile);
+	    	 LineIterator iter =null;  
+	    	 LineIterator it =null;  
+	     	 Set<String> isFollowedset=new HashSet<String>();
+	     	Set<String> asFansset=new HashSet<String>();
+	     	 String strb=null;
+	     	 String str=null;
+	     	 User user=null;
+	     	Map<String ,User > userMap=new HashMap<String ,User>();
+	     	 Map<String ,User > result=new HashMap<String ,User>();
+	     	 
+	     	 try {
+				iter=FileUtils.lineIterator(fileAsFans);
+				while(iter.hasNext()){
+					user=new User();
+					strb=iter.next();
+					String[] arr=strb.split(" ");
+					user.setUID(arr[0]);
+					user.setFriendNums(arr.length-1);
+					userMap.put(arr[0], user);
+					//功能一部分，保存列表
+					if(!isFollowedset.contains(arr[0])){
+						isFollowedset.add(arr[0]);
+					}
+				}
+				
+				System.out.println(" 现在做好一半了，这个集合一共有"+isFollowedset.size());
+				it=FileUtils.lineIterator(fileIsFollowed);
+				User ue=null;
+				BigDecimal   b   =   null;  
+				BigDecimal   c   =   null;  
+				
+			 
+				while(it.hasNext()){
+				    
+					str=it.nextLine();
+					String[] arr2=str.split(" ");
+					ue=userMap.get(arr2[0]);
+				    //做非空处理,不为空就是意味着上面统计关注数量时有了这个对象
+					if(ue!=null){
+                  ue.setUID(arr2[0]);
+                  ue.setFollowNums(arr2.length-1);
+                  //计算关注数除以粉丝数
+                  b=new BigDecimal((double)ue.getFriendNums()/(double)ue.getFollowNums());
+                  double   f1   =   b.setScale(3,   BigDecimal.ROUND_HALF_UP).doubleValue();  
+                  ue.setFriDivFolRate(f1);
+                  //计算用户的关注度，关注度=Nfriends/(Nfriends+Nfollows)
+                  c=new BigDecimal((double)ue.getFriendNums()/((double)(ue.getFollowNums()+ue.getFriendNums())));
+                  double   f2   =   c.setScale(3,   BigDecimal.ROUND_HALF_UP).doubleValue();  
+                  ue.setFriendsRate(f2);
+                  result.put(arr2[0], ue);
+                  }
+                  //System.out.println(ue);
+                  //功能一部分，保存UID
+					if(!asFansset.contains(arr2[0])){
+						asFansset.add(arr2[0]);
+					}
+				
+					
+				}
+				
+				//对结果map进行排序，这里是根据用户关注的用户数量进行排序，具体可以重写sortMapByValue中的相关代码
+				result=sortMapByValue(result);
+				//保存得到结果
+			  saveResultByUserMap(result,saveFilePath);
+//				for (Map.Entry<String, User> entry : result.entrySet()) {
+//					   System.out.println(entry.getValue());
+//					  }
+//				System.out.println(" 现在另一半也做好了，这个集合一共有"+asFansset.size());
+				//isFollowedset.addAll(asFansset);
+				
+				Set<String> results=new HashSet<String>();
+				Iterator itt=asFansset.iterator();
+				while(itt.hasNext()){
+					
+					String temp=itt.next().toString();
+					if(isFollowedset.contains(temp)){
+						
+						results.add(temp);
+					}		
+				}
+				System.out.println("交集的大小为"+results.size());
+				/*控制台显示
+				int i=0;
+				for(String res:results){
+					
+					i++;
+				System.out.print(res+"\t");
+				
+				if(i%10==0)
+					
+					System.out.println();
+				
+				}*/
+				//功能一，保存UID列表
+				//utils.saveResultBySet(results, saveFilePath);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(strb);
+			}finally{
+				LineIterator.closeQuietly(iter);
+				LineIterator.closeQuietly(it);
+			}		  
+	  }
+	  
+	  
+	    public   Map<String,User> sortMapByValue(Map<String,User> map ){
+	    	 
+	    	 ArrayList<Map.Entry<String ,User>> list=new ArrayList<Map.Entry<String,User>>(map.entrySet());
+	    	 Collections.sort(list,new Comparator<Map.Entry<String ,User>>(){    		 
+				@Override
+				public int compare(java.util.Map.Entry<String, User> arg0, java.util.Map.Entry<String, User> arg1) {
+					// TODO Auto-generated method stub
+					User user1=arg0.getValue();
+					User user2=arg1.getValue();
+					//根据不同参数排序
+					//根据关注数降序排列
+					//int result=user2.getFriendNums()- user1.getFriendNums();
+					//根据粉丝数降序排列
+					int result=user2.getFollowNums()- user1.getFollowNums();
+					
+					//根据关注数与粉丝数比例降序排列
+					//double result=user2.getFriDivFolRate()- user1.getFriDivFolRate();
+					
+					//根据关注数与粉丝数比例降序排列
+					//double result=user2.getFriendNums()- user1.getFriendNums();	
+				      if(result > 0)
+				       return 1;
+				      else if(result == 0)
+				       return 0;
+				      else 
+				       return -1;
+				}    		 
+	    	 });
+	    	     Map<String ,User> newMap = new LinkedHashMap<String,User>();  
+	            for (int i = 0; i < list.size(); i++) {  
+	                newMap.put(list.get(i).getKey(), list.get(i).getValue());  
+	            }  
+	            return newMap; 
+	     }
+	    
+	    public   void saveResultByUserMap( Map<String,User> map,String saveFilePath){
+	    	 File file=new File(saveFilePath);
+	      	 StringBuffer str=new StringBuffer();
+	      	 int cou=0;
+	         Iterator<?> it =map.entrySet().iterator();
+	         while(it.hasNext()){
+	        	 cou++;
+	        	 @SuppressWarnings("rawtypes")
+				Map.Entry entry=(Map.Entry) it.next();
+	        	 Object key=entry.getKey();
+	        	// str.append(key.toString()+" ");
+	        	 Object val=entry.getValue();
+	        	 str.append(val.toString()+"  ");
+	        	// if(cou%30==0)
+	        		 str.append("\n");
+	        	
+	         }
+	         try {
+				FileUtils.writeStringToFile(file, str.toString(), "utf-8");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	         //System.out.println(str.toString());
+	     }
 
 }

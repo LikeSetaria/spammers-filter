@@ -18,6 +18,48 @@ public class User {
 	 private double friDivFolRate;
 	 //用户关注度=Nfriend/(Nfriend+Nfollow)
 	 private double friendsRate;
+	 //简介信息是否为空,false代表简介为空
+	 private boolean profile;
+		//微博转发数
+	 private int reposts_count;
+	 //微博评论数
+	 private int comment_count;
+	 //微博来源
+	 private char source;
+	 //微博创建时间
+	 private String created_at;
+	 public boolean isProfile() {
+		return profile;
+	}
+	public void setProfile(boolean profile) {
+		this.profile = profile;
+	}
+	public int getReposts_count() {
+		return reposts_count;
+	}
+	public void setReposts_count(int reposts_count) {
+		this.reposts_count = reposts_count;
+	}
+	public int getComment_count() {
+		return comment_count;
+	}
+	public void setComment_count(int comment_count) {
+		this.comment_count = comment_count;
+	}
+	public char getSource() {
+		return source;
+	}
+	public void setSource(char source) {
+		this.source = source;
+	}
+	public String getCreated_at() {
+		return created_at;
+	}
+	public void setCreated_at(String created_at) {
+		this.created_at = created_at;
+	}
+
+
 	 public double getFriendsRate() {
 		return friendsRate;
 	}

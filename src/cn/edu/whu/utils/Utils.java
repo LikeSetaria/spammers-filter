@@ -20,6 +20,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,10 +41,10 @@ public class Utils {
      * @param path
      * @return
      */
-     public   Map<String, File> getFileList(String filePath)
+     public   Map<String, File> getFileList(String folderPath)
      {
-    	 Map<String, File> map=new HashMap<>();
-    	 File file=new File(filePath);
+    	 Map<String, File> map=new TreeMap<>();
+    	 File file=new File(folderPath);
     	 int i=0;
     	 if(file.isDirectory()){
     		 File [] f=file.listFiles();
@@ -412,5 +413,40 @@ public class Utils {
                // System.out.println(list.get(i).getKey()+"   "+list.get(i).getValue());
             }  
             return newMap; 
+     }
+     /**
+      * 读取一个文件的内容，到一个集合中。注意唯一性
+      * 文件应该的格式是：空格分隔
+      * uid
+      * uid
+      * 或者是
+      * uid uid uid uid 
+      * uid uid uid uid
+      * @param filePath
+      * @return
+      */
+     public  Set<String> readToSet(String filePath){
+    	  File file=new File(filePath);
+    	  Set<String> set=new LinkedHashSet<String>();
+    	  LineIterator it=null;
+    	   try {
+			it=FileUtils.lineIterator(file);
+			String line;
+			while(it.hasNext()){
+				line=it.nextLine();
+				String [] arr=line.split(" ");
+				if(!set.contains(arr[0]))
+					set.add(arr[0]);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	   finally{
+    		   LineIterator.closeQuietly(it);
+    	   }
+    	   
+    	 return set;
+    	 
      }
 }
