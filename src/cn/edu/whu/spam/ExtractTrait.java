@@ -30,7 +30,7 @@ import cn.edu.whu.utils.Utils;
  *提取用户的特征
  */
 public class ExtractTrait {
-      static  String  	UID_FILE_PATH="E:/spam/UID.txt";
+      static  String  	UID_FILE_PATH="E:/spam/BothUID.txt";
       //用户ID
       static Set<String> UID_SET=new LinkedHashSet<String>();
       static Map<String,StringBuilder> USER_WEIBO_MAP=new HashMap<String,StringBuilder>();
@@ -43,7 +43,7 @@ public class ExtractTrait {
 		//抽取部分用户的profile信息
 		//ext.extractItemByUID("D:/Whuer/FudanData/weibo_users.txt", UID_FILE_PATH , "E:/spam/UserItems.txt");
 		//抽取微博
-//		ext.extractWeibo("D:/Whuer/FudanData/MERGE","E:/spam/weibo");
+	ext.extractWeibo("H:/复旦大学/Weibo.Corpus/Weibo.data/merge","E:/spam/weibo");
 //		ext.save("E:/spam/weibo");
 //		for (Entry<String, StringBuilder> entry : USER_WEIBO_MAP.entrySet()) {  
 //			  
@@ -51,7 +51,7 @@ public class ExtractTrait {
 //		  
 //		} 
 		//提取特征
-		ext.extractFeatures("E:/spam/weibo/159597830.txt");
+		//ext.extractFeatures("E:/spam/weibo/159597830.txt");
 	 
 	}
 	/**
@@ -134,7 +134,13 @@ public class ExtractTrait {
     	 //UID_SET.add("127978896");
     	 //UID_SET.add("159597830");
     	 Map<String,File> files=new TreeMap<String,File>();
+    	 //把用户的微博做成静态的Map,当要抽取的微博非常多是，这样明显不合适，所以用下面的局部变量存每个文件下的
+    	 Map<String,StringBuilder> localMap=new HashMap<String,StringBuilder>();
     	 files=utils.getFileList(weiboFolderPath);
+    	 files.remove("lv2_weibo.zip");
+    	 files.remove("lv3_0.rar");
+    	 files.remove("weibodata.rar");
+    	 System.out.println(files.size());
     	 Iterator it=files.keySet().iterator();
     	 while(it.hasNext()){
     		     String key;    
@@ -209,7 +215,7 @@ public class ExtractTrait {
     	Path path=Paths.get(URL);
     	//微博中@数量
     	int atNums=0;
-    	//微博中URL数量
+    	//含URL的微博数
     	int URLNums=0;
     	//微博中的是否提及话题，#topic#
     	int topicNums=0;
@@ -219,15 +225,12 @@ public class ExtractTrait {
     	int reposts_count=0;
     	//评论数
     	int comment_count=0;
+    	Utils utils=new Utils();
     	String content;
     	 
     	  try {
 			 content = new String(Files.readAllBytes(path));
-			 Pattern pattern = Pattern.compile("//(//d{3}//)//s//d{3}-//d{4}");
-			
 			String[]  strb=content.split("\\n");
-			String[] temp=null;
-			
 			System.out.println("total Nums Of weibo "+strb.length);
 			for(String ss:strb){
 				StringBuilder tem=new StringBuilder();
@@ -247,9 +250,13 @@ public class ExtractTrait {
 				//System.out.println(arr2[5]);
 				reposts_count=Integer.valueOf(arr2[1])+reposts_count;
 				comment_count=Integer.valueOf(arr2[2])+comment_count;
-				 
+				atNums=atNums+utils.calStr(arr2[5], "@");
+				topicNums=topicNums+utils.calStr(arr2[5], "#"); 
+				if(arr2[5].contains("http"))
+					URLNums++;
 			}
-			System.out.println("评论数"+comment_count+"转发数"+reposts_count);
+			System.out.println("评论数"+comment_count+"转发数"+
+			reposts_count+"@数"+atNums+"#数"+topicNums+"URL数"+URLNums);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

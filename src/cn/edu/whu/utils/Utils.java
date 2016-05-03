@@ -437,6 +437,8 @@ public class Utils {
 				String [] arr=line.split(" ");
 				if(!set.contains(arr[0]))
 					set.add(arr[0]);
+				//对于只有uid列表
+				//set.add(line.trim());
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -448,5 +450,37 @@ public class Utils {
     	   
     	 return set;
     	 
+     }
+     /**
+      * 计算一个字符串中，某个字符出现的次数，如：@是大法官圣诞节还是@司法所，统计其中@字符的次数
+      */
+     public int calStr(String sourceStr,String findStr){
+    	 int beginIndex=-1;
+    	 int count=0;
+    	 while((beginIndex=sourceStr.indexOf(findStr))!=-1){
+    		 sourceStr=sourceStr.substring(beginIndex+findStr.length());
+    		 count++;
+    	 }
+    	 
+    	 return  count;
+     }
+     /**
+      * 计算一个字符串中含有的URL数，
+      */
+     public int calURL(String sourceStr){
+    	 sourceStr=sourceStr.toLowerCase();
+    	 int count=0;
+    	 if(sourceStr.contains("www")||sourceStr.contains("http")){
+    	 String[] st=sourceStr.split("http");
+    	 String[] st2=sourceStr.split("www");
+    	 if(st.length==st2.length)
+    		 count=st.length-1;
+    	 else if(st.length>st2.length)
+    		 count=st.length-1;
+    	 else count=1;
+    	 return count;
+    	 }
+    	 else return count;
+    	  
      }
 }
