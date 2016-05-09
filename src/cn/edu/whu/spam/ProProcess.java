@@ -102,8 +102,13 @@ public class ProProcess {
 		 * 第三步抽取，珍妮爬取的不存在用户的特征
 		 */
 		//根据爬取的不存在列表，找出信息比较全（存在关注和粉丝）和不存在用户列表的交集。对其进行分析，提取他的特征
-		pro.extractNotExist("E:/UserNotExist_tmp.txt","E:/spam/BothUID.txt","E:/spam/NotExistuid.txt");
-		
+		//pro.extractNotExist("E:/UserNotExist_tmp.txt","E:/spam/BothUID.txt","E:/spam/NotExistuid.txt");
+		//pro.extractNotExist("E:/spam/2_GetRelations/UserNotExist_selected.txt","E:/spam/2_GetRelations/BothUID.txt","E:/normal/UID.txt");
+		/*
+		 * 
+		 */
+		//pro.extractBoth("E:/spam/uidfollows_selected.txt", "E:/spam/uidfriends_selected.txt", "E:/spam/count.txt");
+		//pro.selectUIDF("E:/normal/UID.txt", "E:/spam/2_GetRelations/uidfollows.txt", "E:/normal/2_UltimateNormal/uidfollows_normal.txt");
 	}
 	//第一步，提取Ngram后的结果，方便下一步使用
 	/**
@@ -609,6 +614,7 @@ public class ProProcess {
        /**
 	   * 功能一：提取既关注别人，又有粉丝关注的用户UID，保存这个UID列表
 	   * 功能二：提取用户的粉丝数量，及其关注的用户的数量，并根据关注数进行降序排列 。形式是2589370790	32	20
+	   *      提取用户的关系特征，包括关注度，三角关注关系等
 	   */
 	  public   void extractBoth(String uidfollowsFile,String uidfriendsFile,String saveFilePath){
 		  File fileIsFollowed=new File(uidfollowsFile);
@@ -616,13 +622,12 @@ public class ProProcess {
 	    	 LineIterator iter =null;  
 	    	 LineIterator it =null;  
 	     	 Set<String> isFollowedset=new HashSet<String>();
-	     	Set<String> asFansset=new HashSet<String>();
+	     	 Set<String> asFansset=new HashSet<String>();
 	     	 String strb=null;
 	     	 String str=null;
 	     	 User user=null;
 	     	Map<String ,User > userMap=new HashMap<String ,User>();
 	     	 Map<String ,User > result=new HashMap<String ,User>();
-	     	 
 	     	 try {
 				iter=FileUtils.lineIterator(fileAsFans);
 				while(iter.hasNext()){
@@ -659,7 +664,7 @@ public class ProProcess {
                   double   f1   =   b.setScale(3,   BigDecimal.ROUND_HALF_UP).doubleValue();  
                   ue.setFriDivFolRate(f1);
                   //计算用户的关注度，关注度=Nfriends/(Nfriends+Nfollows)
-                  c=new BigDecimal((double)ue.getFriendNums()/((double)(ue.getFollowNums()+ue.getFriendNums())));
+                  c=new BigDecimal((double)ue.getFollowNums()/((double)(ue.getFollowNums()+ue.getFriendNums())));
                   double   f2   =   c.setScale(3,   BigDecimal.ROUND_HALF_UP).doubleValue();  
                   ue.setFriendsRate(f2);
                   result.put(arr2[0], ue);
@@ -732,10 +737,10 @@ public class ProProcess {
 					//根据关注数降序排列
 					//int result=user2.getFriendNums()- user1.getFriendNums();
 					//根据粉丝数降序排列
-					int result=user2.getFollowNums()- user1.getFollowNums();
+					//int result=user2.getFollowNums()- user1.getFollowNums();
 					
-					//根据关注数与粉丝数比例降序排列
-					//double result=user2.getFriDivFolRate()- user1.getFriDivFolRate();
+					//根据关注数与粉丝数比例升序排列
+					double result=user1.getFriDivFolRate()- user2.getFriDivFolRate();
 					
 					//根据关注数与粉丝数比例降序排列
 					//double result=user2.getFriendNums()- user1.getFriendNums();	
@@ -779,5 +784,51 @@ public class ProProcess {
 			}
 	         //System.out.println(str.toString());
 	     }
+	    /**
+	     * 根据一部分uid，抽取另一个文件中的uid
+	     * 文件１输入的格式是： uid(key)　
+	     *               uid
+	     *               uid
+	     *  文件2输入格式是：uid(key)  uid uid uid 
+	     */
+	    public void selectUIDF(String uidFilePath,String uidFFilePath,String savefile){
+	    	File uidffile=new File(uidFFilePath);
+	    	Utils utils=new Utils();
+	    	Set<String> uidSet=new HashSet<String>();
+	    	uidSet=utils.readToSet(uidFilePath);
+	    	LineIterator it=null;
+	    	FileWriter fw=null;
+	    
+	    	try {
+	    		 fw=new FileWriter(savefile,true);
+	    		 
+				it=FileUtils.lineIterator(uidffile);
+				while(it.hasNext()){
+					
+					String line=it.nextLine();
+					//System.out.println(line);
+					String[] arr=line.split(" ");
+					if(uidSet.contains(arr[0])){
+						//System.out.println(line);
+						fw.write(line);
+						fw.write("\n");
+						fw.flush();
+						
+					}
+					
+					
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+				try {
+					fw.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+	    }
 
 }

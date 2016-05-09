@@ -5,6 +5,7 @@ package cn.edu.whu.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,10 +24,11 @@ import cn.edu.whu.pojo.Relation;
  * 寻找微博关注关系中三角关系，社会学上分析三角关注关系作为一种稳定关系，所以有这种关系的人是水军的可能性就比较低
  * 但另一方面集团水军一般会相互关注，这方面高的话是不是说明另一个问题呢？
  * @author bczhang
- *输入文件是关注关系文件，第一个是UID后面跟着的是他关注的用户ID,以Tab分割
+ *输入文件是关注关系文件，第一个是UID后面跟着的是他关注的用户ID,以Tab或者空格分割
  */
 public class FindTriangleRelation {
 	    //保存最后的结果，其中String是每个用户的ID作为Key，value存储的是间接关注的个数。如A->B,B->C,C->A其中value存的是C关注A的人数
+       static Map<String ,String> result2=new TreeMap<String,String>();
        static Map<String ,Integer> result=new TreeMap<String,Integer>();
        //关注关系，
        static Map<String,Relation> friendMap=new HashMap<String,Relation>();
@@ -34,18 +36,19 @@ public class FindTriangleRelation {
        public static void main(String[] args){
     	   FindTriangleRelation find=new FindTriangleRelation();
     	   Utils utils=new Utils();
-    	   find.initFriendMap();
+    	   find.initFriendMap("E:/normal/2_UltimateNormal/uidfollows_normal.txt");
     	   find.findTri();
-    	   result=utils.sortMapByValue(result);
-    	   utils.saveResultByHashMap(result, "F:/tri.txt");
+    	   // result=utils.sortMapByValue(result);
+    	   utils.saveMap(result2, "E:/normal/tri_uidFollows.txt");
     	  // System.out.println(result.size());
     	  //System.out.println(result);
     	   
        }
        
        //A->B;B->C;C->A
-       public void initFriendMap(){
-    	   File file=new File("E:/relation_results_as_fans_25w.txt");
+       public void initFriendMap(String uidFFilePath){
+    	   //File file=new File("E:/relation_results_as_fans_25w.txt");
+    	   File file=new File(uidFFilePath);
       	 LineIterator iter =null;     	 
        	 String strb=null;
        	 Relation relation=null;
@@ -55,7 +58,7 @@ public class FindTriangleRelation {
 			//文件读入Map
 			while(iter.hasNext()){
 				strb=iter.next();
-				String[] arr=strb.split("\t");
+				String[] arr=strb.split(" ");
 				relation =new Relation();
 				relation.setUser_UID(arr[0]);
 				for(int i=1;i<arr.length-1;i++)
@@ -97,8 +100,13 @@ public class FindTriangleRelation {
        }
        public void findTri(){
     	   Iterator<?> it =friendMap.entrySet().iterator();
+    	   int friends=0;
+    	   double rate=0.0;
+			DecimalFormat   df=new   java.text.DecimalFormat("#.###"); 
 	         while(it.hasNext()){  
-				Map.Entry entry=(Map.Entry) it.next();
+	        	friends=0;
+	        	rate=0.0;
+				 Map.Entry entry=(Map.Entry) it.next();
 	        	 String key=entry.getKey().toString();
 	             List<String> CList=getColBToC(key);
 	             int count=0;
@@ -108,6 +116,13 @@ public class FindTriangleRelation {
 	            	 count++;
  	             }
  	             result.put(key, count);
+// 	             保存为三角关系比例
+// 	             Relation re =friendMap.get(key);
+// 	             friends=re.getFollowsByHe().size();
+// 	             if(friends!=0)
+// 	             rate=(double)count/(double)friends;
+// 	             else rate=0.000;
+// 	             result2.put(key, df.format(rate));
 	         }
 	         
 	         

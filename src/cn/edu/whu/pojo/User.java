@@ -109,6 +109,6 @@ public class User {
 // }
 	//以空格为分割
  public String  toString(){
-	 return  this.UID+" "+this.friendNums +" "+this.followNums;//+friendsRate;
+	 return  this.UID+" "+this.friendNums +" "+this.followNums+" "+friendsRate;
  }
 }

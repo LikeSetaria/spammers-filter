@@ -128,7 +128,10 @@ public class Test {
 		//test.extraceEdge();
 		//test.extractGender();
 		//System.out.println(utils.readToSet("E:/spam/tt.txt"));
-		System.out.println(utils.calURL("erhttp:dfgdghsdfgdg的法国恢复的话www.dsgfs为广大http//"));
+		//System.out.println(utils.calURL("erhttp:dfgdghsdfgdg的法国恢复的话www.dsgfs为广大http//"));
+		Set<String> set=new HashSet<String>();
+		set=utils.readToSet("E:/normal/weibo.txt");
+		utils.saveResultBySet(set, "E:/normal/UID.txt");
 	}
 	  	public void extractFid(){
 	  		File file=new File("E:/mute_fake/UidInfo_friends1.txt");

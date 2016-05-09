@@ -41,9 +41,7 @@ public class Ngram
  public static void main(String[] args){
 	 Ngram nrgram=new Ngram();
 	 Utils utils=new Utils();
-	 String str1=utils.readFileToString("D:/Whuer/Major/weibo/RESULT/weibo_users_name.txt");
-	 //System.out.println(str1);
-	double sim =nrgram.getSimilarity("С������", str1,2);
+	double sim =nrgram.getSimilarity("#魔幻精灵#", "我在#魔幻精灵#中完成了'拥有90名好友！'的成就，你也来一起来试试吧.@魔幻精灵游戏 ",2);
     System.out.println(sim);
  }
  
@@ -66,7 +64,7 @@ public class Ngram
          displayResult(res1);
          //saveResult(res1,"E:/temp/tttt.txt");
         List<result> res2 = processString(wordTwo, n);
-         displayResult(res2);
+        // displayResult(res2);
         int c = common(res1,res2);
         int u = union(res1,res2);
         double sim = (double)c/(double)u;

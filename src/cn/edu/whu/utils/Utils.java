@@ -320,10 +320,12 @@ public class Utils {
      	StringBuffer str=new StringBuffer();
      	int cou=0;
      	for(String res:d){
-     		cou++;
+     		
      		str.append(res.toString());
      		//if(cou%10==0)
      			str.append("\n");
+     			cou++;
+     			
      	}
      	String content=str.toString();
      	try {
@@ -341,6 +343,36 @@ public class Utils {
       * @param saveFilePath 保存到的目录地址
       */
      public   void saveResultByHashMap( Map<String,Integer> map,String saveFilePath){
+    	 File file=new File(saveFilePath);
+      	 StringBuffer str=new StringBuffer();
+      	 int cou=0;
+         Iterator<?> it =map.entrySet().iterator();
+         while(it.hasNext()){
+        	 cou++;
+        	 @SuppressWarnings("rawtypes")
+			Map.Entry entry=(Map.Entry) it.next();
+        	 Object key=entry.getKey();
+        	 str.append(key.toString()+" ");
+        	 Object val=entry.getValue();
+        	 str.append(val.toString()+"  ");
+        	// if(cou%30==0)
+        		 str.append("\n");
+        	
+         }
+         try {
+			FileUtils.writeStringToFile(file, str.toString(), "utf-8");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         //System.out.println(str.toString());
+     }
+     /**保存Map数据到磁盘
+      *@author bczhang
+      *@param d 待保存map
+      * @param saveFilePath 保存到的目录地址
+      */
+     public   void saveMap( Map<String,String> map,String saveFilePath){
     	 File file=new File(saveFilePath);
       	 StringBuffer str=new StringBuffer();
       	 int cou=0;
@@ -434,7 +466,9 @@ public class Utils {
 			String line;
 			while(it.hasNext()){
 				line=it.nextLine();
-				String [] arr=line.split(" ");
+				
+				String [] arr=line.split(",");
+				//String [] arr=line.split(" ");
 				if(!set.contains(arr[0]))
 					set.add(arr[0]);
 				//对于只有uid列表
@@ -451,16 +485,45 @@ public class Utils {
     	 return set;
     	 
      }
+     //读取文件到一个set集合，这个文件是每行一个uid
+     public  Set<String> readToSet2(String filePath){
+   	  File file=new File(filePath);
+   	  Set<String> set=new LinkedHashSet<String>();
+   	  LineIterator it=null;
+   	   try {
+			it=FileUtils.lineIterator(file);
+			String line;
+			while(it.hasNext()){
+				line=it.nextLine();
+				
+				//String [] arr=line.split(" ");
+				
+				//对于只有uid列表
+				set.add(line.trim());
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+   	   finally{
+   		   LineIterator.closeQuietly(it);
+   	   }
+   	   
+   	 return set;
+   	 
+    }
      /**
       * 计算一个字符串中，某个字符出现的次数，如：@是大法官圣诞节还是@司法所，统计其中@字符的次数
       */
      public int calStr(String sourceStr,String findStr){
     	 int beginIndex=-1;
     	 int count=0;
+    	 if(sourceStr!=null){
     	 while((beginIndex=sourceStr.indexOf(findStr))!=-1){
     		 sourceStr=sourceStr.substring(beginIndex+findStr.length());
     		 count++;
-    	 }
+    	 }}
+    	 
     	 
     	 return  count;
      }
