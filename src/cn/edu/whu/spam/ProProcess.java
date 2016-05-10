@@ -105,9 +105,10 @@ public class ProProcess {
 		//pro.extractNotExist("E:/UserNotExist_tmp.txt","E:/spam/BothUID.txt","E:/spam/NotExistuid.txt");
 		//pro.extractNotExist("E:/spam/2_GetRelations/UserNotExist_selected.txt","E:/spam/2_GetRelations/BothUID.txt","E:/normal/UID.txt");
 		/*
-		 * 
+		 * 提取关注度
 		 */
-		//pro.extractBoth("E:/spam/uidfollows_selected.txt", "E:/spam/uidfriends_selected.txt", "E:/spam/count.txt");
+		  pro.extractBoth("E:/spam/uidfollows_selected.txt", "E:/spam/uidfriends_selected.txt", "E:/spam/4_extractFetures/attentionRate.txt");
+	      pro.extractBoth("E:/normal/2_UltimateNormal/uidfollows_normal.txt", "E:/normal/2_UltimateNormal/uidfriends_normal.txt", "E:/normal/3_extractFetures/attentionRate.txt");
 		//pro.selectUIDF("E:/normal/UID.txt", "E:/spam/2_GetRelations/uidfollows.txt", "E:/normal/2_UltimateNormal/uidfollows_normal.txt");
 	}
 	//第一步，提取Ngram后的结果，方便下一步使用
@@ -661,11 +662,11 @@ public class ProProcess {
                   ue.setFollowNums(arr2.length-1);
                   //计算关注数除以粉丝数
                   b=new BigDecimal((double)ue.getFriendNums()/(double)ue.getFollowNums());
-                  double   f1   =   b.setScale(3,   BigDecimal.ROUND_HALF_UP).doubleValue();  
+                  double   f1   =   b.setScale(6,   BigDecimal.ROUND_HALF_UP).doubleValue();  
                   ue.setFriDivFolRate(f1);
                   //计算用户的关注度，关注度=Nfriends/(Nfriends+Nfollows)
                   c=new BigDecimal((double)ue.getFollowNums()/((double)(ue.getFollowNums()+ue.getFriendNums())));
-                  double   f2   =   c.setScale(3,   BigDecimal.ROUND_HALF_UP).doubleValue();  
+                  double   f2   =   c.setScale(6,   BigDecimal.ROUND_HALF_UP).doubleValue();  
                   ue.setFriendsRate(f2);
                   result.put(arr2[0], ue);
                   }

@@ -64,11 +64,14 @@ public class ExtractTrait {
 
 
 		//提取not exist用户的行为特征
-		ext.extractFeatures("E:/spam/3_UltimateSelected/weibos", "E:/spam/extractF.txt");
+		ext.extractFeatures("E:/spam/3_UltimateSelected/weibos", "E:/spam/behaviorFeatures2.txt");
 		//提取normal用户的行为特征
-		//ext.extractFeatures("E:/normal/2_UltimateNormal/weibos", "E:/normal/behaviorFeatures.txt");
+		ext.extractFeatures("E:/normal/2_UltimateNormal/weibos", "E:/normal/behaviorFeatures2.txt");
 	    //ext.calF();
 		//ext.calIntersection();
+		
+		//ext.analyseProfile("E:/normal/2_UltimateNormal/profiles.txt", "E:/normal/proTrait.txt");
+		//ext.analyseProfile("E:/spam/3_UltimateSelected/profiles.txt", "E:/spam/profilesTrait.txt");
 		
 	
 	}
@@ -337,7 +340,7 @@ public class ExtractTrait {
 					rep++;
 				}
 			}
-			DecimalFormat   df=new   java.text.DecimalFormat("#.###"); 
+			DecimalFormat   df=new   java.text.DecimalFormat("#.######"); 
 			double URLrate=(double)URLNums/(double)weiboTotal;
 			double weiborepostRate=(double)rep/(double)weiboTotal;
 			double commentRate=(double)comment_count/(double)weiboTotal;
@@ -346,7 +349,9 @@ public class ExtractTrait {
 			double topicRate=(double)topicNums/(double)weiboTotal;
 			String[] weibo=weibotext.toString().split("\n");
 			double weibosimilarity=calWeiboSimilarity(weibo);
+			//训练的时候要特征要相似，否则效果可能很不好。所以这里要对时间间隔这个特征进行规范化，比如处理这一维的最大值
 			double intervalRate=calTimeTrait(timeList);
+			
 			//System.out.println("总评论数"+comment_count+"总转发数"+
 			//reposts_count+"@总数"+atNums+"#总数数"+topicNums+"URL比例"+df.format(URLrate)+"转发的微博比例"+df.format(repostRate));
 			result=uid+" "+df.format(commentRate)+" "+df.format(repostRate)+" "+df.format(atRate)+" "+df.format(topicRate)+" "+df.format(URLrate)+" "+df.format(weiborepostRate)+" "+df.format(weibosimilarity)+
@@ -503,6 +508,48 @@ public class ExtractTrait {
          rate=(double)result/(double)(list.size());
          return rate;
          
+    }
+    
+    /**
+     * 基于用户profile信息的特征抽取，
+     * 输入：profileFile
+     * 输出：uid ..
+     * 输入格式：false,本源学习圈,m,广东 深圳,87691000,本源学习圈，陪伴你成长。
+     */
+    public void analyseProfile(String userFilePath,String save){
+    	File file =new File(userFilePath);
+    	Utils utils=new Utils();
+    	LineIterator it=null;
+    	Map<String,String> result=new HashMap<String,String>();
+    	int count=0;
+    	int m=1;
+    	try {
+			it=FileUtils.lineIterator(file);
+			String line;
+			while(it.hasNext()){
+				count=0;
+				line=it.nextLine();
+				String[] arr=line.split(",");
+                if(arr.length!=6){
+                	//特殊处理简介中含有逗号的情况
+                	System.out.println(line);
+                }
+                if(arr[5].contains("http")||arr[5].contains("www")){
+                	count=1;
+                }
+                if(arr[5]=="\"\""){
+                	m=0;
+                }
+				result.put(arr[4], count+" "+m);
+				
+			}
+			utils.saveMap(result, save);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			LineIterator.closeQuietly(it);
+		}
     }
    
 }
