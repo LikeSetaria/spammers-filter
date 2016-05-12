@@ -348,9 +348,9 @@ public class ExtractTrait {
 			double atRate=(double)atNums/(double)weiboTotal;
 			double topicRate=(double)topicNums/(double)weiboTotal;
 			String[] weibo=weibotext.toString().split("\n");
-			double weibosimilarity=calWeiboSimilarity(weibo);
+			double weibosimilarity=calWeiboSimilarity(weibo)/weiboTotal;
 			//训练的时候要特征要相似，否则效果可能很不好。所以这里要对时间间隔这个特征进行规范化，比如处理这一维的最大值
-			double intervalRate=calTimeTrait(timeList);
+			double intervalRate=calTimeTrait2(timeList);
 			
 			//System.out.println("总评论数"+comment_count+"总转发数"+
 			//reposts_count+"@总数"+atNums+"#总数数"+topicNums+"URL比例"+df.format(URLrate)+"转发的微博比例"+df.format(repostRate));
@@ -410,7 +410,7 @@ public class ExtractTrait {
     		//System.out.println(value);
     		result.add(extractF(value.toString()));
     	}
-    	utils.saveResultByList(result, save);
+    	//utils.saveResultByList(result, save);
     	System.out.println(result.size());
     }
     /**
@@ -509,7 +509,58 @@ public class ExtractTrait {
          return rate;
          
     }
-    
+    /**
+     * 重新设计时间特征
+     * 
+     * 
+     * 
+     */
+    public double calTimeTrait2(List<String> list){
+    	//把字符串的时间序列转化为日期类型，并且得到从标准时间到这个时间的毫秒数
+         long interval=0l;
+         //[]
+         int less5weibo=0;
+         //(]
+         int between5and10=0;
+         //(]
+         int between10and30=0;
+         //(]
+         int between30and60=0;
+         //(]
+         int between60and1440=0;
+         //()
+         int more1440=0;
+         double rate=0.0;
+         List<Long> timelist=new LinkedList<Long>();
+         DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+         Date date=new Date();
+         try{
+         for(String ss:list){
+        	 date = df.parse(ss); 
+        	 //格式化的时间是精确到分钟，所以这里只需要精确到分钟加入到list
+        	 timelist.add(date.getTime());
+         }
+         }catch  (Exception e) {
+        	 e.printStackTrace();
+         }
+         for(int i=0;i<timelist.size()-1;i++){
+        	 interval=timelist.get(i)-timelist.get(i+1);
+        	 //System.out.println(interval); 
+        	 if(interval>0&&interval<=300000)
+        		 less5weibo++;
+        	 else if (interval>300000&&interval<=600000)
+        		 between5and10++;
+        	 else if(interval>600000&&interval<=1800000)
+        		 between10and30++;
+        	 else if (interval>1800000&&interval<=3600000)
+        		 between30and60++;
+        	 else if(interval>3600000&&interval<=86400000)
+        		 between60and1440++;
+        	 else more1440++;
+         }
+         return rate;
+         
+    }
     /**
      * 基于用户profile信息的特征抽取，
      * 输入：profileFile
