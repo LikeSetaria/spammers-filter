@@ -22,14 +22,14 @@ import cn.edu.whu.utils.Utils;
  *合并之前算出的各种向量。得到用户的特征向量。
  */
 public class GetFeatureVector {
-	private static final String  BEHAVIOR_FEATURES_SELECTED_FILE_PATH="E:/spam/4_extractFetures/behaviorFeatures.txt";
-	private static final String  BEHAVIOR_FEATURES_NORMAL_FILE_PATH="E:/normal/3_extractFetures/behaviorFeatures.txt";
-	private static final String  ATTENTIONRATE_SELECTED_FILE_PATH="E:/spam/4_extractFetures/attentionRate.txt";
-	private static final String  ATTENTIONRATE_NORMAL_FILE_PATH="E:/normal/3_extractFetures/attentionRate.txt";
-	private static final String  PROFILETRAIT_SELECTED_PATH="E:/spam/4_extractFetures/profilesTrait.txt";
-	private static final String  PROFILETRAIT_NORMAL_PATH="E:/normal/3_extractFetures/profilesTrait.txt";
-	private static final String TRIREALTION_SELECTED_PATH="E:/spam/4_extractFetures/tri_uidFriends.txt";
-	private static final String TRIREALTION_NORMAL_PATH="E:/normal/3_extractFetures/tri_uidFriends.txt";
+	private static final String  BEHAVIOR_FEATURES_SELECTED_FILE_PATH="E:/spam/4_extractFetures/behaviorFeatures3.txt";
+	private static final String  BEHAVIOR_FEATURES_NORMAL_FILE_PATH="E:/normal/3_extractFetures/behaviorFeatures3.txt";
+	private static final String  ATTENTIONRATE_SELECTED_FILE_PATH="E:/spam/4_extractFetures/attentionRate3.txt";
+	private static final String  ATTENTIONRATE_NORMAL_FILE_PATH="E:/normal/3_extractFetures/attentionRate3.txt";
+	private static final String  PROFILETRAIT_SELECTED_PATH="E:/spam/4_extractFetures/profilesTrait3.txt";
+	private static final String  PROFILETRAIT_NORMAL_PATH="E:/normal/3_extractFetures/profilesTrait3.txt";
+	private static final String TRIREALTION_SELECTED_PATH="E:/spam/4_extractFetures/tri_uidFriends3.txt";
+	private static final String TRIREALTION_NORMAL_PATH="E:/normal/3_extractFetures/tri_uidFriends3.txt";
 	static Map<String,FeatureVector> result=new HashMap<String ,FeatureVector>();
     static Map<String,String> saveMap=new HashMap<>();
 	/**
@@ -40,30 +40,31 @@ public class GetFeatureVector {
 		//得到select部分的特征向量
 		initRelationFeature(ATTENTIONRATE_SELECTED_FILE_PATH,PROFILETRAIT_SELECTED_PATH,TRIREALTION_SELECTED_PATH);
 		initBehaviorFeatures(BEHAVIOR_FEATURES_SELECTED_FILE_PATH);
-		standardizeIntervalRate();
-		//display();
-		save("E:/spam/5_selectedFeatureVec/selectVec.txt");
+		//standardizeIntervalRate();
+		display();
+		save("E:/spam/5_selectedFeatureVec/selectVec3.txt");
 		//得到normal
 		result.clear();
 		saveMap.clear();
 		initRelationFeature(ATTENTIONRATE_NORMAL_FILE_PATH,PROFILETRAIT_NORMAL_PATH,TRIREALTION_NORMAL_PATH);
 		initBehaviorFeatures(BEHAVIOR_FEATURES_NORMAL_FILE_PATH);
-		standardizeIntervalRate();
+		//standardizeIntervalRate();
 		//display();
-		save("E:/normal/5_selectedFeatureVec/selectVec.txt");
+		save("E:/normal/5_selectedFeatureVec/selectVec3.txt");
 	}
 	/**
 	 * 初始化用户关系特征，主要包括关注度等
 	 * 关注度文件为：uid 关注度
 	 * @param path
 	 */
-	public static void initRelationFeature(String path,String profilesTraitPath,String triPath){
-		File	 file= new File(path);
+	public static void initRelationFeature(String attentionRatepath,String profilesTraitPath,String triPath){
+		File	 file= new File(attentionRatepath);
 		File  profilesTraitFile=new File(profilesTraitPath);
 		File trifile=new File(triPath);
 		   LineIterator lineit=null;
 		   LineIterator it=null;
 		   LineIterator triit=null;
+		   //需要对这个几个特征进行规范化处理,在这里处理规范化不合适，需要对最后的特征向量做个规范化程序，对其规范化，不然让添加特征时要频繁的修改
 		   		     try {	
 						 lineit=FileUtils.lineIterator(file);
 						 it=FileUtils.lineIterator(profilesTraitFile);
@@ -74,7 +75,10 @@ public class GetFeatureVector {
 						       String[] arr=line.split(" ");
 						       FeatureVector fv=new FeatureVector();
 						       fv.setUid(arr[0]);
-						       fv.setAttentionRate(arr[1]);
+						       fv.setFollowsNum(arr[1]);
+						       fv.setFrinedsNum(arr[2]);
+						       fv.setFriendsNumDivfollowsNum(arr[3]);
+						       fv.setAttentionRate(arr[4]);
 						       result.put(arr[0], fv);
 						       
 							}
@@ -84,8 +88,10 @@ public class GetFeatureVector {
 								 String line=it.nextLine();
 							     String[] arr=line.split(" ");
 								 vec=result.get(arr[0]);
-								 vec.setIfProfile(arr[2]);
 								 vec.setProfileURL(arr[1]);
+								 vec.setIfProfile(arr[2]); 
+								 vec.setProfileLen(arr[3]);
+								 vec.setUserNameLen(arr[4]);
 								 result.put(arr[0], vec);
 							}
 							FeatureVector tri=new FeatureVector();
@@ -129,7 +135,13 @@ public class GetFeatureVector {
 						    	   fv.setTextURLrate(arr[5]);
 						    	   fv.setWeiboFromRepostRate(arr[6]);
 						    	   fv.setWeiboTextSimilarity(arr[7]);
-						    	   fv.setIntervalRate(arr[8]);
+						    	   //fv.setIntervalRate(arr[8]);
+						    	   fv.setTimeItvalLess5(arr[8]);
+						    	   fv.setTimeItvalLess10(arr[9]);
+						    	   fv.setTimeItvalLess30(arr[10]);
+						    	   fv.setTimeItvalLess60(arr[11]);
+						    	   fv.setTimeItvalLess1440(arr[12]);
+						    	   fv.setTimeItvalLessmore(arr[13]);
 						       }else{
 						    	   System.out.println(line);
 						       }

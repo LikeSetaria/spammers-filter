@@ -86,6 +86,43 @@ public class FeatureVector {
 	public void setIfProfile(String ifProfile) {
 		this.ifProfile = ifProfile;
 	}
+
+     public String getTimeItvalLess5() {
+		return timeItvalLess5;
+	}
+	public void setTimeItvalLess5(String timeItvalLess5) {
+		this.timeItvalLess5 = timeItvalLess5;
+	}
+	public String getTimeItvalLess10() {
+		return timeItvalLess10;
+	}
+	public void setTimeItvalLess10(String timeItvalLess10) {
+		this.timeItvalLess10 = timeItvalLess10;
+	}
+	public String getTimeItvalLess30() {
+		return timeItvalLess30;
+	}
+	public void setTimeItvalLess30(String timeItvalLess30) {
+		this.timeItvalLess30 = timeItvalLess30;
+	}
+	public String getTimeItvalLess60() {
+		return timeItvalLess60;
+	}
+	public void setTimeItvalLess60(String timeItvalLess60) {
+		this.timeItvalLess60 = timeItvalLess60;
+	}
+	public String getTimeItvalLess1440() {
+		return timeItvalLess1440;
+	}
+	public void setTimeItvalLess1440(String timeItvalLess1440) {
+		this.timeItvalLess1440 = timeItvalLess1440;
+	}
+	public String getTimeItvalLessmore() {
+		return timeItvalLessmore;
+	}
+	public void setTimeItvalLessmore(String timeItvalLessmore) {
+		this.timeItvalLessmore = timeItvalLessmore;
+	}
 	 private String uid;
      private String attentionRate;
      private String commentRate;
@@ -99,9 +136,51 @@ public class FeatureVector {
      private String triRealtion;
      private String profileURL;
      private String ifProfile;
+	 private String timeItvalLess5;
+     private String timeItvalLess10;
+     private String timeItvalLess30;
+     private String timeItvalLess60;
+     private String timeItvalLess1440;
+     private String timeItvalLessmore;
+     public String getFrinedsNum() {
+		return frinedsNum;
+	}
+	public void setFrinedsNum(String frinedsNum) {
+		this.frinedsNum = frinedsNum;
+	}
+	public String getFollowsNum() {
+		return followsNum;
+	}
+	public void setFollowsNum(String followsNum) {
+		this.followsNum = followsNum;
+	}
+	public String getFriendsNumDivfollowsNum() {
+		return friendsNumDivfollowsNum;
+	}
+	public void setFriendsNumDivfollowsNum(String friendsNumDivfollowsNum) {
+		this.friendsNumDivfollowsNum = friendsNumDivfollowsNum;
+	}
+	public String getUserNameLen() {
+		return userNameLen;
+	}
+	public void setUserNameLen(String userNameLen) {
+		this.userNameLen = userNameLen;
+	}
+	public String getProfileLen() {
+		return profileLen;
+	}
+	public void setProfileLen(String profileLen) {
+		this.profileLen = profileLen;
+	}
+	private String frinedsNum;
+     private String followsNum;
+     private String friendsNumDivfollowsNum;
+     private String userNameLen;
+     private String profileLen;
      public String toString(){
     	 String str=uid+" "+attentionRate+" "+commentRate+" "+repostRate+" "+atRate+" "+topicRate+" "+textURLrate+" "+weiboFromRepostRate+" "
-    			 +weiboTextSimilarity+" "+intervalRate+" "+triRealtion+" "+profileURL+" "+ifProfile;
+    			 +weiboTextSimilarity+" "+ timeItvalLess5+" "+timeItvalLess10+" "+timeItvalLess30+" "+timeItvalLess60+" "+timeItvalLess1440+" "+timeItvalLessmore+" "+triRealtion+" "+profileURL+" "+ifProfile+" "
+    			 +frinedsNum+" "+followsNum+" "+friendsNumDivfollowsNum+" "+userNameLen+" "+profileLen;
     	 return str;
      }
 }

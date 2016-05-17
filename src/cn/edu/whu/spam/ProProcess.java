@@ -59,6 +59,7 @@ public class ProProcess {
 		//uti.fileSpilt("E:/spam/allUIDRelations.txt", "E:/spam/", 2, 77363900);
 		//提取粉丝关系
 		//pro.extractFollows("E:/spam/allUIDRelations_part2.txt","E:/spam/uidfollows_part2.txt");
+		//pro.extractFollows("E:/spam/allUIDRelations_part2.txt","E:/spam/uidfollows_part2.txt");
 		
 		
 		/*
@@ -107,9 +108,23 @@ public class ProProcess {
 		/*
 		 * 提取关注度
 		 */
-		  pro.extractBoth("E:/spam/uidfollows_selected.txt", "E:/spam/uidfriends_selected.txt", "E:/spam/4_extractFetures/attentionRate.txt");
-	      pro.extractBoth("E:/normal/2_UltimateNormal/uidfollows_normal.txt", "E:/normal/2_UltimateNormal/uidfriends_normal.txt", "E:/normal/3_extractFetures/attentionRate.txt");
+		//  pro.extractBoth("E:/spam/uidfollows_selected.txt", "E:/spam/uidfriends_selected.txt", "E:/spam/4_extractFetures/attentionRate.txt");
+	    //  pro.extractBoth("E:/normal/2_UltimateNormal/uidfollows_normal.txt", "E:/normal/2_UltimateNormal/uidfriends_normal.txt", "E:/normal/3_extractFetures/attentionRate.txt");
 		//pro.selectUIDF("E:/normal/UID.txt", "E:/spam/2_GetRelations/uidfollows.txt", "E:/normal/2_UltimateNormal/uidfollows_normal.txt");
+		
+		/*
+		 * 之前做的normal部分是从用户名Ngram概率低的三十万中取得，这样就有测试样本的特征，下面重新提取正常用户的所有关系
+		 */
+		//pro.extractPartOfRelation("D:/Whuer/FudanData/weibo_follows.csv","E:/normal/normalUID.txt", "E:/normal/twice/UIDFriendsRelations.txt");
+		//pro.extractFollows("E:/normal/twice/UIDFollowsRelations.txt","E:/normal/twice/uidfollows.txt");
+		//pro.extractFriends("E:/normal/twice/UIDFriendsRelations.txt","E:/normal/twice/uidfriends.txt");
+		// pro.getFriednsFollowsUID("E:/normal/twice/uidfriends.txt", "E:/normal/twice/uidfollows.txt", "E:/normal/twice/finalUID.txt");
+		//pro.selectUIDFItems("E:/normal/twice/2_GetRelations/uidfriends.txt", "E:/normal/twice/UID.txt", "E:/normal/twice/3_UltimateSelected/uidfriends.txt");
+		//pro.selectUIDFItems("E:/normal/twice/2_GetRelations/uidfollows.txt", "E:/normal/twice/UID.txt", "E:/normal/twice/3_UltimateSelected/uidfollows.txt");
+		//pro.extractBoth("E:/spam/uidfollows_selected.txt", "E:/spam/uidfriends_selected.txt", "E:/spam/4_extractFetures/attentionRate.txt");
+	     // pro.extractBoth("E:/normal/2_UltimateNormal/uidfollows.txt", "E:/normal/2_UltimateNormal/uidfriends.txt", "E:/normal/3_extractFetures/attentionRate3.txt");
+	      //pro.extractBoth("E:/spam/uidfollows_selected.txt", "E:/spam/uidfriends_selected.txt", "E:/spam/4_extractFetures/attentionRate4.txt");
+		pro.selectUIDF("E:/spam/removeNormalUID.txt", "E:/selectVec3.txt", "E:/newSelectVec3.txt");
 	}
 	//第一步，提取Ngram后的结果，方便下一步使用
 	/**
@@ -181,7 +196,7 @@ public class ProProcess {
 				while(iter.hasNext()){
 					total1++;
 					str1=new StringBuilder(iter.nextLine());
-					set.add(str1.toString());
+					set.add(str1.toString().trim());
 				}
 				//逐行遍历原始数据文件，
 				while(it.hasNext()){
@@ -618,8 +633,8 @@ public class ProProcess {
 	   *      提取用户的关系特征，包括关注度，三角关注关系等
 	   */
 	  public   void extractBoth(String uidfollowsFile,String uidfriendsFile,String saveFilePath){
-		  File fileIsFollowed=new File(uidfollowsFile);
-		  File fileAsFans=new File(uidfriendsFile);
+		  File followsfile=new File(uidfollowsFile);
+		  File friendsfile=new File(uidfriendsFile);
 	    	 LineIterator iter =null;  
 	    	 LineIterator it =null;  
 	     	 Set<String> isFollowedset=new HashSet<String>();
@@ -630,7 +645,7 @@ public class ProProcess {
 	     	Map<String ,User > userMap=new HashMap<String ,User>();
 	     	 Map<String ,User > result=new HashMap<String ,User>();
 	     	 try {
-				iter=FileUtils.lineIterator(fileAsFans);
+				iter=FileUtils.lineIterator(friendsfile);
 				while(iter.hasNext()){
 					user=new User();
 					strb=iter.next();
@@ -645,7 +660,7 @@ public class ProProcess {
 				}
 				
 				System.out.println(" 现在做好一半了，这个集合一共有"+isFollowedset.size());
-				it=FileUtils.lineIterator(fileIsFollowed);
+				it=FileUtils.lineIterator(followsfile);
 				User ue=null;
 				BigDecimal   b   =   null;  
 				BigDecimal   c   =   null;  
@@ -661,7 +676,7 @@ public class ProProcess {
                   ue.setUID(arr2[0]);
                   ue.setFollowNums(arr2.length-1);
                   //计算关注数除以粉丝数
-                  b=new BigDecimal((double)ue.getFriendNums()/(double)ue.getFollowNums());
+                  b=new BigDecimal((double)ue.getFollowNums()/(double)ue.getFriendNums());
                   double   f1   =   b.setScale(6,   BigDecimal.ROUND_HALF_UP).doubleValue();  
                   ue.setFriDivFolRate(f1);
                   //计算用户的关注度，关注度=Nfriends/(Nfriends+Nfollows)
@@ -741,7 +756,7 @@ public class ProProcess {
 					//int result=user2.getFollowNums()- user1.getFollowNums();
 					
 					//根据关注数与粉丝数比例升序排列
-					double result=user1.getFriDivFolRate()- user2.getFriDivFolRate();
+					double result=user2.getFriDivFolRate()- user1.getFriDivFolRate();
 					
 					//根据关注数与粉丝数比例降序排列
 					//double result=user2.getFriendNums()- user1.getFriendNums();	
@@ -809,7 +824,7 @@ public class ProProcess {
 					String line=it.nextLine();
 					//System.out.println(line);
 					String[] arr=line.split(" ");
-					if(uidSet.contains(arr[0])){
+					if(!uidSet.contains(arr[0])){
 						//System.out.println(line);
 						fw.write(line);
 						fw.write("\n");
@@ -831,5 +846,62 @@ public class ProProcess {
 				}
 			}
 	    }
-
+  /*
+   * 提取关系的交集，如uidfrieds、uidfollows提取其交集，
+   */
+	    public void getFriednsFollowsUID(String uidfriednsPath,String uidFollowsPath,String save){
+	    	Utils utils=new Utils();
+	    	Set<String> friset=new HashSet<String>();
+	    	Set<String> folset=new HashSet<String>();
+	    	Set<String> result=new HashSet<>();
+	    	friset=utils.readToSet(uidfriednsPath);
+	    	folset=utils.readToSet(uidFollowsPath);
+	    	for(String ss:folset){
+	    		if(friset.contains(ss)){
+	    			result.add(ss);
+	    		}
+	    	}
+	    	System.out.println(result.size());
+	    	utils.saveResultBySet(result, save);
+	    }
+	    /**
+	     * 根据 指定的uid，赛选uidfriends.txt中相同uid条目
+	     */
+	    public void selectUIDFItems(String uidFPath,String uidPath,String saveuidf){
+	    	Utils utils=new Utils();
+	    	Set<String> uidset=new HashSet<>();
+	    	uidset=utils.readToSet2(uidPath);
+	    	File file=new File(uidFPath);
+	    	LineIterator it=null;
+	    	FileWriter fw=null;
+	    	try {
+				fw=new FileWriter(new File(saveuidf));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	    	try {
+				it=FileUtils.lineIterator(file);
+				while(it.hasNext()){
+					String line=it.nextLine();
+					String[] arr=line.split(" ");
+					if(uidset.contains(arr[0])){
+						fw.write(line);
+						fw.write("\n");
+						fw.flush();
+					}
+				}
+				fw.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+				try {
+					fw.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+	    }
 }

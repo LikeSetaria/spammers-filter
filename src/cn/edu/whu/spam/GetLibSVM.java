@@ -31,14 +31,15 @@ public class GetLibSVM {
 	 */
 	
 	
-	private static final String SELECTED_PATH="E:/spam/5_selectedFeatureVec/selectVec.txt";
-	private static final String NORMAL_PATH="E:/normal/5_selectedFeatureVec/selectVec.txt";
+	private static final String SELECTED_PATH="E:/spam/5_selectedFeatureVec/selectVec4.txt";
+	private static final String NORMAL_PATH="E:/normal/5_selectedFeatureVec/selectVec4.txt";
+	private static final String LIBSVMRESULT="E:/libSVM/实验四/sample.txt";
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		createLibSVM(SELECTED_PATH,NORMAL_PATH);
+		createLibSVM(SELECTED_PATH,NORMAL_PATH,LIBSVMRESULT);
 	}
 	//1代表正类，即normal部分，2代表负类，即selected部分
-	public static void createLibSVM(String path1,String path2){
+	public static void createLibSVM(String path1,String path2,String save){
 		File file1=new File(path1);
 		File file2=new File(path2);
 		LineIterator it1=null;
@@ -93,8 +94,17 @@ public class GetLibSVM {
 			ss.append(result.get(k));
 			ss.append("\n");
 		}
-		utils.saveResultBySet(set,"E:/libSVM/tt.txt");
+		utils.saveResultBySet(set,save);
 		System.out.println(result.size());
+		
+	}
+	/*
+	 * 统一的，对各个不符合的特征条目进行规范化操作，
+	 * 输入：2505594030 0.63125 0.321903 0.321903 0.174779 0.24115 0.380531 0.134956 0 0 1  ....
+	 * 
+	 */
+	public void standardizeVec(String vecpath){
+		File vecfile=new File(vecpath);
 		
 	}
 

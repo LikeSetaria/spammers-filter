@@ -13,8 +13,10 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -129,9 +131,12 @@ public class Test {
 		//test.extractGender();
 		//System.out.println(utils.readToSet("E:/spam/tt.txt"));
 		//System.out.println(utils.calURL("erhttp:dfgdghsdfgdg的法国恢复的话www.dsgfs为广大http//"));
-		Set<String> set=new HashSet<String>();
-		set=utils.readToSet("E:/normal/weibo.txt");
-		utils.saveResultBySet(set, "E:/normal/UID.txt");
+		Set<String> result=new HashSet<String>();
+		result=utils.readToSet("E:/removeNormalUID.txt");
+		utils.saveResultBySet(result, "E:/spam/removeNormalUID.txt");
+
+		
+		
 	}
 	  	public void extractFid(){
 	  		File file=new File("E:/mute_fake/UidInfo_friends1.txt");

@@ -397,6 +397,36 @@ public class Utils {
 		}
          //System.out.println(str.toString());
      }
+     /**保存Map数据到磁盘
+      *@author bczhang
+      *@param d 待保存map
+      * @param saveFilePath 保存到的目录地址
+      */
+     public   void saveMapandSaveKey( Map<String,String> map,String saveFilePath){
+    	 File file=new File(saveFilePath);
+      	 StringBuffer str=new StringBuffer();
+      	 int cou=0;
+         Iterator<?> it =map.entrySet().iterator();
+         while(it.hasNext()){
+        	 cou++;
+        	 @SuppressWarnings("rawtypes")
+			Map.Entry entry=(Map.Entry) it.next();
+        	 Object key=entry.getKey();
+        	 str.append(key.toString()+" ");
+        	 Object val=entry.getValue();
+        	 str.append(val.toString()+"  ");
+        	// if(cou%30==0)
+        		 str.append("\n");
+        	
+         }
+         try {
+			FileUtils.writeStringToFile(file, str.toString(), "utf-8");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         //System.out.println(str.toString());
+     }
      /**
       * 对HashMap根据value进行排序
       * @return HashMap
@@ -467,8 +497,8 @@ public class Utils {
 			while(it.hasNext()){
 				line=it.nextLine();
 				
-				String [] arr=line.split(",");
-				//String [] arr=line.split(" ");
+				//String [] arr=line.split(",");
+				String [] arr=line.split(" ");
 				if(!set.contains(arr[0]))
 					set.add(arr[0]);
 				//对于只有uid列表

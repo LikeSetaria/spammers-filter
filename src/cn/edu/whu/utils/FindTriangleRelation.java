@@ -28,20 +28,24 @@ import cn.edu.whu.pojo.Relation;
  */
 public class FindTriangleRelation {
 	    //保存最后的结果，其中String是每个用户的ID作为Key，value存储的是间接关注的个数。如A->B,B->C,C->A其中value存的是C关注A的人数
-       static Map<String ,String> result2=new TreeMap<String,String>();
-       static Map<String ,Integer> result=new TreeMap<String,Integer>();
+       static Map<String ,String> result=new TreeMap<String,String>();
+       //static Map<String ,Integer> result=new TreeMap<String,Integer>();
        //关注关系，
        static Map<String,Relation> friendMap=new HashMap<String,Relation>();
        static Set<String> Cset=new HashSet<String>();
        public static void main(String[] args){
     	   FindTriangleRelation find=new FindTriangleRelation();
     	   Utils utils=new Utils();
-    	   find.initFriendMap("E:/normal/2_UltimateNormal/uidfollows_normal.txt");
+    	  // find.initFriendMap("E:/normal/2_UltimateNormal/uidfollows.txt");
+    	  // find.findTri();
+    	   // result=utils.sortMapByValue(result);
+    	 //  utils.saveMap(result, "E:/normal/tri_uidFollows2.txt");
+    	   
+    	   
+    	   find.initFriendMap("E:/spam/3_UltimateSelected/uidfollows_selected.txt");
     	   find.findTri();
     	   // result=utils.sortMapByValue(result);
-    	   utils.saveMap(result2, "E:/normal/tri_uidFollows.txt");
-    	  // System.out.println(result.size());
-    	  //System.out.println(result);
+    	   utils.saveMapandSaveKey(result, "E:/spam/4_extractFetures/tri_uidFollows2.txt");
     	   
        }
        
@@ -102,7 +106,7 @@ public class FindTriangleRelation {
     	   Iterator<?> it =friendMap.entrySet().iterator();
     	   int friends=0;
     	   double rate=0.0;
-			DecimalFormat   df=new   java.text.DecimalFormat("#.###"); 
+			DecimalFormat   df=new   java.text.DecimalFormat("#.######"); 
 	         while(it.hasNext()){  
 	        	friends=0;
 	        	rate=0.0;
@@ -115,14 +119,14 @@ public class FindTriangleRelation {
 	             if(ss.equals(key))
 	            	 count++;
  	             }
- 	             result.put(key, count);
+ 	            // result.put(key, new Integer(count).toString());
 // 	             保存为三角关系比例
-// 	             Relation re =friendMap.get(key);
-// 	             friends=re.getFollowsByHe().size();
-// 	             if(friends!=0)
-// 	             rate=(double)count/(double)friends;
-// 	             else rate=0.000;
-// 	             result2.put(key, df.format(rate));
+ 	             Relation re =friendMap.get(key);
+ 	             friends=re.getFollowsByHe().size();
+ 	             if(friends!=0)
+ 	             rate=(double)count/(double)friends;
+ 	             else rate=0.000000;
+ 	             result.put(key, df.format(rate));
 	         }
 	         
 	         

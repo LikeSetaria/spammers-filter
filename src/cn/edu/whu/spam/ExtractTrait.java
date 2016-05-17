@@ -43,7 +43,8 @@ import cn.edu.whu.utils.Utils;
  *提取用户的特征
  */
 public class ExtractTrait {
-      static  String  	UID_FILE_PATH="E:/normal/UID.txt";
+      //static  String  	UID_FILE_PATH="E:/normal/UID.txt";
+      static  String  	UID_FILE_PATH="E:/normal/twice/UID.txt";
  	 public static final long ONEHOUR = 3600000l;
       //用户ID
       static Set<String> UID_SET=new LinkedHashSet<String>();
@@ -57,21 +58,22 @@ public class ExtractTrait {
 		//抽取not exist用户的profile信息,注意UID_FILE_PATH初始化
 		//ext.extractItemByUID("D:/Whuer/FudanData/weibo_users.txt", UID_FILE_PATH , "E:/spam/profiles.txt");
 		//抽取normal用户的profile信息
-		//ext.extractItemByUID("D:/Whuer/FudanData/weibo_users.txt", UID_FILE_PATH , "E:/normal/profiles.txt");
+		//ext.extractItemByUID("D:/Whuer/FudanData/weibo_users.txt", UID_FILE_PATH , "E:/normal/twice/profiles.txt");
 		//抽取微博
-	    //ext.extractWeibo("H:/复旦大学/Weibo.Corpus/Weibo.data/merge","E:/normal/2_UltimateNormal/weibos");
+	    //ext.extractWeibo("H:/复旦大学/Weibo.Corpus/Weibo.data/merge","E:/normal/twice/3_UltimateNormal/weibos");
 	    //ext.extractWeibo2("D:/Whuer/FudanData/weibodata.csv","E:/normal/weibo.txt");
+		//ext.extractWeibo2("D:/Whuer/FudanData/weibodata.csv","E:/normal/twice/weibo.txt");
 
 
 		//提取not exist用户的行为特征
-		ext.extractFeatures("E:/spam/3_UltimateSelected/weibos", "E:/spam/behaviorFeatures2.txt");
+		//ext.extractFeatures("E:/spam/3_UltimateSelected/weibos", "E:/spam/behaviorFeatures2.txt");
 		//提取normal用户的行为特征
-		ext.extractFeatures("E:/normal/2_UltimateNormal/weibos", "E:/normal/behaviorFeatures2.txt");
+		//ext.extractFeatures("E:/normal/2_UltimateNormal/weibos", "E:/normal/behaviorFeatures.txt");
 	    //ext.calF();
 		//ext.calIntersection();
 		
-		//ext.analyseProfile("E:/normal/2_UltimateNormal/profiles.txt", "E:/normal/proTrait.txt");
-		//ext.analyseProfile("E:/spam/3_UltimateSelected/profiles.txt", "E:/spam/profilesTrait.txt");
+		//ext.analyseProfile("E:/normal/2_UltimateNormal/profiles.txt", "E:/normal/3_extractFetures/profilesTrait3.txt");
+		//ext.analyseProfile("E:/spam/3_UltimateSelected/profiles.txt", "E:/spam/4_extractFetures/profilesTrait3.txt");
 		
 	
 	}
@@ -151,7 +153,7 @@ public class ExtractTrait {
     /**
      * 提取部分用户的微博信息，一个用户的微博集保存为一个以这个用户命名的txt文件
      * 遍历72GB的数据需要10分钟
-     * 也可以分割一个大微博文件为每个uid命名的文件
+     * 也可以分割一个大微博文件为每个uid命名的文件,手动指定路径
      */
     public void extractWeibo(String weiboFolderPath,String saveFolderPath){
     	 Utils utils=new Utils();
@@ -165,7 +167,7 @@ public class ExtractTrait {
 //    	 files.remove("lv2_weibo.zip");
 //    	 files.remove("lv3_0.rar");
 //    	 files.remove("weibodata.rar");
-         files.put("weibo.txt", new File("E:/normal/weibo.txt"));
+         files.put("weibo.txt", new File("E:/normal/twice/weibo.txt"));
     	 System.out.println(files.size());
     	 Iterator it=files.keySet().iterator();
     	 while(it.hasNext()){
@@ -350,13 +352,14 @@ public class ExtractTrait {
 			String[] weibo=weibotext.toString().split("\n");
 			double weibosimilarity=calWeiboSimilarity(weibo)/weiboTotal;
 			//训练的时候要特征要相似，否则效果可能很不好。所以这里要对时间间隔这个特征进行规范化，比如处理这一维的最大值
-			double intervalRate=calTimeTrait2(timeList);
+			//double intervalRate=calTimeTrait(timeList);
+			String intervalRate=calTimeTrait2(timeList);
 			
 			//System.out.println("总评论数"+comment_count+"总转发数"+
 			//reposts_count+"@总数"+atNums+"#总数数"+topicNums+"URL比例"+df.format(URLrate)+"转发的微博比例"+df.format(repostRate));
 			result=uid+" "+df.format(commentRate)+" "+df.format(repostRate)+" "+df.format(atRate)+" "+df.format(topicRate)+" "+df.format(URLrate)+" "+df.format(weiborepostRate)+" "+df.format(weibosimilarity)+
-					" "+df.format(intervalRate);
-		   // System.out.println(result);
+					" "+intervalRate;
+		    //System.out.println(result);
     	  } catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -410,7 +413,7 @@ public class ExtractTrait {
     		//System.out.println(value);
     		result.add(extractF(value.toString()));
     	}
-    	//utils.saveResultByList(result, save);
+    	utils.saveResultByList(result, save);
     	System.out.println(result.size());
     }
     /**
@@ -515,7 +518,7 @@ public class ExtractTrait {
      * 
      * 
      */
-    public double calTimeTrait2(List<String> list){
+    public String calTimeTrait2(List<String> list){
     	//把字符串的时间序列转化为日期类型，并且得到从标准时间到这个时间的毫秒数
          long interval=0l;
          //[]
@@ -531,6 +534,7 @@ public class ExtractTrait {
          //()
          int more1440=0;
          double rate=0.0;
+         DecimalFormat   fm=new   java.text.DecimalFormat("#.######"); 
          List<Long> timelist=new LinkedList<Long>();
          DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
          Date date=new Date();
@@ -558,8 +562,16 @@ public class ExtractTrait {
         		 between60and1440++;
         	 else more1440++;
          }
-         return rate;
-         
+         double l5=(double)less5weibo/(double)list.size();
+         double l10=(double)between5and10/(double)list.size();
+         double l30=(double)between10and30/(double)list.size();
+         double l60=(double)between30and60/(double)list.size();
+         double l1440=(double)between60and1440/(double)list.size();
+         double m1440=(double)more1440/(double)list.size();
+         //返回格式化特征向量
+         //return "1:"+fm.format(l5)+" "+"2:"+fm.format(l10)+" "+"3:"+fm.format(l30)+" "+"4:"+fm.format(l60)+" "+"5:"+fm.format(l1440)+" "+"6:"+fm.format(more1440);
+         //
+         return fm.format(l5)+" "+fm.format(l10)+" "+fm.format(l30)+" "+fm.format(l60)+" "+fm.format(l1440)+" "+fm.format(m1440);
     }
     /**
      * 基于用户profile信息的特征抽取，
@@ -574,27 +586,48 @@ public class ExtractTrait {
     	Map<String,String> result=new HashMap<String,String>();
     	int count=0;
     	int m=1;
+    	int profileLen=0;
+    	int userNameLen=0;
     	try {
 			it=FileUtils.lineIterator(file);
 			String line;
 			while(it.hasNext()){
 				count=0;
+				profileLen=0;
+				userNameLen=0;
 				line=it.nextLine();
+				StringBuilder tem=new StringBuilder();
 				String[] arr=line.split(",");
-                if(arr.length!=6){
+				//存储规范的数组切割
+				String[] arr2=new String[6];
+				//复制数组前5个，这部分是格式化的，第6才可能出现异常
+				for(int i=0;i<=5;i++)
+					arr2[i]=arr[i];
+				//原文本以逗号为分割，但是可能text中含有英文逗号，所以对于这些特殊的需要规范化处理
+				if(arr.length>6){
+					for(int i=5;i<arr.length;i++){
+						tem.append(arr[i]);
+					}
+					arr2[5]=tem.toString();
+				}
+                if(arr2.length!=6){
                 	//特殊处理简介中含有逗号的情况
                 	System.out.println(line);
                 }
-                if(arr[5].contains("http")||arr[5].contains("www")){
+                //判断简介中是否含有URL
+                if(arr2[5].contains("http")||arr2[5].contains("www")){
                 	count=1;
                 }
-                if(arr[5]=="\"\""){
+                //判断简介是否为空，材料里面为空是""
+                if(arr2[5]=="\"\""){
                 	m=0;
                 }
-				result.put(arr[4], count+" "+m);
+                profileLen=arr2[5].length();
+                userNameLen=arr2[1].length();
+				result.put(arr2[4], count+" "+m+" "+profileLen+" "+userNameLen);
 				
 			}
-			utils.saveMap(result, save);
+			utils.saveMapandSaveKey(result, save);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
