@@ -124,7 +124,7 @@ public class ProProcess {
 		//pro.extractBoth("E:/spam/uidfollows_selected.txt", "E:/spam/uidfriends_selected.txt", "E:/spam/4_extractFetures/attentionRate.txt");
 	     // pro.extractBoth("E:/normal/2_UltimateNormal/uidfollows.txt", "E:/normal/2_UltimateNormal/uidfriends.txt", "E:/normal/3_extractFetures/attentionRate3.txt");
 	      //pro.extractBoth("E:/spam/uidfollows_selected.txt", "E:/spam/uidfriends_selected.txt", "E:/spam/4_extractFetures/attentionRate4.txt");
-		pro.selectUIDF("E:/spam/removeNormalUID.txt", "E:/selectVec3.txt", "E:/newSelectVec3.txt");
+		pro.selectUIDF("E:/spam/removeNormalUID.txt", "E:/selectVec3.txt", "E:/selectVec4.txt");
 	}
 	//第一步，提取Ngram后的结果，方便下一步使用
 	/**

@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
@@ -40,9 +42,10 @@ public class GetFeatureVector {
 		//得到select部分的特征向量
 		initRelationFeature(ATTENTIONRATE_SELECTED_FILE_PATH,PROFILETRAIT_SELECTED_PATH,TRIREALTION_SELECTED_PATH);
 		initBehaviorFeatures(BEHAVIOR_FEATURES_SELECTED_FILE_PATH);
-		//standardizeIntervalRate();
-		display();
-		save("E:/spam/5_selectedFeatureVec/selectVec3.txt");
+		//standardizeIntervalRate();已经更改时间间隔特征选取方式，不再需要再次进行规范化
+		//display();
+		removeNomalUID("E:/spam/5_selectedFeatureVec/spamRemoveNormalUID.txt");
+		save("E:/spam/5_selectedFeatureVec/selectVec5.txt");
 		//得到normal
 		result.clear();
 		saveMap.clear();
@@ -50,7 +53,7 @@ public class GetFeatureVector {
 		initBehaviorFeatures(BEHAVIOR_FEATURES_NORMAL_FILE_PATH);
 		//standardizeIntervalRate();
 		//display();
-		save("E:/normal/5_selectedFeatureVec/selectVec3.txt");
+		save("E:/normal/5_selectedFeatureVec/selectVec5.txt");
 	}
 	/**
 	 * 初始化用户关系特征，主要包括关注度等
@@ -197,5 +200,27 @@ public class GetFeatureVector {
 		}
 		utils.saveMap(saveMap, path);
 	}
+	/**
+     * 根据一个文件中的uid，删除另一个文件中包含那些uid的条目。 
+     * 此处过滤结果，删除负类样本中可能是正类的部分
+     *输入文件需要过滤的uid列表。的格式是： uid(key)　
+     *                          uid
+     *                          uid
+     *输入文件二，待过滤的特征向量是：uid(key) 特征1 特征2 特征3 。。。 
+     */
+    public static void removeNomalUID(String uidFilePath){
+    	 
+    	Utils utils=new Utils();
+    	Set<String> uidSet=new HashSet<String>();
+    	uidSet=utils.readToSet2(uidFilePath);
+    	int count=0;
+    	for(String key:uidSet){
+    		if(result.containsKey(key)){
+    			result.remove(key);
+    			count++;
+    		}	
+    	}
+    	 System.out.println("spam中去除可能正类样本数"+count);
+    }
 
 }

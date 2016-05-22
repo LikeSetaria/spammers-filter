@@ -4,6 +4,7 @@
 package cn.edu.whu.spam;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -98,6 +99,7 @@ public class GetLibSVM {
 		System.out.println(result.size());
 		
 	}
+
 	/*
 	 * 统一的，对各个不符合的特征条目进行规范化操作，
 	 * 输入：2505594030 0.63125 0.321903 0.321903 0.174779 0.24115 0.380531 0.134956 0 0 1  ....

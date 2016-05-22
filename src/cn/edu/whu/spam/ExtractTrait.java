@@ -375,6 +375,7 @@ public class ExtractTrait {
     public  double calWeiboSimilarity(String[] str){
 
     	GetSimilarity getSimi=new GetSimilarity();
+    	LevenshteinDistance ld=new LevenshteinDistance();
     	//保存一个句子的最大值 
     	double max=0.0;
     	 //保存一个比较的临时结果
@@ -384,14 +385,9 @@ public class ExtractTrait {
          for(int i=0;i<str.length-1;i++){
         	 max=0.0;
          	 temp=0.0;
-        	
-        	// for(int j=0;j<str.length;j++){
-        		// if(j!=i){
-        			temp=getSimi.getSimilarity(str[i], str[i+1], 2);
-        		// }
-        		// if(temp>max)
-        			 max=temp;
-        	// }
+        	//temp=getSimi.getSimilarity(str[i], str[i+1], 2);
+         	 //使用编辑距离计算字符串的相似性
+         	  temp=ld.getSimilarity(str[i], str[i+1]);
         	 result+=temp;
         	// System.out.println("正在计算的句子的是     "+str[i]+"其最大匹配度为"+max);
          }
@@ -514,7 +510,7 @@ public class ExtractTrait {
     }
     /**
      * 重新设计时间特征
-     * 
+     * 0522继续改进时间特征。连续取，细化
      * 
      * 
      */
@@ -532,6 +528,9 @@ public class ExtractTrait {
          //(]
          int between60and1440=0;
          //()
+         int interval_less_0=0,interval_less_2=0,interval_less_5=0,interval_less_10=0,
+        		 interval_less_20=0,interval_less_30=0;
+         int interval_less_1h=0,interval_less_2h=0,interval_less_5h=0,interval_less_24h=0,interval_less_more=0;
          int more1440=0;
          double rate=0.0;
          DecimalFormat   fm=new   java.text.DecimalFormat("#.######"); 
@@ -550,28 +549,67 @@ public class ExtractTrait {
          for(int i=0;i<timelist.size()-1;i++){
         	 interval=timelist.get(i)-timelist.get(i+1);
         	 //System.out.println(interval); 
-        	 if(interval>0&&interval<=300000)
-        		 less5weibo++;
-        	 else if (interval>300000&&interval<=600000)
-        		 between5and10++;
-        	 else if(interval>600000&&interval<=1800000)
-        		 between10and30++;
-        	 else if (interval>1800000&&interval<=3600000)
-        		 between30and60++;
-        	 else if(interval>3600000&&interval<=86400000)
-        		 between60and1440++;
-        	 else more1440++;
+        	 //因为爬取的材料，精确到分钟，所以间隔等于0的是很重要的一个特征。实验5时修改，添加间隔=0。后面重新提取注意此的效果
+//        	 if(interval>=0&&interval<=300000)
+//        		 less5weibo++;
+//        	 else if (interval>300000&&interval<=600000)
+//        		 between5and10++;
+//        	 else if(interval>600000&&interval<=1800000)
+//        		 between10and30++;
+//        	 else if (interval>1800000&&interval<=3600000)
+//        		 between30and60++;
+//        	 else if(interval>3600000&&interval<=86400000)
+//        		 between60and1440++;
+//        	 else more1440++;
+        	 //下面重新设计时间间隔特征
+        	 if(interval==0)
+        		 interval_less_0++;
+	    	 else if (interval>300000&&interval<=600000)
+	    		   interval_less_0++;
+	    	 else if(interval<=120000)
+	    		 interval_less_2++;
+	    	 else if (interval<=300000)
+	    		 interval_less_5++;
+	    	 else if(interval<=600000)
+	    		 interval_less_10++;
+	    	 else if(interval<=1200000)
+	    		 interval_less_20++; 
+	    	 else if(interval<=1800000)
+		    	 interval_less_30++;
+	    	 else if(interval<=3600000)
+	    		 interval_less_1h++;
+	    	 else if(interval<=7200000)
+	    		 interval_less_2h++;
+	    	 else if(interval<=18000000)
+	    		 interval_less_5h++;
+	    	 else if(interval<=86400000)
+	    		 interval_less_24h++;
+	    	 else 
+	    		 interval_less_more++;
          }
-         double l5=(double)less5weibo/(double)list.size();
-         double l10=(double)between5and10/(double)list.size();
-         double l30=(double)between10and30/(double)list.size();
-         double l60=(double)between30and60/(double)list.size();
-         double l1440=(double)between60and1440/(double)list.size();
-         double m1440=(double)more1440/(double)list.size();
-         //返回格式化特征向量
-         //return "1:"+fm.format(l5)+" "+"2:"+fm.format(l10)+" "+"3:"+fm.format(l30)+" "+"4:"+fm.format(l60)+" "+"5:"+fm.format(l1440)+" "+"6:"+fm.format(more1440);
-         //
-         return fm.format(l5)+" "+fm.format(l10)+" "+fm.format(l30)+" "+fm.format(l60)+" "+fm.format(l1440)+" "+fm.format(m1440);
+         double less0=(double)interval_less_0/(double)list.size();
+         double less2=(double)interval_less_2/(double)list.size();
+         double less5=(double)interval_less_5/(double)list.size();
+         double less10=(double)interval_less_10/(double)list.size();
+         double less20=(double)interval_less_20/(double)list.size();
+         double less30=(double)interval_less_30/(double)list.size();
+         double less1h=(double)interval_less_1h/(double)list.size();
+         double less2h=(double)interval_less_2h/(double)list.size();
+         double less5h=(double)interval_less_5h/(double)list.size();
+         double less24h=(double)interval_less_24h/(double)list.size();
+         double less_more=(double)interval_less_more/(double)list.size();
+         return fm.format(less0)+" "+fm.format(less2)+" "+fm.format(less5)+" "+fm.format(less10)+" "
+        		+fm.format(less20)+" "+fm.format(less30)+" "+fm.format(less1h)+" "+fm.format(less2h)+" "
+                +fm.format(less5h)+" "+fm.format(less24h)+" "+fm.format(less_more);
+//         double l5=(double)less5weibo/(double)list.size();
+//         double l10=(double)between5and10/(double)list.size();
+//         double l30=(double)between10and30/(double)list.size();
+//         double l60=(double)between30and60/(double)list.size();
+//         double l1440=(double)between60and1440/(double)list.size();
+//         double m1440=(double)more1440/(double)list.size();
+//         //返回格式化特征向量
+//         //return "1:"+fm.format(l5)+" "+"2:"+fm.format(l10)+" "+"3:"+fm.format(l30)+" "+"4:"+fm.format(l60)+" "+"5:"+fm.format(l1440)+" "+"6:"+fm.format(more1440);
+//         return fm.format(l5)+" "+fm.format(l10)+" "+fm.format(l30)+" "+fm.format(l60)+" "+fm.format(l1440)+" "+fm.format(m1440);
     }
     /**
      * 基于用户profile信息的特征抽取，
