@@ -36,6 +36,7 @@ import java.util.stream.Stream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 
+import cn.edu.whu.commonsAlgorithms.CosineSimilarAlgorithm;
 import cn.edu.whu.utils.Utils;
 
 /**
@@ -66,11 +67,10 @@ public class ExtractTrait {
 
 
 		//提取not exist用户的行为特征
-		//ext.extractFeatures("E:/spam/3_UltimateSelected/weibos", "E:/spam/behaviorFeatures2.txt");
+		ext.extractFeatures("E:/spam/3_UltimateSelected/weibos", "E:/spam/4_extractFetures/behaviorFeatures7.txt");
 		//提取normal用户的行为特征
-		//ext.extractFeatures("E:/normal/2_UltimateNormal/weibos", "E:/normal/behaviorFeatures.txt");
-	    //ext.calF();
-		//ext.calIntersection();
+		ext.extractFeatures("E:/normal/2_UltimateNormal/weibos", "E:/normal/3_extractFetures/behaviorFeatures7.txt");
+	   
 		
 		//ext.analyseProfile("E:/normal/2_UltimateNormal/profiles.txt", "E:/normal/3_extractFetures/profilesTrait3.txt");
 		//ext.analyseProfile("E:/spam/3_UltimateSelected/profiles.txt", "E:/spam/4_extractFetures/profilesTrait3.txt");
@@ -376,6 +376,7 @@ public class ExtractTrait {
 
     	GetSimilarity getSimi=new GetSimilarity();
     	LevenshteinDistance ld=new LevenshteinDistance();
+    	CosineSimilarAlgorithm cosSim=new CosineSimilarAlgorithm();
     	//保存一个句子的最大值 
     	double max=0.0;
     	 //保存一个比较的临时结果
@@ -386,8 +387,10 @@ public class ExtractTrait {
         	 max=0.0;
          	 temp=0.0;
         	//temp=getSimi.getSimilarity(str[i], str[i+1], 2);
-         	 //使用编辑距离计算字符串的相似性
-         	  temp=ld.getSimilarity(str[i], str[i+1]);
+         	//使用编辑距离计算字符串的相似性
+         	//temp=ld.getSimilarity(str[i], str[i+1]);
+         	 //使用编辑距离衡量相似性不合适，还是需要使用cos相似性算法
+         	 temp=cosSim.cosSimilarityByString(str[i], str[i+1]);
         	 result+=temp;
         	// System.out.println("正在计算的句子的是     "+str[i]+"其最大匹配度为"+max);
          }

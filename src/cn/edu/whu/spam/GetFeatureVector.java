@@ -24,14 +24,14 @@ import cn.edu.whu.utils.Utils;
  *合并之前算出的各种向量。得到用户的特征向量。
  */
 public class GetFeatureVector {
-	private static final String  BEHAVIOR_FEATURES_SELECTED_FILE_PATH="E:/spam/4_extractFetures/behaviorFeatures3.txt";
-	private static final String  BEHAVIOR_FEATURES_NORMAL_FILE_PATH="E:/normal/3_extractFetures/behaviorFeatures3.txt";
-	private static final String  ATTENTIONRATE_SELECTED_FILE_PATH="E:/spam/4_extractFetures/attentionRate3.txt";
-	private static final String  ATTENTIONRATE_NORMAL_FILE_PATH="E:/normal/3_extractFetures/attentionRate3.txt";
-	private static final String  PROFILETRAIT_SELECTED_PATH="E:/spam/4_extractFetures/profilesTrait3.txt";
-	private static final String  PROFILETRAIT_NORMAL_PATH="E:/normal/3_extractFetures/profilesTrait3.txt";
-	private static final String TRIREALTION_SELECTED_PATH="E:/spam/4_extractFetures/tri_uidFriends3.txt";
-	private static final String TRIREALTION_NORMAL_PATH="E:/normal/3_extractFetures/tri_uidFriends3.txt";
+	private static final String  BEHAVIOR_FEATURES_SELECTED_FILE_PATH="E:/spam/4_extractFetures/behaviorFeatures6.txt";
+	private static final String  BEHAVIOR_FEATURES_NORMAL_FILE_PATH="E:/normal/3_extractFetures/behaviorFeatures6.txt";
+	private static final String  ATTENTIONRATE_SELECTED_FILE_PATH="E:/spam/4_extractFetures/attentionRate6.txt";
+	private static final String  ATTENTIONRATE_NORMAL_FILE_PATH="E:/normal/3_extractFetures/attentionRate6.txt";
+	private static final String  PROFILETRAIT_SELECTED_PATH="E:/spam/4_extractFetures/profilesTrait6.txt";
+	private static final String  PROFILETRAIT_NORMAL_PATH="E:/normal/3_extractFetures/profilesTrait6.txt";
+	private static final String TRIREALTION_SELECTED_PATH="E:/spam/4_extractFetures/tri_uidFriends6.txt";
+	private static final String TRIREALTION_NORMAL_PATH="E:/normal/3_extractFetures/tri_uidFriends6.txt";
 	static Map<String,FeatureVector> result=new HashMap<String ,FeatureVector>();
     static Map<String,String> saveMap=new HashMap<>();
 	/**
@@ -44,16 +44,18 @@ public class GetFeatureVector {
 		initBehaviorFeatures(BEHAVIOR_FEATURES_SELECTED_FILE_PATH);
 		//standardizeIntervalRate();已经更改时间间隔特征选取方式，不再需要再次进行规范化
 		//display();
-		removeNomalUID("E:/spam/5_selectedFeatureVec/spamRemoveNormalUID.txt");
-		save("E:/spam/5_selectedFeatureVec/selectVec5.txt");
+		removeNomalUID("E:/spam/5_selectedFeatureVec/spamRemoveNormalUID.txt");//去除1984；余10874-1984=8890条
+		save("E:/spam/5_selectedFeatureVec/selectVec6.txt");
 		//得到normal
 		result.clear();
 		saveMap.clear();
+		
 		initRelationFeature(ATTENTIONRATE_NORMAL_FILE_PATH,PROFILETRAIT_NORMAL_PATH,TRIREALTION_NORMAL_PATH);
 		initBehaviorFeatures(BEHAVIOR_FEATURES_NORMAL_FILE_PATH);
+		removeNomalUID("E:/normal/5_selectedFeatureVec/PunishRemovePartUID.txt");//正类为了平衡，也得去除一些，正类10207;所以得剪去1317
 		//standardizeIntervalRate();
 		//display();
-		save("E:/normal/5_selectedFeatureVec/selectVec5.txt");
+		save("E:/normal/5_selectedFeatureVec/selectVec6.txt");
 	}
 	/**
 	 * 初始化用户关系特征，主要包括关注度等
@@ -139,12 +141,18 @@ public class GetFeatureVector {
 						    	   fv.setWeiboFromRepostRate(arr[6]);
 						    	   fv.setWeiboTextSimilarity(arr[7]);
 						    	   //fv.setIntervalRate(arr[8]);
-						    	   fv.setTimeItvalLess5(arr[8]);
-						    	   fv.setTimeItvalLess10(arr[9]);
-						    	   fv.setTimeItvalLess30(arr[10]);
-						    	   fv.setTimeItvalLess60(arr[11]);
-						    	   fv.setTimeItvalLess1440(arr[12]);
-						    	   fv.setTimeItvalLessmore(arr[13]);
+						    	   fv.setTimeItvalLess0(arr[8]);
+						    	   
+						    	   fv.setTimeItvalLess2(arr[9]);
+						    	   fv.setTimeItvalLess5(arr[10]);
+						    	   fv.setTimeItvalLess10(arr[11]);
+						    	   fv.setTimeItvalLess20(arr[12]);
+						    	   fv.setTimeItvalLess30(arr[13]);
+						    	   fv.setTimeItvalLess60(arr[14]);
+						    	   fv.setTimeItvalLess120(arr[15]);
+						    	   fv.setTimeItvalLess300(arr[16]);
+						    	   fv.setTimeItvalLess1440(arr[17]);
+						    	   fv.setTimeItvalLessmore(arr[18]);
 						       }else{
 						    	   System.out.println(line);
 						       }
@@ -195,10 +203,13 @@ public class GetFeatureVector {
 	}
 	public static void save(String path ){
 		Utils utils=new Utils();
+		int count=0;
 		for(String key:result.keySet()){
+			count++;
 			saveMap.put(key,result.get(key).toString());
 		}
 		utils.saveMap(saveMap, path);
+		System.out.println(count);
 	}
 	/**
      * 根据一个文件中的uid，删除另一个文件中包含那些uid的条目。 

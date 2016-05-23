@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
-import org.apache.log4j.chainsaw.Main;
+
 
 import cn.edu.whu.utils.Utils;
  

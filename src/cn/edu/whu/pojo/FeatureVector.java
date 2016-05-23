@@ -123,25 +123,7 @@ public class FeatureVector {
 	public void setTimeItvalLessmore(String timeItvalLessmore) {
 		this.timeItvalLessmore = timeItvalLessmore;
 	}
-	 private String uid;
-     private String attentionRate;
-     private String commentRate;
-     private String repostRate;
-     private String atRate;
-     private String topicRate;
-     private String textURLrate;
-     private String weiboFromRepostRate;
-     private String weiboTextSimilarity;
-     private String intervalRate;
-     private String triRealtion;
-     private String profileURL;
-     private String ifProfile;
-	 private String timeItvalLess5;
-     private String timeItvalLess10;
-     private String timeItvalLess30;
-     private String timeItvalLess60;
-     private String timeItvalLess1440;
-     private String timeItvalLessmore;
+
      public String getFrinedsNum() {
 		return frinedsNum;
 	}
@@ -172,15 +154,75 @@ public class FeatureVector {
 	public void setProfileLen(String profileLen) {
 		this.profileLen = profileLen;
 	}
-	private String frinedsNum;
+	 private String uid;
+     private String attentionRate;
+     private String commentRate;
+     private String repostRate;
+     private String atRate;
+     private String topicRate;
+     private String textURLrate;
+     private String weiboFromRepostRate;
+     private String weiboTextSimilarity;
+     private String intervalRate;
+     private String triRealtion;
+     private String profileURL;
+     private String ifProfile;
+     public String getTimeItvalLess0() {
+		return timeItvalLess0;
+	}
+	public void setTimeItvalLess0(String timeItvalLess0) {
+		this.timeItvalLess0 = timeItvalLess0;
+	}
+	public String getTimeItvalLess2() {
+		return timeItvalLess2;
+	}
+	public void setTimeItvalLess2(String timeItvalLess2) {
+		this.timeItvalLess2 = timeItvalLess2;
+	}
+	public String getTimeItvalLess20() {
+		return timeItvalLess20;
+	}
+	public void setTimeItvalLess20(String timeItvalLess20) {
+		this.timeItvalLess20 = timeItvalLess20;
+	}
+	public String getTimeItvalLess120() {
+		return timeItvalLess120;
+	}
+	public void setTimeItvalLess120(String timeItvalLess120) {
+		this.timeItvalLess120 = timeItvalLess120;
+	}
+	public String getTimeItvalLess300() {
+		return timeItvalLess300;
+	}
+	public void setTimeItvalLess300(String timeItvalLess300) {
+		this.timeItvalLess300 = timeItvalLess300;
+	}
+	private String timeItvalLess0;
+     private String timeItvalLess2;
+	 private String timeItvalLess5;
+     private String timeItvalLess10;
+     private String timeItvalLess20;
+     private String timeItvalLess30;
+     private String timeItvalLess60;
+     private String timeItvalLess120;
+     private String timeItvalLess300;
+     private String timeItvalLess1440;
+     private String timeItvalLessmore;
+	private  String frinedsNum;
      private String followsNum;
      private String friendsNumDivfollowsNum;
      private String userNameLen;
      private String profileLen;
-     public String toString(){
+//     public  String toString(){
+//    	 String str=uid+" "+attentionRate+" "+commentRate+" "+repostRate+" "+atRate+" "+topicRate+" "+textURLrate+" "+weiboFromRepostRate+" "
+//    			  +weiboTextSimilarity+" "+ timeItvalLess5+" "+timeItvalLess10+" "+timeItvalLess30+" "+timeItvalLess60+" "+timeItvalLess1440+" "+timeItvalLessmore+" "+triRealtion+" "+profileURL+" "+ifProfile+" "
+//    			  +frinedsNum+" "+followsNum+" "+friendsNumDivfollowsNum+" "+userNameLen+" "+profileLen;
+//    	 return str;
+//     }
+     public  String toString(){
     	 String str=uid+" "+attentionRate+" "+commentRate+" "+repostRate+" "+atRate+" "+topicRate+" "+textURLrate+" "+weiboFromRepostRate+" "
-    			 +weiboTextSimilarity+" "+ timeItvalLess5+" "+timeItvalLess10+" "+timeItvalLess30+" "+timeItvalLess60+" "+timeItvalLess1440+" "+timeItvalLessmore+" "+triRealtion+" "+profileURL+" "+ifProfile+" "
-    			 +frinedsNum+" "+followsNum+" "+friendsNumDivfollowsNum+" "+userNameLen+" "+profileLen;
+    			  +weiboTextSimilarity+" "+ timeItvalLess0+" "+ timeItvalLess2+" "+ timeItvalLess5+" "+timeItvalLess10+" "+ timeItvalLess20+" "+timeItvalLess30+" "+timeItvalLess60+" "+ timeItvalLess120+" "+ timeItvalLess300+" "+timeItvalLess1440+" "+timeItvalLessmore+" "+triRealtion+" "+profileURL+" "+ifProfile+" "
+    			  +frinedsNum+" "+followsNum+" "+friendsNumDivfollowsNum+" "+userNameLen+" "+profileLen;
     	 return str;
      }
 }

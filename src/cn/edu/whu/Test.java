@@ -29,7 +29,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
-import org.apache.log4j.Logger;
+
 
 import cn.edu.whu.pojo.Relation;
 import cn.edu.whu.pojo.User;
@@ -42,7 +42,7 @@ import cn.edu.whu.utils.Utils;
  */
 public class Test {
 	 private static String WEIBO_USER_FILEPATH="D:\\Whuer\\Major\\Refs4Spammers";
-	 private final static Logger logger = Logger.getLogger(Test.class);
+	 
 	 private final static String  FOLLOWS_USER_TXT="E:/follows_users_10W_realated.txt";
 	 private final static String  FOLLOWS_USER_RESULTS="E:/temp/relation_resultsExtracted.txt";
 	@SuppressWarnings({ "static-access" })
