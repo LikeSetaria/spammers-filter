@@ -155,6 +155,10 @@ public class GetFeatureVector {
 						    	   fv.setMeanInterval(arr[19]);
 						    	   fv.setWeiboAge(arr[20]);
 						    	   fv.setWeiboSource(arr[21]);
+						    	   fv.setWbSourceRichnessK(arr[22]);
+						    	   fv.setWbSourceRichnessD(arr[23]);
+						    	   fv.setWbSourceRichnessH(arr[24]);
+						    	   fv.setWbSourceRichnessS(arr[25]);
 						    	   
 						       }else{
 						    	   System.out.println(line);

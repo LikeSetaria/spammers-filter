@@ -38,6 +38,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 
 import cn.edu.whu.commonsAlgorithms.CosineSimilarAlgorithm;
+import cn.edu.whu.utils.GetRichnessMetrices;
 import cn.edu.whu.utils.Utils;
 
 /**
@@ -68,9 +69,9 @@ public class ExtractTrait {
 
 
 		//提取not exist用户的行为特征
-		ext.extractFeatures("E:/spam/3_UltimateSelected/weibos", "E:/spam/4_extractFetures/behaviorFeatures8.1.txt");
+		ext.extractFeatures("E:/spam/3_UltimateSelected/weibos", "E:/spam/4_extractFetures/behaviorFeatures9.txt");
 		//提取normal用户的行为特征
-		ext.extractFeatures("E:/normal/2_UltimateNormal/weibos", "E:/normal/3_extractFetures/behaviorFeatures8.1.txt");
+		ext.extractFeatures("E:/normal/2_UltimateNormal/weibos", "E:/normal/3_extractFetures/behaviorFeatures9.txt");
 	   
 		
 		//ext.analyseProfile("E:/normal/2_UltimateNormal/profiles.txt", "E:/normal/3_extractFetures/profilesTrait3.txt");
@@ -296,6 +297,7 @@ public class ExtractTrait {
     	//微博总数
     	int weiboTotal=0;
     	Utils utils=new Utils();
+    	GetRichnessMetrices getRich=new GetRichnessMetrices();
     	String result=null;
     	String content;
     	String uid=null;
@@ -307,12 +309,11 @@ public class ExtractTrait {
 			weiboTotal=strb.length;
 			//System.out.println("total Nums Of weibo "+strb.length);
 			StringBuilder weibotext=new StringBuilder();
-			Set <String> sourceSet=new HashSet<String>();
+			String[] sourceArr = new String[strb.length];
 			for(int j=0;j<strb.length;j++){
 				StringBuilder tem=new StringBuilder();
 				String[] arr=strb[j].split(",");
-				
-				sourceSet.add(arr[3]);
+				sourceArr[j]=arr[3];
 				//存储规范的数组切割
 				String[] arr2=new String[6];
 				uid=arr[0];
@@ -353,17 +354,15 @@ public class ExtractTrait {
 			double atRate=(double)atNums/(double)weiboTotal;
 			double topicRate=(double)topicNums/(double)weiboTotal;
 			String[] weibo=weibotext.toString().split("\n");
-			double weibosimilarity=calWeiboSimilarity(weibo)/weiboTotal;
-			
+			double weibosimilarity=0.0;//相似性作用不大，暂时注释掉
+			//double weibosimilarity=calWeiboSimilarity(weibo)/weiboTotal;
 			//训练的时候要特征要相似，否则效果可能很不好。所以这里要对时间间隔这个特征进行规范化，比如处理这一维的最大值
-			//double intervalRate=calTimeTrait(timeList);
 			String intervalRate=calTimeTrait2(timeList);
-			double sourceRate=(double)sourceSet.size();
+			String sourceRichness=getRich.getRM_YuleAndSimpson(sourceArr);
 			//System.out.println("总评论数"+comment_count+"总转发数"+
 			//reposts_count+"@总数"+atNums+"#总数数"+topicNums+"URL比例"+df.format(URLrate)+"转发的微博比例"+df.format(repostRate));
 			result=uid+" "+df.format(commentRate)+" "+df.format(repostRate)+" "+df.format(atRate)+" "+df.format(topicRate)+" "+df.format(URLrate)+" "+df.format(weiborepostRate)+" "+df.format(weibosimilarity)
-			+" "+intervalRate+" "+df.format(sourceRate);
-		    //System.out.println(result);
+			+" "+intervalRate+" "+sourceRichness;
     	  } catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -203,7 +203,43 @@ public class FeatureVector {
 		public void setMeanInterval(String meanInterval) {
 			this.meanInterval = meanInterval;
 		}
-	private String timeItvalLess0;
+	     public String getWeiboSource() {
+	 		return weiboSource;
+	 	}
+	 	public void setWeiboSource(String weiboSource) {
+	 		this.weiboSource = weiboSource;
+	 	}
+	 	public String getWeiboAge() {
+			return weiboAge;
+		}
+		public void setWeiboAge(String weiboAge) {
+			this.weiboAge = weiboAge;
+		}
+		 public String getWbSourceRichnessK() {
+				return wbSourceRichnessK;
+			}
+			public void setWbSourceRichnessK(String wbSourceRichnessK) {
+				this.wbSourceRichnessK = wbSourceRichnessK;
+			}
+			public String getWbSourceRichnessD() {
+				return wbSourceRichnessD;
+			}
+			public void setWbSourceRichnessD(String wbSourceRichnessD) {
+				this.wbSourceRichnessD = wbSourceRichnessD;
+			}
+			public String getWbSourceRichnessH() {
+				return wbSourceRichnessH;
+			}
+			public void setWbSourceRichnessH(String wbSourceRichnessH) {
+				this.wbSourceRichnessH = wbSourceRichnessH;
+			}
+			public String getWbSourceRichnessS() {
+				return wbSourceRichnessS;
+			}
+			public void setWbSourceRichnessS(String wbSourceRichnessS) {
+				this.wbSourceRichnessS = wbSourceRichnessS;
+			}
+	 private String timeItvalLess0;
      private String timeItvalLess2;
 	 private String timeItvalLess5;
      private String timeItvalLess10;
@@ -220,20 +256,12 @@ public class FeatureVector {
      private String friendsNumDivfollowsNum;
      private String userNameLen;
      private String profileLen;
-     public String getWeiboSource() {
-		return weiboSource;
-	}
-	public void setWeiboSource(String weiboSource) {
-		this.weiboSource = weiboSource;
-	}
-	private String weiboSource;
-	private String weiboAge;
-public String getWeiboAge() {
-		return weiboAge;
-	}
-	public void setWeiboAge(String weiboAge) {
-		this.weiboAge = weiboAge;
-	}
+	 private String weiboSource;
+	 private String weiboAge;
+	 private String wbSourceRichnessK;
+     private String wbSourceRichnessD;
+     private String wbSourceRichnessH;
+     private String wbSourceRichnessS;
 	//     public  String toString(){
 //    	 String str=uid+" "+attentionRate+" "+commentRate+" "+repostRate+" "+atRate+" "+topicRate+" "+textURLrate+" "+weiboFromRepostRate+" "
 //    			  +weiboTextSimilarity+" "+ timeItvalLess5+" "+timeItvalLess10+" "+timeItvalLess30+" "+timeItvalLess60+" "+timeItvalLess1440+" "+timeItvalLessmore+" "+triRealtion+" "+profileURL+" "+ifProfile+" "
@@ -242,7 +270,8 @@ public String getWeiboAge() {
 //     }
      public  String toString(){
     	 String str=uid+" "+attentionRate+" "+commentRate+" "+repostRate+" "+atRate+" "+topicRate+" "+textURLrate+" "+weiboFromRepostRate+" "
-    			  +weiboTextSimilarity+" "+ timeItvalLess0+" "+ timeItvalLess2+" "+ timeItvalLess5+" "+timeItvalLess10+" "+ timeItvalLess20+" "+timeItvalLess30+" "+timeItvalLess60+" "+ timeItvalLess120+" "
+    			 // +weiboTextSimilarity
+    			  +" "+ timeItvalLess0+" "+ timeItvalLess2+" "+ timeItvalLess5+" "+timeItvalLess10+" "+ timeItvalLess20+" "+timeItvalLess30+" "+timeItvalLess60+" "+ timeItvalLess120+" "
     			 + timeItvalLess300+" "+timeItvalLess1440+" "+timeItvalLessmore+" "+meanInterval+" "+triRealtion+" "+profileURL+" "+ifProfile+" "
     			  +frinedsNum+" "+followsNum+" "+friendsNumDivfollowsNum+" "+userNameLen+" "+profileLen+" "+weiboSource+" "+weiboAge;
     	 return str;
