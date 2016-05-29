@@ -34,10 +34,14 @@ public class FilterLibSVMFeatures {
     	//int[] ar={16,17,21,22};
     	//去除关系特征，观察关系特征对分类的影响。这四个类是：triRealtion，frinedsNum，followsNum，friendsNumDivfollowsNum
     	//int[] ar={15,18,19,20};
-    	//去除微博相似度特征，观察微博相似度特征对分类的影响。这四个类是：weiboTextSimilarity
+    	//去除微博相似度特征，观察微博相似度特征对分类的影响。weiboTextSimilarity
     	int[] ar={8};
-    	FilterLibSVMFeatures fls=new FilterLibSVMFeatures("E:/libSVM/实验四/sample4.txt");
-    	fls.handle("E:/libSVM/实验五/sample5_remSimFea.txt",ar);
+    	//平均时间间隔处
+    	//int[] ar={20};
+    	//微博源
+    	//int[] ar={29};
+    	FilterLibSVMFeatures fls=new FilterLibSVMFeatures("E:/libSVM/实验八/sample8.txt");
+    	fls.handle("E:/libSVM/实验八/sample8_removesim",ar);
     }
     private void  handle(String save,int[] ind){
     	File file=new File(libSVMFilePath);

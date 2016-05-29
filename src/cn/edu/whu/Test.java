@@ -26,6 +26,8 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
@@ -131,11 +133,16 @@ public class Test {
 		//test.extractGender();
 		//System.out.println(utils.readToSet("E:/spam/tt.txt"));
 		//System.out.println(utils.calURL("erhttp:dfgdghsdfgdg的法国恢复的话www.dsgfs为广大http//"));
-		Set<String> result=new HashSet<String>();
-		result=utils.readToSet("E:/removeNormalUID.txt");
-		utils.saveResultBySet(result, "E:/spam/removeNormalUID.txt");
+//		Set<String> result=new HashSet<String>();
+//		result=utils.readToSet("E:/removeNormalUID.txt");
+//		utils.saveResultBySet(result, "E:/spam/removeNormalUID.txt");
 
-		
+		String regEx="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}\"\"【】‘；：”“’。，、？]"; 
+		String str="xdher喜欢狗儿粉丝@ ！ # ￥……%&）    v “\"\"?？!&*日价格划算";
+		Pattern p = Pattern.compile(regEx); 
+		Matcher m = p.matcher(str);
+		m.replaceAll("").replaceAll("\\s", "");
+		System.out.println(str.replaceAll(regEx, "").replaceAll("\\s", ""));
 		
 	}
 	  	public void extractFid(){

@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,9 +68,9 @@ public class ExtractTrait {
 
 
 		//提取not exist用户的行为特征
-		ext.extractFeatures("E:/spam/3_UltimateSelected/weibos", "E:/spam/4_extractFetures/behaviorFeatures7.txt");
+		ext.extractFeatures("E:/spam/3_UltimateSelected/weibos", "E:/spam/4_extractFetures/behaviorFeatures8.1.txt");
 		//提取normal用户的行为特征
-		ext.extractFeatures("E:/normal/2_UltimateNormal/weibos", "E:/normal/3_extractFetures/behaviorFeatures7.txt");
+		ext.extractFeatures("E:/normal/2_UltimateNormal/weibos", "E:/normal/3_extractFetures/behaviorFeatures8.1.txt");
 	   
 		
 		//ext.analyseProfile("E:/normal/2_UltimateNormal/profiles.txt", "E:/normal/3_extractFetures/profilesTrait3.txt");
@@ -306,10 +307,12 @@ public class ExtractTrait {
 			weiboTotal=strb.length;
 			//System.out.println("total Nums Of weibo "+strb.length);
 			StringBuilder weibotext=new StringBuilder();
+			Set <String> sourceSet=new HashSet<String>();
 			for(int j=0;j<strb.length;j++){
 				StringBuilder tem=new StringBuilder();
 				String[] arr=strb[j].split(",");
 				
+				sourceSet.add(arr[3]);
 				//存储规范的数组切割
 				String[] arr2=new String[6];
 				uid=arr[0];
@@ -351,14 +354,15 @@ public class ExtractTrait {
 			double topicRate=(double)topicNums/(double)weiboTotal;
 			String[] weibo=weibotext.toString().split("\n");
 			double weibosimilarity=calWeiboSimilarity(weibo)/weiboTotal;
+			
 			//训练的时候要特征要相似，否则效果可能很不好。所以这里要对时间间隔这个特征进行规范化，比如处理这一维的最大值
 			//double intervalRate=calTimeTrait(timeList);
 			String intervalRate=calTimeTrait2(timeList);
-			
+			double sourceRate=(double)sourceSet.size();
 			//System.out.println("总评论数"+comment_count+"总转发数"+
 			//reposts_count+"@总数"+atNums+"#总数数"+topicNums+"URL比例"+df.format(URLrate)+"转发的微博比例"+df.format(repostRate));
-			result=uid+" "+df.format(commentRate)+" "+df.format(repostRate)+" "+df.format(atRate)+" "+df.format(topicRate)+" "+df.format(URLrate)+" "+df.format(weiborepostRate)+" "+df.format(weibosimilarity)+
-					" "+intervalRate;
+			result=uid+" "+df.format(commentRate)+" "+df.format(repostRate)+" "+df.format(atRate)+" "+df.format(topicRate)+" "+df.format(URLrate)+" "+df.format(weiborepostRate)+" "+df.format(weibosimilarity)
+			+" "+intervalRate+" "+df.format(sourceRate);
 		    //System.out.println(result);
     	  } catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -372,29 +376,49 @@ public class ExtractTrait {
      * 计算微博的相似度,返回的是微博层级之间的相似度之和。如A,B,C三天微博，计算A和B，B和C
      * @return
      */
-    public  double calWeiboSimilarity(String[] str){
+    public static double calWeiboSimilarity(String[] str){
 
     	GetSimilarity getSimi=new GetSimilarity();
     	LevenshteinDistance ld=new LevenshteinDistance();
     	CosineSimilarAlgorithm cosSim=new CosineSimilarAlgorithm();
+//    	String regEx="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]"; 
+//    	Pattern p = Pattern.compile(regEx); 
+//    	Matcher m = null;
+//    	 //需要对微博进行预处理，去除@、#等公共字符使只有纯文本
+//    	String[] str2=new String[str.length];
+//    	for(int i=0;i<str.length;i++){
+//    		m=p.matcher(str[i]);
+//    		str2[i]=m.replaceAll("").replaceAll("\\s", "");
+//        	
+//        		
+//    	}
     	//保存一个句子的最大值 
     	double max=0.0;
     	 //保存一个比较的临时结果
     	 double temp=0.0;
     	 //保存结果
     	 double result=0.0;
+    	
+    	
          for(int i=0;i<str.length-1;i++){
         	 max=0.0;
          	 temp=0.0;
         	//temp=getSimi.getSimilarity(str[i], str[i+1], 2);
          	//使用编辑距离计算字符串的相似性
-         	//temp=ld.getSimilarity(str[i], str[i+1]);
+         	 //temp=ld.getSimilarity(str[i], str[i+1]);
          	 //使用编辑距离衡量相似性不合适，还是需要使用cos相似性算法
+         	 
+         	 //if(!str[i].contains("转发微博")&&str[i].length()>4){
          	 temp=cosSim.cosSimilarityByString(str[i], str[i+1]);
+         	 
+         	// System.out.println(temp);
+         	// }
+         	 if(temp>0)
         	 result+=temp;
         	// System.out.println("正在计算的句子的是     "+str[i]+"其最大匹配度为"+max);
+      
          }
-    return result/(double)str.length;
+    return result;
     }
     /**
      * 遍历所有的文件抽取特征，并保存结果
@@ -517,7 +541,7 @@ public class ExtractTrait {
      * 
      * 
      */
-    public String calTimeTrait2(List<String> list){
+    public static String calTimeTrait2(List<String> list){
     	//把字符串的时间序列转化为日期类型，并且得到从标准时间到这个时间的毫秒数
          long interval=0l;
          //[]
@@ -531,6 +555,8 @@ public class ExtractTrait {
          //(]
          int between60and1440=0;
          //()
+         long firstWeiboTimestamp=0l;
+         long lastWeiboTimestamp=0l;
          int interval_less_0=0,interval_less_2=0,interval_less_5=0,interval_less_10=0,
         		 interval_less_20=0,interval_less_30=0;
          int interval_less_1h=0,interval_less_2h=0,interval_less_5h=0,interval_less_24h=0,interval_less_more=0;
@@ -539,8 +565,12 @@ public class ExtractTrait {
          DecimalFormat   fm=new   java.text.DecimalFormat("#.######"); 
          List<Long> timelist=new LinkedList<Long>();
          DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+         String standardTime="2016-01-01 00:00";
+         Date standardDate=new Date();
+         
          Date date=new Date();
-         try{
+         try{//获得标准时间的日期格式
+        	 standardDate=df.parse(standardTime);
          for(String ss:list){
         	 date = df.parse(ss); 
         	 //格式化的时间是精确到分钟，所以这里只需要精确到分钟加入到list
@@ -549,6 +579,15 @@ public class ExtractTrait {
          }catch  (Exception e) {
         	 e.printStackTrace();
          }
+         firstWeiboTimestamp=timelist.get(timelist.size()-1);
+         //System.out.println(date.getTime()+"创建时间"+timelist.get(timelist.size()-1));
+		//	System.out.println("标准时间"+standardDate.getTime()+"创建时间"+timelist.get(timelist.size()-1));
+			double oneyear=31536000000d;//一年是多少毫秒
+			double weiboAge=(double) (standardDate.getTime()-timelist.get(timelist.size()-1))/oneyear;
+		 // System.out.println(standardDate.getTime()-timelist.get(timelist.size()-1));
+		 // System.out.println(weiboAge);
+         lastWeiboTimestamp=timelist.get(0);
+        // System.out.println("+list.get(0));
          for(int i=0;i<timelist.size()-1;i++){
         	 interval=timelist.get(i)-timelist.get(i+1);
         	 //System.out.println(interval); 
@@ -590,6 +629,12 @@ public class ExtractTrait {
 	    	 else 
 	    		 interval_less_more++;
          }
+         //添加平均微博发布间隔特征,单位天
+         double meanInterval=0.0;
+          meanInterval=(double)Math.abs(lastWeiboTimestamp-firstWeiboTimestamp)/(double)(86400000);
+          meanInterval=meanInterval/(double)list.size();
+          //System.out.println("差"+Math.abs(lastWeiboTimestamp-firstWeiboTimestamp)+" "+list.size()+" "+meanInterval);
+          
          double less0=(double)interval_less_0/(double)list.size();
          double less2=(double)interval_less_2/(double)list.size();
          double less5=(double)interval_less_5/(double)list.size();
@@ -603,7 +648,7 @@ public class ExtractTrait {
          double less_more=(double)interval_less_more/(double)list.size();
          return fm.format(less0)+" "+fm.format(less2)+" "+fm.format(less5)+" "+fm.format(less10)+" "
         		+fm.format(less20)+" "+fm.format(less30)+" "+fm.format(less1h)+" "+fm.format(less2h)+" "
-                +fm.format(less5h)+" "+fm.format(less24h)+" "+fm.format(less_more);
+                +fm.format(less5h)+" "+fm.format(less24h)+" "+fm.format(less_more)+" "+fm.format(meanInterval)+" "+fm.format(weiboAge);
 //         double l5=(double)less5weibo/(double)list.size();
 //         double l10=(double)between5and10/(double)list.size();
 //         double l30=(double)between10and30/(double)list.size();

@@ -197,6 +197,12 @@ public class FeatureVector {
 	public void setTimeItvalLess300(String timeItvalLess300) {
 		this.timeItvalLess300 = timeItvalLess300;
 	}
+	   public String getMeanInterval() {
+			return meanInterval;
+		}
+		public void setMeanInterval(String meanInterval) {
+			this.meanInterval = meanInterval;
+		}
 	private String timeItvalLess0;
      private String timeItvalLess2;
 	 private String timeItvalLess5;
@@ -208,12 +214,27 @@ public class FeatureVector {
      private String timeItvalLess300;
      private String timeItvalLess1440;
      private String timeItvalLessmore;
-	private  String frinedsNum;
+	 private String meanInterval;
+	 private  String frinedsNum;
      private String followsNum;
      private String friendsNumDivfollowsNum;
      private String userNameLen;
      private String profileLen;
-//     public  String toString(){
+     public String getWeiboSource() {
+		return weiboSource;
+	}
+	public void setWeiboSource(String weiboSource) {
+		this.weiboSource = weiboSource;
+	}
+	private String weiboSource;
+	private String weiboAge;
+public String getWeiboAge() {
+		return weiboAge;
+	}
+	public void setWeiboAge(String weiboAge) {
+		this.weiboAge = weiboAge;
+	}
+	//     public  String toString(){
 //    	 String str=uid+" "+attentionRate+" "+commentRate+" "+repostRate+" "+atRate+" "+topicRate+" "+textURLrate+" "+weiboFromRepostRate+" "
 //    			  +weiboTextSimilarity+" "+ timeItvalLess5+" "+timeItvalLess10+" "+timeItvalLess30+" "+timeItvalLess60+" "+timeItvalLess1440+" "+timeItvalLessmore+" "+triRealtion+" "+profileURL+" "+ifProfile+" "
 //    			  +frinedsNum+" "+followsNum+" "+friendsNumDivfollowsNum+" "+userNameLen+" "+profileLen;
@@ -221,8 +242,9 @@ public class FeatureVector {
 //     }
      public  String toString(){
     	 String str=uid+" "+attentionRate+" "+commentRate+" "+repostRate+" "+atRate+" "+topicRate+" "+textURLrate+" "+weiboFromRepostRate+" "
-    			  +weiboTextSimilarity+" "+ timeItvalLess0+" "+ timeItvalLess2+" "+ timeItvalLess5+" "+timeItvalLess10+" "+ timeItvalLess20+" "+timeItvalLess30+" "+timeItvalLess60+" "+ timeItvalLess120+" "+ timeItvalLess300+" "+timeItvalLess1440+" "+timeItvalLessmore+" "+triRealtion+" "+profileURL+" "+ifProfile+" "
-    			  +frinedsNum+" "+followsNum+" "+friendsNumDivfollowsNum+" "+userNameLen+" "+profileLen;
+    			  +weiboTextSimilarity+" "+ timeItvalLess0+" "+ timeItvalLess2+" "+ timeItvalLess5+" "+timeItvalLess10+" "+ timeItvalLess20+" "+timeItvalLess30+" "+timeItvalLess60+" "+ timeItvalLess120+" "
+    			 + timeItvalLess300+" "+timeItvalLess1440+" "+timeItvalLessmore+" "+meanInterval+" "+triRealtion+" "+profileURL+" "+ifProfile+" "
+    			  +frinedsNum+" "+followsNum+" "+friendsNumDivfollowsNum+" "+userNameLen+" "+profileLen+" "+weiboSource+" "+weiboAge;
     	 return str;
      }
 }

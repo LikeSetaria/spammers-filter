@@ -61,7 +61,7 @@ public class CosineSimilarAlgorithm {
 	* @return Double   
 	* @throws
 	 */
-	public Double cosSimilarityByString(String first,String second){
+	public double cosSimilarityByString(String first,String second){
 		try{
 			Map<String, Integer> firstTfMap=TfIdfAlgorithm.segStr(first);
 			Map<String, Integer> secondTfMap=TfIdfAlgorithm.segStr(second);
