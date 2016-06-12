@@ -8,8 +8,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,8 +29,8 @@ import cn.edu.whu.utils.Utils;
  *合并之前算出的各种向量。得到用户的特征向量。
  */
 public class GetFeatureVector {
-	private static final String  BEHAVIOR_FEATURES_SELECTED_FILE_PATH="E:/spam/4_extractFetures/behaviorFeatures8.1.txt";
-	private static final String  BEHAVIOR_FEATURES_NORMAL_FILE_PATH="E:/normal/3_extractFetures/behaviorFeatures8.1.txt";
+	private static final String  BEHAVIOR_FEATURES_SELECTED_FILE_PATH="E:/spam/4_extractFetures/behaviorFeatures9.txt";
+	private static final String  BEHAVIOR_FEATURES_NORMAL_FILE_PATH="E:/normal/3_extractFetures/behaviorFeatures9.txt";
 	private static final String  ATTENTIONRATE_SELECTED_FILE_PATH="E:/spam/4_extractFetures/attentionRate6.txt";
 	private static final String  ATTENTIONRATE_NORMAL_FILE_PATH="E:/normal/3_extractFetures/attentionRate6.txt";
 	private static final String  PROFILETRAIT_SELECTED_PATH="E:/spam/4_extractFetures/profilesTrait6.txt";
@@ -45,8 +50,9 @@ public class GetFeatureVector {
 		//standardizeIntervalRate();已经更改时间间隔特征选取方式，不再需要再次进行规范化
 		//display();
 		removeNomalUID("E:/spam/5_selectedFeatureVec/spamRemoveNormalUID.txt");//去除1984；余10874-1984=8890条
-		save("E:/spam/5_selectedFeatureVec/selectVec8.1.txt");
+		save("E:/spam/5_selectedFeatureVec/selectVec9.txt");
 		//得到normal
+		
 		result.clear();
 		saveMap.clear();
 		
@@ -55,7 +61,7 @@ public class GetFeatureVector {
 		removeNomalUID("E:/normal/5_selectedFeatureVec/PunishRemovePartUID.txt");//正类为了平衡，也得去除一些，正类10207;所以得剪去1317
 		//standardizeIntervalRate();
 		//display();
-		save("E:/normal/5_selectedFeatureVec/selectVec8.1.txt");
+		save("E:/normal/5_selectedFeatureVec/selectVec9.txt");
 	}
 	/**
 	 * 初始化用户关系特征，主要包括关注度等
@@ -154,11 +160,10 @@ public class GetFeatureVector {
 						    	   fv.setTimeItvalLessmore(arr[18]);
 						    	   fv.setMeanInterval(arr[19]);
 						    	   fv.setWeiboAge(arr[20]);
-						    	   fv.setWeiboSource(arr[21]);
-						    	   fv.setWbSourceRichnessK(arr[22]);
-						    	   fv.setWbSourceRichnessD(arr[23]);
-						    	   fv.setWbSourceRichnessH(arr[24]);
-						    	   fv.setWbSourceRichnessS(arr[25]);
+						    	   fv.setWbSourceRichnessK(arr[21]);
+						    	   fv.setWbSourceRichnessD(arr[22]);
+						    	   fv.setWbSourceRichnessH(arr[23]);
+						    	   fv.setWbSourceRichnessS(arr[24]);
 						    	   
 						       }else{
 						    	   System.out.println(line);
@@ -203,9 +208,9 @@ public class GetFeatureVector {
 			result.put(key, fv);
 		}
 	}
-	public static  void display(){
-		for(String key:result.keySet()){
-			System.out.println( result.get(key).toString());
+	public static  void display(Map<String,FeatureVector> map){
+		for(String key:map.keySet()){
+			System.out.println( map.get(key).toString());
 		}
 	}
 	public static void save(String path ){
@@ -239,6 +244,28 @@ public class GetFeatureVector {
     		}	
     	}
     	 System.out.println("spam中去除可能正类样本数"+count);
+    }
+    /**
+     * 对HashMap根据value进行排序
+     * @return HashMap
+     * @param HashMap
+     */
+    public static  Map<String,FeatureVector> sort(){
+   	  List<Map.Entry<String ,FeatureVector>> list=new ArrayList<Map.Entry<String,FeatureVector>>(result.entrySet());
+   	 Collections.sort(list,new Comparator<Map.Entry<String ,FeatureVector>>(){    		 
+			@Override
+			public int compare(java.util.Map.Entry<String, FeatureVector> arg0, java.util.Map.Entry<String, FeatureVector> arg1) {
+				return   arg0.getValue().compareTo(arg1.getValue());
+				
+			     
+			}    		 
+   	 });
+   	     Map<String,FeatureVector> newMap = new LinkedHashMap<String,FeatureVector>();  
+           for (int i = 0; i < list.size(); i++) {  
+               newMap.put(list.get(i).getKey(), list.get(i).getValue());
+               System.out.println(list.get(i).getKey()+"   "+list.get(i).getValue());
+           }  
+           return newMap; 
     }
 
 }

@@ -30,8 +30,8 @@ public class GetNewFeatures {
 		// TODO Auto-generated method stub
 		//for spam
 		initIdentifyRela("D:/Whuer/FudanData/weibo_users.txt");
-		//getVfriends("E:/spam/3_UltimateSelected/uidfriends_selected.txt","E:/VRelation_spam.txt");
-		getVfriends("E:/normal/2_UltimateNormal/uidfriends.txt","E:/VRelation_normal.txt");
+		getVfriends("E:/spam/3_UltimateSelected/uidfollows_selected.txt","E:/TrustRankV.txt");
+		//getVfriends("E:/normal/2_UltimateNormal/uidfriends.txt","E:/VRelation_normal.txt");
 		
 	}
 	//初始化用户是否是认证用户关系Map

@@ -7,7 +7,7 @@ package cn.edu.whu.pojo;
  * @author bczhang
  *特征向量，这里存储用户的所有的特征向量。
  */
-public class FeatureVector {
+public class FeatureVector implements Comparable<Object> {
      public String getUid() {
 		return uid;
 	}
@@ -203,12 +203,6 @@ public class FeatureVector {
 		public void setMeanInterval(String meanInterval) {
 			this.meanInterval = meanInterval;
 		}
-	     public String getWeiboSource() {
-	 		return weiboSource;
-	 	}
-	 	public void setWeiboSource(String weiboSource) {
-	 		this.weiboSource = weiboSource;
-	 	}
 	 	public String getWeiboAge() {
 			return weiboAge;
 		}
@@ -256,7 +250,6 @@ public class FeatureVector {
      private String friendsNumDivfollowsNum;
      private String userNameLen;
      private String profileLen;
-	 private String weiboSource;
 	 private String weiboAge;
 	 private String wbSourceRichnessK;
      private String wbSourceRichnessD;
@@ -268,12 +261,30 @@ public class FeatureVector {
 //    			  +frinedsNum+" "+followsNum+" "+friendsNumDivfollowsNum+" "+userNameLen+" "+profileLen;
 //    	 return str;
 //     }
+     @Override
+     public int compareTo(Object o){
+    	 if(this==o)
+    	 {
+    		 return 0;
+    	 }else if (o!=null&& o instanceof FeatureVector){
+    		 FeatureVector fv=(FeatureVector)o;
+    		 if(Double.valueOf(fv.getTextURLrate().equals(0)?"0.0":fv.getTextURLrate())<Double.valueOf(this.getTextURLrate().equals(0)?"0.0":fv.getTextURLrate()))
+    		 {
+    			 return -1;
+    		 }
+    		 else {
+    			 return 1;
+    		 }
+    	 }else 
+    		 return -1;
+     }
      public  String toString(){
     	 String str=uid+" "+attentionRate+" "+commentRate+" "+repostRate+" "+atRate+" "+topicRate+" "+textURLrate+" "+weiboFromRepostRate+" "
     			 // +weiboTextSimilarity
     			  +" "+ timeItvalLess0+" "+ timeItvalLess2+" "+ timeItvalLess5+" "+timeItvalLess10+" "+ timeItvalLess20+" "+timeItvalLess30+" "+timeItvalLess60+" "+ timeItvalLess120+" "
     			 + timeItvalLess300+" "+timeItvalLess1440+" "+timeItvalLessmore+" "+meanInterval+" "+triRealtion+" "+profileURL+" "+ifProfile+" "
-    			  +frinedsNum+" "+followsNum+" "+friendsNumDivfollowsNum+" "+userNameLen+" "+profileLen+" "+weiboSource+" "+weiboAge;
+    			  +frinedsNum+" "+followsNum+" "+friendsNumDivfollowsNum+" "+userNameLen+" "+profileLen+" "+weiboAge+" "+wbSourceRichnessK+" "+wbSourceRichnessD+" "+wbSourceRichnessH+" "+wbSourceRichnessS;
     	 return str;
      }
+     
 }

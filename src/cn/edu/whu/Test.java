@@ -17,6 +17,7 @@ import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -137,14 +138,112 @@ public class Test {
 //		result=utils.readToSet("E:/removeNormalUID.txt");
 //		utils.saveResultBySet(result, "E:/spam/removeNormalUID.txt");
 
-		String regEx="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}\"\"【】‘；：”“’。，、？]"; 
-		String str="xdher喜欢狗儿粉丝@ ！ # ￥……%&）    v “\"\"?？!&*日价格划算";
-		Pattern p = Pattern.compile(regEx); 
-		Matcher m = p.matcher(str);
-		m.replaceAll("").replaceAll("\\s", "");
-		System.out.println(str.replaceAll(regEx, "").replaceAll("\\s", ""));
-		
+//		String regEx="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}\"\"【】‘；：”“’。，、？]"; 
+//		String str="xdher喜欢狗儿粉丝@ ！ # ￥……%&）    v “\"\"?？!&*日价格划算";
+//		Pattern p = Pattern.compile(regEx); 
+//		Matcher m = p.matcher(str);
+//		m.replaceAll("").replaceAll("\\s", "");
+//		System.out.println(str.replaceAll(regEx, "").replaceAll("\\s", ""));
+//		LineIterator it=null;
+//		Map<String,Double> map=new HashMap<>();
+//		Set<String> set=new HashSet<>();
+//		set=utils.readToSet("E:/spam/5_selectedFeatureVec/selectVec9.txt");
+//		try {
+//			//it = FileUtils.lineIterator(new File("E:/spam/5_selectedFeatureVec/selectVec8.1.txt"));
+//			it = FileUtils.lineIterator(new File("E:/spam/5_selectedFeatureVec/selectVec8.txt"));
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		try {
+//		    while (it.hasNext()) {
+//		        String line = it.nextLine();
+//		        String[] arr=line.split(" ");
+//		        if(set.contains(arr[0]))
+//		        map.put(arr[0], Double.valueOf(arr[7].equals(0)?"0.0":arr[7]));
+//		    }
+//		   StringBuilder str=new StringBuilder();
+//	for(Map.Entry<String, Double> m:utils.sortMapByValue2(map).entrySet()){
+//		System.out.println(m.getKey());
+//		str.append(m.getKey());
+//		str.append("\n");
+//		
+//	}
+//	try {
+//		FileUtils.write(new File("E:/spam/removeUIDBySimrate2.txt"), str.toString());
+//	} catch (IOException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+//		} finally {
+//		    LineIterator.closeQuietly(it);
+//		}		
+		//test.extraceEdge();
+		//test.modifyFuid();
+//		try {
+//			process.extractItemByUID("E:/spam/3_UltimateSelected/profiles.txt", "E:/spam/manual_uids.txt", "E:/spam/人工赛选/profiles.txt");
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		File folder=new File("E:/spam/3_UltimateSelected/weibos");
+//		String[] arr=folder.list();
+//		Set<String> set=new HashSet<>();
+//		set=utils.readToSet2("E:/spam/人工赛选/manual_uids.txt");
+//		System.out.println(set.size());
+//		for(String a:arr){
+//			String[] sarr=a.split(".txt");
+//			System.out.println(sarr[0]);
+//			if(set.contains(sarr[0]))
+//		  utils.copyFile("E:/spam/3_UltimateSelected/weibos/"+a, "E:/spam/人工赛选/weibos/"+a);
+//		}
+		File file=new File("I://人工赛选//weibos");
+		String[] arr=file.list();
+		System.out.println(arr.length);
 	}
+	
+	/**
+	 * 
+	 */
+	
+	/**
+	 * spam fuid列表中关注出现重复现象，
+	 */
+		
+	public void modifyFuid(){
+		Set<String> set;
+		try {
+			LineIterator it=FileUtils.lineIterator(new File("E:/spam/3_UltimateSelected/uidfriends_selected.txt"));
+			StringBuilder strb=new StringBuilder();
+			while(it.hasNext()){
+				
+				String line=it.nextLine();
+				String [] arr=line.split(" ");
+				set=new HashSet<String>();
+				strb.append(arr[0]);
+				strb.append(" ");
+				for(int i=1;i<arr.length;i++){
+					System.out.println(arr.length-1);
+					set.add(arr[i]);
+					System.out.println("set"+set.size());
+				}
+				for(String s:set){
+					strb.append(s.trim());
+					strb.append(" ");
+				}
+				strb.append("\n");
+			}
+		FileUtils.write(new File("E:/spam/3_UltimateSelected/uidfriend_modefy.txt"), strb);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
 	  	public void extractFid(){
 	  		File file=new File("E:/mute_fake/UidInfo_friends1.txt");
 	  		File save=new File("E:/mute_fake/REs/UidInfo_friends1_fuid.txt");
@@ -253,8 +352,10 @@ public class Test {
 	 * 抽取边
 	 */
 	public void extraceEdge(){
-		File file=new File("E:/mute_fake/REs/UidInfo_follows1_fuid.txt");
-		File save=new File("E:/mute_fake/REs/UidInfo_follows1_fuidEdge.txt");
+//		File file=new File("E:/mute_fake/REs/UidInfo_follows1_fuid.txt");
+//		File save=new File("E:/mute_fake/REs/UidInfo_follows1_fuidEdge.txt");
+		File file=new File("E:/spam/3_UltimateSelected/uidfriends_selected.txt");
+		File save=new File("E:/spam/3_UltimateSelected/uidfriends_edge.txt");
 		FileWriter fw=null;
 		LineIterator it=null;
 		try {
@@ -263,13 +364,15 @@ public class Test {
 			String line;
 			while(it.hasNext()){
 				 line =it.nextLine();
-				 String[] arr=line.split(" ");
+				 String[] arr=line.trim().split(" ");
 				 StringBuilder strb=new StringBuilder();
 				 for(int i=1;i<arr.length;i++){
+					 if(!arr[i].equals("")&&arr[i]!=null){
 					 strb.append(arr[0]);
 					 strb.append(" ");
 					 strb.append(arr[i]);
 					 strb.append("\n");
+					 }
 				 }
 				// System.out.println(strb.toString());
 				 fw.write(strb.toString());

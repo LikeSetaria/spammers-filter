@@ -32,9 +32,9 @@ public class GetLibSVM {
 	 */
 	
 	
-	private static final String SELECTED_PATH="E:/spam/5_selectedFeatureVec/selectVec8.1.txt";
-	private static final String NORMAL_PATH="E:/normal/5_selectedFeatureVec/selectVec8.1.txt";
-	private static final String LIBSVMRESULT="E:/libSVM/实验八/sample8.1.txt";
+	private static final String SELECTED_PATH="E:/spam/5_selectedFeatureVec/selectVec9.txt";
+	private static final String NORMAL_PATH="E:/normal/5_selectedFeatureVec/selectVec9.txt";
+	private static final String LIBSVMRESULT="E:/libSVM/实验九/sample9.txt";
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		createLibSVM(SELECTED_PATH,NORMAL_PATH,LIBSVMRESULT);
