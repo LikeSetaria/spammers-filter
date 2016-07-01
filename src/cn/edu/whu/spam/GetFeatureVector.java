@@ -50,7 +50,7 @@ public class GetFeatureVector {
 		//standardizeIntervalRate();已经更改时间间隔特征选取方式，不再需要再次进行规范化
 		//display();
 		removeNomalUID("E:/spam/5_selectedFeatureVec/spamRemoveNormalUID.txt");//去除1984；余10874-1984=8890条
-		save("E:/spam/5_selectedFeatureVec/selectVec9.txt");
+		save("E:/spam/5_selectedFeatureVec/selectVec10.txt");
 		//得到normal
 		
 		result.clear();
@@ -61,7 +61,7 @@ public class GetFeatureVector {
 		removeNomalUID("E:/normal/5_selectedFeatureVec/PunishRemovePartUID.txt");//正类为了平衡，也得去除一些，正类10207;所以得剪去1317
 		//standardizeIntervalRate();
 		//display();
-		save("E:/normal/5_selectedFeatureVec/selectVec9.txt");
+		save("E:/normal/5_selectedFeatureVec/selectVec10.txt");
 	}
 	/**
 	 * 初始化用户关系特征，主要包括关注度等

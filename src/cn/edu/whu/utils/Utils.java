@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -491,7 +492,7 @@ public class Utils {
       */
      public  Set<String> readToSet(String filePath){
     	  File file=new File(filePath);
-    	  Set<String> set=new LinkedHashSet<String>();
+    	  Set<String> set=new HashSet<String>();
     	  LineIterator it=null;
     	   try {
 			it=FileUtils.lineIterator(file);
@@ -544,6 +545,42 @@ public class Utils {
    	 return set;
    	 
     }
+     /**
+      * 读取一个文件的内容，到一个集合中。注意唯一性
+      * 文件应该的格式是：空格分隔
+      * uid
+      * uid
+      * 或者是
+      * uid uid uid uid 
+      * uid uid uid uid
+      * @param filePath
+      * @return  所有的uid 
+      */
+     public  Set<String> readToSet3(String filePath){
+    	  File file=new File(filePath);
+    	  Set<String> set=new LinkedHashSet<String>();
+    	  LineIterator it=null;
+    	   try {
+			it=FileUtils.lineIterator(file);
+			String line;
+			while(it.hasNext()){
+				line=it.nextLine();
+				String [] arr=line.split(" ");
+				for(String ss:arr){
+					set.add(ss);
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	   finally{
+    		   LineIterator.closeQuietly(it);
+    	   }
+    	   
+    	 return set;
+    	 
+     }
      /**
       * 计算一个字符串中，某个字符出现的次数，如：@是大法官圣诞节还是@司法所，统计其中@字符的次数
       */
@@ -631,5 +668,38 @@ public class Utils {
          }
          
          return isSucess;
+     }
+     /**
+      * 根据uid列表，选择uid列表里的条目。用来根据uid列表选择，uid_follows 或者uid_friends
+      * 参数uidPath是待提取的uid列表
+      * 参数uidFPath是uid文件所在路径，每行以空格为分割
+      * 参数savePath是提取的uidf文件保存路径
+      */
+     public void selectUIDF(String uidPath,String uidFPath,String SavePath){
+    	 Set<String> uidset=new HashSet<>();
+    	 uidset=this.readToSet(uidPath);
+    	 LineIterator it=null;
+    	 StringBuilder strb=new StringBuilder();
+    	 try {
+			it=FileUtils.lineIterator(new File(uidFPath));
+			int count=0;
+			while(it.hasNext()){
+				String line=it.nextLine();
+				String []arr=line.split(" ");
+				if(uidset.contains(arr[0].trim())){
+					strb.append(line);
+					strb.append("\n");
+					count++;
+				}
+				
+			}
+			System.out.println("uid列表含有"+uidset.size()+"选择的uidF有"+count+"条");
+			FileUtils.write(new File(SavePath), strb);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	 
+    	 
      }
 }
