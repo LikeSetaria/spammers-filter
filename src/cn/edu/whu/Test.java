@@ -181,31 +181,118 @@ public class Test {
 		//test.extraceEdge();
 		//test.modifyFuid();
 //		try {
-//			process.extractItemByUID("E:/spam/3_UltimateSelected/profiles.txt", "E:/spam/manual_uids.txt", "E:/spam/人工赛选/profiles.txt");
+//			//process.extractItemByUID("E:/spam/3_UltimateSelected/profiles.txt", "E:/spam/manual_uids.txt", "E:/spam/人工赛选/profiles.txt");
+//			process.extractItemByUID("E:/normal/2_UltimateNormal/profiles.txt", "E:/normal/random400uid.txt", "E:/normal/人工赛选/profiles.txt");
 //		} catch (FileNotFoundException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 //		
-//		File folder=new File("E:/spam/3_UltimateSelected/weibos");
+//		File folder=new File("E:/normal/2_UltimateNormal/weibos");
 //		String[] arr=folder.list();
 //		Set<String> set=new HashSet<>();
-//		set=utils.readToSet2("E:/spam/人工赛选/manual_uids.txt");
+//		set=utils.readToSet2("E:/normal/人工赛选/random400uid.txt");
 //		System.out.println(set.size());
 //		for(String a:arr){
 //			String[] sarr=a.split(".txt");
 //			System.out.println(sarr[0]);
 //			if(set.contains(sarr[0]))
-//		  utils.copyFile("E:/spam/3_UltimateSelected/weibos/"+a, "E:/spam/人工赛选/weibos/"+a);
+//		  utils.copyFile("E:/normal/2_UltimateNormal/weibos/"+a, "E:/normal/人工赛选/weibo/"+a);
 //		}
-		File file=new File("I://人工赛选//weibos");
-		String[] arr=file.list();
-		System.out.println(arr.length);
+		
+		
+//		File file=new File("I://人工赛选//weibos");
+//		String[] arr=file.list();
+//		StringBuilder strb=new StringBuilder();
+//		for(String ss:arr){
+//			String aa=ss.replace(".txt", "");
+//			strb.append(aa.trim());
+//			strb.append("\n");
+//			
+//		}
+//		System.out.println(strb);
+//		try {
+//			FileUtils.write(new File("E:/spam/人工赛选/uid.txt"), strb.toString());
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.println(arr.length);
+		
+		
+		//utils.selectUIDF("E:/spam/spam_both_selected.txt", "E:/spam/3_UltimateSelected/uidfollows_selected.txt", "E:/spam/3.1_graphFetures/341uidfriends.txt");
+		//utils.selectUIDF("E:/spam/spam_both_selected.txt", "E:/spam/3_UltimateSelected/uidfriends_selected.txt", "E:/spam/3.1_graphFetures/341uidfollows.txt");
+		
+		
+		 //Set <String> setme=new HashSet<>();
+		// Set <String> setshe=new HashSet<>();
+	    //setme=utils.readToSet("D:/uidme.txt");
+	   // setshe=utils.readToSet("D:/uidshe.txt");
+		 //setme=utils.readToSet("E:/normal/UID.txt");
+		// setshe=utils.readToSet("E:/spam/spammersManualUID.txt");
+		 //int i=0;
+		// StringBuilder strb=new StringBuilder();
+		// for(String ss:setme){
+			 
+			
+			// if(setshe.contains(ss.trim())){
+			//	 strb.append(ss);
+			//	 strb.append("\n");
+				 
+			//	 i++;
+			// }
+		// }
+		 //System.out.println(strb);
+		// utils.saveResultBySet(setme, "E:/normal/remove.txt");
+//		 try {
+//			
+//			//FileUtils.write(new File("E:/normal/removeNormalUID.txt"), strb);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		// System.out.println(i);
+//		  
+//		StringBuilder str=new StringBuilder();
+//		LineIterator it=null;
+//		Map<String,Double> map=new HashMap<>();
+//		Set<String> set=new HashSet<>();
+//		int i=0;
+//		set=utils.readToSet("E:/normal/2_UltimateNormal/uidfriends.txt");
+//		for(String sss:set){
+//			str.append(sss.trim());
+//			str.append("\n");
+//			i++;
+//			if(i==400)
+//				break;
+//		}
+//	
+//		try {
+//			FileUtils.write(new File("E:/random400uid.txt"), str);
+//			//it = FileUtils.lineIterator(new File("E:/spam/5_selectedFeatureVec/selectVec8.1.txt"));
+//			it = FileUtils.lineIterator(new File("E:/spam/5_selectedFeatureVec/selectVec8.txt"));
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+	//utils.selectUIDF("E:/normal/3.1_graphFetures/new27spam.txt", "E:/normal/3.1_graphFetures/graph_metric_friends.txt", "E:/normal/3.1_graphFetures/graph_metric_friends27.txt");
+	utils.removeUIDF("E:/normal/3.1_graphFetures/new27spam.txt", "E:/normal/3.1_graphFetures/graph_metric_follows400.txt", "E:/normal/3.1_graphFetures/graph_metric_follows373.txt");
+//	File folder=new File("E:/normal/人工赛选/weibo");  
+//	String[] arr=folder.list();
+//	Set<String> set=new HashSet<>();
+//	for(String ss:arr){
+//		String[] arr2=ss.split(".txt");
+//		set.add(arr2[0].trim());
+//		//System.out.println(arr2[0]);
+//	}
+//	utils.saveResultBySet(set, "E:/normal/人工赛选/myNormalUID373.txt");
+//	System.out.println(arr.length);
 	}
 	
-	/**
-	 * 
-	 */
+	
+
+
 	
 	/**
 	 * spam fuid列表中关注出现重复现象，

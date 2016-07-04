@@ -6,10 +6,12 @@ package cn.edu.whu.spam;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -35,9 +37,13 @@ public class GetLibSVM {
 	private static final String SELECTED_PATH="E:/spam/5_selectedFeatureVec/selectVec10.txt";
 	private static final String NORMAL_PATH="E:/normal/5_selectedFeatureVec/selectVec10.txt";
 	private static final String LIBSVMRESULT="E:/libSVM/实验十/sample10.txt";
+	private static final String LIBSVMGRAPHRESULT="E:/libSVM/graph/368followsample1.txt";
+	private static final String SPAM_GRAPH_PATH="E:/spam/3.1_graphFetures/graph_metric_follows.txt";
+	private static final String NORMAL_GRAPH_PATH="E:/normal/3.1_graphFetures/graph_metric_follows.txt";
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		createLibSVM(SELECTED_PATH,NORMAL_PATH,LIBSVMRESULT);
+		//createLibSVM(SELECTED_PATH,NORMAL_PATH,LIBSVMRESULT);
+		createLibSVM(SPAM_GRAPH_PATH,NORMAL_GRAPH_PATH,LIBSVMGRAPHRESULT);
 	}
 	//1代表正类，即normal部分，2代表负类，即selected部分
 	public static void createLibSVM(String path1,String path2,String save){
@@ -82,21 +88,29 @@ public class GetLibSVM {
 				key++;
 				set.add(strb.toString());
 				result.put(key, strb.toString());
-				//System.out.println(strb);
+				//System.out.println(result.size());
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Set<String> hashset=new HashSet<>();
+		
+		//进行随机化处理，到达乱序效果,更深刻的理解String
+		Set<StringBuilder> resultset=new HashSet<StringBuilder>();
 		StringBuilder ss=new StringBuilder();
 		for(Integer k:result.keySet()){
-			hashset.add(result.get(k));
-			ss.append(result.get(k));
-			ss.append("\n");
+			resultset.add(new StringBuilder(result.get(k)));
 		}
-		utils.saveResultBySet(set,save);
-		System.out.println(result.size());
+		for(StringBuilder strb:resultset){
+			if(strb!=null){
+			ss.append(strb);
+			ss.append("\n");}
+		}
+		
+		//System.out.println(ss);
+		//utils.saveResultBySet(set,save);
+		System.out.println(resultset.size());
+		utils.writeToFile(save, ss.toString());
 		
 	}
 

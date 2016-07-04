@@ -126,7 +126,7 @@ public class Utils {
      public   boolean writeToFile(  String filePath ,String content){
     	  File file=new File(filePath);
     	  try { 
-    	   org.apache.commons.io.FileUtils.writeStringToFile(file,"\n"+ content, "utf-8"); 
+    	   org.apache.commons.io.FileUtils.writeStringToFile(file, content, "utf-8"); 
     	  } catch (IOException e) { 
     	   e.printStackTrace(); 
     	  } 
@@ -376,6 +376,36 @@ public class Utils {
       * @param saveFilePath 保存到的目录地址
       */
      public   void saveMap( Map<String,String> map,String saveFilePath){
+    	 File file=new File(saveFilePath);
+      	 StringBuffer str=new StringBuffer();
+      	 int cou=0;
+         Iterator<?> it =map.entrySet().iterator();
+         while(it.hasNext()){
+        	 cou++;
+        	 @SuppressWarnings("rawtypes")
+			Map.Entry entry=(Map.Entry) it.next();
+        	 Object key=entry.getKey();
+        	// str.append(key.toString()+" ");
+        	 Object val=entry.getValue();
+        	 str.append(val.toString()+"  ");
+        	// if(cou%30==0)
+        		 str.append("\n");
+        	
+         }
+         try {
+			FileUtils.writeStringToFile(file, str.toString(), "utf-8");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         //System.out.println(str.toString());
+     }
+     /**保存Map数据到磁盘
+      *@author bczhang
+      *@param d 待保存map
+      * @param saveFilePath 保存到的目录地址
+      */
+     public   void saveMapInteger( Map<Integer,String> map,String saveFilePath){
     	 File file=new File(saveFilePath);
       	 StringBuffer str=new StringBuffer();
       	 int cou=0;
@@ -694,6 +724,39 @@ public class Utils {
 				
 			}
 			System.out.println("uid列表含有"+uidset.size()+"选择的uidF有"+count+"条");
+			FileUtils.write(new File(SavePath), strb);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	 
+    	 
+     }
+     /**
+      * 根据uid列表，删除uid列表里的条目。用来根据uid列表删除，uid_follows 或者uid_friends指定的条目
+      * 参数uidPath是待删除的uid列表
+      * 参数uidFPath是uid文件所在路径，每行以空格为分割
+      * 参数savePath是提取的uidf文件保存路径
+      */
+     public void removeUIDF(String uidPath,String uidFPath,String SavePath){
+    	 Set<String> uidset=new HashSet<>();
+    	 uidset=this.readToSet(uidPath);
+    	 LineIterator it=null;
+    	 StringBuilder strb=new StringBuilder();
+    	 try {
+			it=FileUtils.lineIterator(new File(uidFPath));
+			int count=0;
+			while(it.hasNext()){
+				String line=it.nextLine();
+				String []arr=line.split(" ");
+				if(!uidset.contains(arr[0].trim())){
+					strb.append(line);
+					strb.append("\n");
+					count++;
+				}
+				
+			}
+			System.out.println("uid删除列表含有"+uidset.size()+"选择的uidF有"+count+"条");
 			FileUtils.write(new File(SavePath), strb);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
