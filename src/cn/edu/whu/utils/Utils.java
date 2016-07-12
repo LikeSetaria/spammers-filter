@@ -286,8 +286,72 @@ public class Utils {
           
        
      }  
+     /**
+      *超大文件切分成N份小文件。
+      *将一个行数为fileLines的文本文件平均分为splitNum个小文本文件，其中换行符'r'是linux上的，windows的java换行符是'\r\n'：
+      *@author bczhang
+      *@param filePath 待处理文件位置
+      *@param splitNum要切割的小文件个数
+      *@param splitLines 文件的总共的行数
+      */
+     public void fileSpilt(String filePath,String outputFolderPath,int splitNums){
+    	 int bufferSize = 20 * 1024 * 1024;//设读取文件的缓存为20MB   
+         //建立缓冲文本输入流   
+         File file = new File(filePath);     
+         int splitNum = splitNums;//要分割的块数减一   
+         int fileLines=0;
+	
+			fileLines = getFileLineNums(filePath);
+		
+		
+         long perSplitLines = fileLines / splitNum;//每个块的行数   
+         try{
+        	 FileInputStream fileInputStream = new FileInputStream(file);  
+             BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);  
+             InputStreamReader inputStreamReader = new InputStreamReader(bufferedInputStream);  
+             BufferedReader input = new BufferedReader(inputStreamReader, bufferSize);  
+         for (int i = 0; i <= splitNum; ++i)  
+         {  
+             //分割   
+             //每个块建立一个输出   
+             FileWriter output = new FileWriter(outputFolderPath+ i + ".txt");  
+             String line = null;  
+             //逐行读取，逐行输出   
+             for (long lineCounter = 0; lineCounter < perSplitLines && (line = input.readLine()) != null; ++lineCounter)  
+             {  
+                 output.append(line + "\r\n");  
+             }  
+             output.flush();  
+             output.close();  
+             output = null;  
+         }  
+         input.close(); }
+         catch (IOException e){
+        	 e.printStackTrace();
+         }
+          
+       
+     }  
  
-     
+     /**
+      * 得到文件的行数
+     * @throws IOException 
+      */
+     public int getFileLineNums(String filePath){
+    	 File file=new File(filePath);
+    	 int couny=0;
+    	 LineIterator it=null;
+    	 try {
+			it=FileUtils.lineIterator(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	 while(it.hasNext()){
+    		 couny++;
+    	 }
+    	 return couny;
+     }
      /**保存链表到磁盘
       *@author bczhang
       *@param d 待保存链表

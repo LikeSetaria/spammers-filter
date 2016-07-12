@@ -233,6 +233,48 @@ public class FeatureVector implements Comparable<Object> {
 			public void setWbSourceRichnessS(String wbSourceRichnessS) {
 				this.wbSourceRichnessS = wbSourceRichnessS;
 			}
+			  public String getGraphCentrality() {
+					return graphCentrality;
+				}
+				public void setGraphCentrality(String graphCentrality) {
+					this.graphCentrality = graphCentrality;
+				}
+				public String getGraphAverageDegree() {
+					return graphAverageDegree;
+				}
+				public void setGraphAverageDegree(String graphAverageDegree) {
+					this.graphAverageDegree = graphAverageDegree;
+				}
+				public String getGraphDensity() {
+					return graphDensity;
+				}
+				public void setGraphDensity(String graphDensity) {
+					this.graphDensity = graphDensity;
+				}
+				public String getGraphPathLength() {
+					return graphPathLength;
+				}
+				public void setGraphPathLength(String graphPathLength) {
+					this.graphPathLength = graphPathLength;
+				}
+				public String getGraphModularity() {
+					return graphModularity;
+				}
+				public void setGraphModularity(String graphModularity) {
+					this.graphModularity = graphModularity;
+				}
+				public String getGrapheightedDegree() {
+					return grapheightedDegree;
+				}
+				public void setGrapheightedDegree(String grapheightedDegree) {
+					this.grapheightedDegree = grapheightedDegree;
+				}
+	 private String graphCentrality="";
+     private String graphAverageDegree="";
+     private String graphDensity="";
+     private String graphPathLength="";
+     private String graphModularity="";
+     private String grapheightedDegree="";
 	 private String timeItvalLess0;
      private String timeItvalLess2;
 	 private String timeItvalLess5;
@@ -251,10 +293,11 @@ public class FeatureVector implements Comparable<Object> {
      private String userNameLen;
      private String profileLen;
 	 private String weiboAge;
-	 private String wbSourceRichnessK;
-     private String wbSourceRichnessD;
-     private String wbSourceRichnessH;
-     private String wbSourceRichnessS;
+	 private String wbSourceRichnessK="";
+     private String wbSourceRichnessD="";
+     private String wbSourceRichnessH="";
+     private String wbSourceRichnessS="";
+   
 	//     public  String toString(){
 //    	 String str=uid+" "+attentionRate+" "+commentRate+" "+repostRate+" "+atRate+" "+topicRate+" "+textURLrate+" "+weiboFromRepostRate+" "
 //    			  +weiboTextSimilarity+" "+ timeItvalLess5+" "+timeItvalLess10+" "+timeItvalLess30+" "+timeItvalLess60+" "+timeItvalLess1440+" "+timeItvalLessmore+" "+triRealtion+" "+profileURL+" "+ifProfile+" "
@@ -283,7 +326,8 @@ public class FeatureVector implements Comparable<Object> {
     			 // +weiboTextSimilarity
     			  +" "+ timeItvalLess0+" "+ timeItvalLess2+" "+ timeItvalLess5+" "+timeItvalLess10+" "+ timeItvalLess20+" "+timeItvalLess30+" "+timeItvalLess60+" "+ timeItvalLess120+" "
     			 + timeItvalLess300+" "+timeItvalLess1440+" "+timeItvalLessmore+" "+meanInterval+" "+triRealtion+" "+profileURL+" "+ifProfile+" "
-    			  +frinedsNum+" "+followsNum+" "+friendsNumDivfollowsNum+" "+userNameLen+" "+profileLen+" "+weiboAge+" "+wbSourceRichnessK+" "+wbSourceRichnessD+" "+wbSourceRichnessH+" "+wbSourceRichnessS;
+    			  +frinedsNum+" "+followsNum+" "+friendsNumDivfollowsNum+" "+userNameLen+" "+profileLen+" "+weiboAge+" "+wbSourceRichnessK+" "+wbSourceRichnessD+" "+wbSourceRichnessH+" "+wbSourceRichnessS+
+    			  " "+graphCentrality+" "+graphAverageDegree+" "+graphDensity+" "+graphPathLength+" "+graphModularity+" "+grapheightedDegree;
     	 return str;
      }
      

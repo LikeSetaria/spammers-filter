@@ -38,11 +38,17 @@ public class FilterLibSVMFeatures {
     	//int[] ar={8};
     	//平均时间间隔处
     	//int[] ar={20};
+    	//微博三角关系
+    	//int[] ar={21};
     	//微博源
-    	int[] ar={30,31,32,33};
-    	//int[] ar={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29};
-    	FilterLibSVMFeatures fls=new FilterLibSVMFeatures("E:/libSVM/实验十/sample10.txt");
-    	fls.handle("E:/libSVM/实验十/sample10removeSource.txt",ar);
+    	//int[] ar={30,31,32,33};
+    	//图特征
+    	//int[] ar={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33};
+    	//图特征和三角形关系
+    	int[] ar={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,23,24,25,26,27,28,29,30,31,32,33};
+    	
+    	FilterLibSVMFeatures fls=new FilterLibSVMFeatures("E:\\libSVM\\libSVMSample\\allFeatures_Gfollows.txt");
+    	fls.handle("E:/libSVM/libSVMSample/onlyGraphMetriceAndTriRela_Gfollows.txt",ar);
     }
     private void  handle(String save,int[] ind){
     	File file=new File(libSVMFilePath);

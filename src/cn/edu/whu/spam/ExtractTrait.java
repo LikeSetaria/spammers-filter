@@ -47,7 +47,9 @@ import cn.edu.whu.utils.Utils;
  */
 public class ExtractTrait {
       //static  String  	UID_FILE_PATH="E:/normal/UID.txt";
-      static  String  	UID_FILE_PATH="E:/normal/twice/UID.txt";
+     // static  String  	UID_FILE_PATH="E:/normal/twice/UID.txt";
+   //   static  String  	UID_FILE_PATH="E:/spam/3.1_graphFetures/341uidFriendSet.txt";
+      static  String  	UID_FILE_PATH="E:/normal/359uidFriendsSet.txt";
  	 public static final long ONEHOUR = 3600000l;
       //用户ID
       static Set<String> UID_SET=new LinkedHashSet<String>();
@@ -63,21 +65,21 @@ public class ExtractTrait {
 		//抽取normal用户的profile信息
 		//ext.extractItemByUID("D:/Whuer/FudanData/weibo_users.txt", UID_FILE_PATH , "E:/normal/twice/profiles.txt");
 		//抽取微博
-	    //ext.extractWeibo("H:/复旦大学/Weibo.Corpus/Weibo.data/merge","E:/normal/twice/3_UltimateNormal/weibos");
+	   // ext.extractWeibo("H:/复旦大学/Weibo.Corpus/Weibo.data/merge","E:/normal/twice/3_UltimateNormal/weibos");
 	    //ext.extractWeibo2("D:/Whuer/FudanData/weibodata.csv","E:/normal/weibo.txt");
 		//ext.extractWeibo2("D:/Whuer/FudanData/weibodata.csv","E:/normal/twice/weibo.txt");
 
 
 		//提取not exist用户的行为特征
-		ext.extractFeatures("E:/spam/3_UltimateSelected/weibos", "E:/spam/4_extractFetures/behaviorFeatures9.txt");
+	//	ext.extractFeatures("E:/spam/3_UltimateSelected/weibos", "E:/spam/4_extractFetures/behaviorFeatures9.txt");
 		//提取normal用户的行为特征
-		ext.extractFeatures("E:/normal/2_UltimateNormal/weibos", "E:/normal/3_extractFetures/behaviorFeatures9.txt");
+		//ext.extractFeatures("E:/normal/2_UltimateNormal/weibos", "E:/normal/3_extractFetures/behaviorFeatures9.txt");
 	   
 		
 		//ext.analyseProfile("E:/normal/2_UltimateNormal/profiles.txt", "E:/normal/3_extractFetures/profilesTrait3.txt");
 		//ext.analyseProfile("E:/spam/3_UltimateSelected/profiles.txt", "E:/spam/4_extractFetures/profilesTrait3.txt");
 		
-	
+		ext.extractWeibo("D:/Whuer/FudanData/weibodata.csv","F:/weibo/normal/ALLfriend");
 	}
 	/**
      *根据ID抽取相关的条目。
@@ -169,7 +171,8 @@ public class ExtractTrait {
 //    	 files.remove("lv2_weibo.zip");
 //    	 files.remove("lv3_0.rar");
 //    	 files.remove("weibodata.rar");
-         files.put("weibo.txt", new File("E:/normal/twice/weibo.txt"));
+       files.put("weibo.txt", new File("F:/weibo/normal/friend.txt"));
+         //files.put("weibo.txt", new File("E:/spam/3.1_graphFetures/341followWeibo.txt"));
     	 System.out.println(files.size());
     	 Iterator it=files.keySet().iterator();
     	 while(it.hasNext()){
@@ -190,17 +193,18 @@ public class ExtractTrait {
 								strb=new StringBuilder(line);
 							USER_WEIBO_MAP.put(arr[0], strb);
 							}
-							else
+							else 
 							{
 								strb=USER_WEIBO_MAP.get(arr[0]).append("\n"+line);
-								USER_WEIBO_MAP.put(arr[0],strb );
-							}
+								USER_WEIBO_MAP.put(arr[0],strb );}
+							
 						}
 					}
 					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					
 				}
     		     //保存结果
     		     splitWeiboToFiles(saveFolderPath);

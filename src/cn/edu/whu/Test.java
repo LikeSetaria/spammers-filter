@@ -188,18 +188,18 @@ public class Test {
 //			e.printStackTrace();
 //		}
 //		
-//		File folder=new File("E:/normal/2_UltimateNormal/weibos");
+//		File folder=new File("D:/人工赛选/weibos");
 //		String[] arr=folder.list();
 //		Set<String> set=new HashSet<>();
-//		set=utils.readToSet2("E:/normal/人工赛选/random400uid.txt");
+//		set=utils.readToSet2("D:/人工赛选/spam_both_selected.txt");
 //		System.out.println(set.size());
 //		for(String a:arr){
 //			String[] sarr=a.split(".txt");
 //			System.out.println(sarr[0]);
 //			if(set.contains(sarr[0]))
-//		  utils.copyFile("E:/normal/2_UltimateNormal/weibos/"+a, "E:/normal/人工赛选/weibo/"+a);
+//		  utils.copyFile("D:/人工赛选/weibos/"+a, "D:/人工赛选/341weibos/"+a);
 //		}
-		
+//		
 		
 //		File file=new File("I://人工赛选//weibos");
 //		String[] arr=file.list();
@@ -221,7 +221,7 @@ public class Test {
 		
 		
 		//utils.selectUIDF("E:/spam/spam_both_selected.txt", "E:/spam/3_UltimateSelected/uidfollows_selected.txt", "E:/spam/3.1_graphFetures/341uidfriends.txt");
-		//utils.selectUIDF("E:/spam/spam_both_selected.txt", "E:/spam/3_UltimateSelected/uidfriends_selected.txt", "E:/spam/3.1_graphFetures/341uidfollows.txt");
+		//utils.selectUIDF("E:/normal/359normalUID.txt", "E:/normal/2_UltimateNormal/uidfollows.txt", "E:/normal/359uidfollows.txt");
 		
 		
 		 //Set <String> setme=new HashSet<>();
@@ -277,8 +277,10 @@ public class Test {
 //		}
 //		
 	//utils.selectUIDF("E:/normal/3.1_graphFetures/new27spam.txt", "E:/normal/3.1_graphFetures/graph_metric_friends.txt", "E:/normal/3.1_graphFetures/graph_metric_friends27.txt");
-	utils.removeUIDF("E:/normal/3.1_graphFetures/new27spam.txt", "E:/normal/3.1_graphFetures/graph_metric_follows400.txt", "E:/normal/3.1_graphFetures/graph_metric_follows373.txt");
-//	File folder=new File("E:/normal/人工赛选/weibo");  
+	//utils.removeUIDF("E:/normal/3.1_graphFetures/new27spam.txt", "E:/normal/3.1_graphFetures/graph_metric_follows400.txt", "E:/normal/3.1_graphFetures/graph_metric_follows373.txt");
+//File folder=new File("F:/weibo/spam/ALLfriend"); 
+//String[] arr=folder.list();
+//System.out.println(arr.length);
 //	String[] arr=folder.list();
 //	Set<String> set=new HashSet<>();
 //	for(String ss:arr){
@@ -288,11 +290,85 @@ public class Test {
 //	}
 //	utils.saveResultBySet(set, "E:/normal/人工赛选/myNormalUID373.txt");
 //	System.out.println(arr.length);
+	//	utils.selectUIDF("E:/spam/3.1_graphFetures/341uid.txt", "E:/spam/4_extractFetures/attentionRate6.txt", "E:/spam/spamSample/attentionRate.txt");
+		//getuid();
+		//getAllFriendsUID();
+
+	}
+	public static  void getAllFriendsUID(){
+		Utils utils=new Utils();
+		Set<String> set=new HashSet<>();
+		//String friendUIDs=utils.readFileToString("E:/spam/3.1_graphFetures/341uidfriends.txt");
+		String friendUIDs=utils.readFileToString("E:/normal/359uidfollows.txt");
+		String[] uidArr=friendUIDs.split("\\s");
+		for(String ss:uidArr){
+			set.add(ss.trim());
+		}
+		utils.saveResultBySet(set, "E:/normal/359uidFollowsSet.txt");
+		System.out.println(uidArr.length);
 	}
 	
 	
+	//合并筛选的普通用户
 
-
+	public static  void getuid(){
+		Utils utils=new Utils();
+		Set<String>zhenniSet=new HashSet<>();
+		Set<String>MeSet=new HashSet<>();
+		Set<String>result=new HashSet<>();
+		Set<String> liubeiset=new HashSet<>();
+	   MeSet=utils.readToSet("D:/uidMeNormal.txt");
+		String str1=utils.readFileToString("D:/random400uid.txt");
+		String str2=utils.readFileToString("D:/uidLiuBeiNormal.txt");
+		String[] arr1=str1.split("\n");
+		String[] arr2=str2.split("\n");
+		for(String ss:arr1){
+			String[] temp=ss.split(" ");
+			//System.out.println(temp[1]);
+			if(temp[1].equals("是")||temp[1]=="是")
+			zhenniSet.add(temp[0]);
+		}
+	
+		for(String ss:arr2){
+			String[] temp2=ss.split("\\s");
+			if(temp2[1].replace("\\s", "").trim().contains("1")){
+			    //System.out.println(temp2[0]);
+			    liubeiset.add( temp2[0]);
+			}
+		
+			
+		}
+		for(String set:MeSet){
+			int count=1;
+			if(zhenniSet.contains(set.trim()))
+				count++;
+			if(liubeiset.contains(set.trim()))
+				count++;
+			if(count>=2){
+				result.add(set.trim());
+			System.out.println(set);
+			}
+			}
+		//utils.saveResultBySet(zhenniSet, "D:uidZhenNiNormal.txt");
+		//utils.saveResultBySet(liubeiset, "D:uidliubei.txt");
+		
+//		System.out.println(zhenniSet.size()+"result de dax "+result.size());
+//		
+//		File folder=new File("D:/weibo");
+//		String[] list=folder.list();
+//		String path="D:/weibo/";
+//		for(String fileName:list){
+//			//System.out.println(path+fileName);
+//		  String name[]=	fileName.split(".txt");
+//			String text[]=utils.readFileToString(path+fileName).split("\n");
+//			String line[]=text[0].split("\\s");
+//			if(line[0].replace("\\s", "").trim().equals("1")){
+//			//System.out.println(line[0].trim().equals(1));
+//			System.out.println(name[0]+  " "+line[0].trim().replace("\\s", ""));
+//			}
+//		}
+		
+	}
 	
 	/**
 	 * spam fuid列表中关注出现重复现象，

@@ -37,13 +37,18 @@ public class GetLibSVM {
 	private static final String SELECTED_PATH="E:/spam/5_selectedFeatureVec/selectVec10.txt";
 	private static final String NORMAL_PATH="E:/normal/5_selectedFeatureVec/selectVec10.txt";
 	private static final String LIBSVMRESULT="E:/libSVM/实验十/sample10.txt";
-	private static final String LIBSVMGRAPHRESULT="E:/libSVM/graph/368followsample1.txt";
-	private static final String SPAM_GRAPH_PATH="E:/spam/3.1_graphFetures/graph_metric_follows.txt";
-	private static final String NORMAL_GRAPH_PATH="E:/normal/3.1_graphFetures/graph_metric_follows.txt";
+	private static final String LIBSVMGRAPHRESULT="E:/libSVM/graph/368followAndfriendGM.txt";
+	private static final String SPAM_GRAPH_PATH="E:/spam/3.1_graphFetures/graph_metric.txt";
+	private static final String NORMAL_GRAPH_PATH="E:/normal/3.1_graphFetures/graph_metric.txt";
+	
+	private static final String SPAM_FINAL_PATH="E:/spam/spamSample/featureVec/selectAllVec_Gfollows.txt";
+	private static final String NORMAL_FINAL_PATH="E:/normal/normalSample/featureVec/selectAllVec_Gfollows.txt";
+	private static final String LIBSVMFINALRESULT="E:/libSVM/libSVMSample/allFeatures_Gfollows.txt";
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//createLibSVM(SELECTED_PATH,NORMAL_PATH,LIBSVMRESULT);
-		createLibSVM(SPAM_GRAPH_PATH,NORMAL_GRAPH_PATH,LIBSVMGRAPHRESULT);
+		//createLibSVM(SPAM_GRAPH_PATH,NORMAL_GRAPH_PATH,LIBSVMGRAPHRESULT);
+		createLibSVM(SPAM_FINAL_PATH,NORMAL_FINAL_PATH,LIBSVMFINALRESULT);
 	}
 	//1代表正类，即normal部分，2代表负类，即selected部分
 	public static void createLibSVM(String path1,String path2,String save){
@@ -63,7 +68,7 @@ public class GetLibSVM {
 				int i=1;
 				strb=new StringBuilder();
 				String line=it1.nextLine();
-				String[] arr1=line.split(" ");
+				String[] arr1=line.trim().split(" ");
 				strb.append("1  ");
 				for(int j=1;j<arr1.length;j++){
 					strb.append(i+":"+arr1[j]+" ");
@@ -79,7 +84,7 @@ public class GetLibSVM {
 				int m=1;
 				strb=new StringBuilder();
 				String line=it2.nextLine();
-				String[] arr1=line.split(" ");
+				String[] arr1=line.trim().split(" ");
 				strb.append("2  ");
 				for(int j=1;j<arr1.length;j++){
 					strb.append(m+":"+arr1[j]+" ");
@@ -111,7 +116,6 @@ public class GetLibSVM {
 		//utils.saveResultBySet(set,save);
 		System.out.println(resultset.size());
 		utils.writeToFile(save, ss.toString());
-		
 	}
 
 	/*
