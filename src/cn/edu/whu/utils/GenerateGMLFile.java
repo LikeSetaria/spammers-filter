@@ -26,18 +26,19 @@ public class GenerateGMLFile {
 	static Utils utils=new Utils();
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		 
+		//得到无向图，边节点关系
+		//patchUndirectedGraph();
 		patchHandle();
 	}
 	public static void patchHandle(){
 		//File folder=new File("E:/spam/3.1_graphFetures/graphs_friends/");
 		//File folder=new File("E:/spam/120DataSet/120graphs_follows/");
-		File folder=new File("E:/normal//3.1_graphFetures/graphs_follows/");
+		File folder=new File("E:/spam//3.1_graphFetures/graphs_follows_undirected/");
 		String[] files=folder.list();
 		for(String filepath:files){
 			//getGraphFile(filepath,"E:/spam/3.1_graphFetures/gephi_gml/graphs_friends_gml/");
 			//getGraphFile(filepath,"E:/spam/120DataSet/gephi_gml/graphs_follows_gml/");
-			getGraphFile(filepath,"E:/normal/3.1_graphFetures/gephi_gml/graphs_follows_gml/");
+			getGraphFile(filepath,"E:/spam/3.1_graphFetures/gephi_gml/graphs_follows_gml_undirected/");
 			System.out.println(filepath);
 		}
 	}
@@ -45,7 +46,7 @@ public class GenerateGMLFile {
 	public static void getGraphFile(String fileName,String savePath){
 		StringBuilder gmlStrb=new StringBuilder();
 		//String path="E:/spam/120DataSet/120graphs_follows/"+fileName;
-		String path="E:/normal/3.1_graphFetures/graphs_follows/"+fileName;
+		String path="E:/spam/3.1_graphFetures/graphs_follows_undirected/"+fileName;
 		//String graphStr=utils.readFileToString("E:/spam/3.1_graphFetures/graphs_follows/1032153895.txt");
 		String graphStr=utils.readFileToString(path);
 		String[] uidarr=fileName.split(".txt");
@@ -63,12 +64,15 @@ public class GenerateGMLFile {
 		
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");//设置日期格式
 		String date=df.format(new Date());// new Date()为获取当前系统时间
-		gmlStrb.append("Creator"+ " \"BcZhang on "+date+"\"");
-		gmlStrb.append("\n");
-		gmlStrb.append("graph"+"\n"+"["+"\n");
+	//	gmlStrb.append("Creator"+ " \"BcZhang on "+date+"\"");
+	//	gmlStrb.append("\n");
+		gmlStrb.append("graph"+" "+"["+"\n");
 		//拼接节点
 		while(it.hasNext()){
-			gmlStrb.append("  node"+"\n"+"  ["+"\n"+"   id "+it.next());
+			Object line=it.next();
+			
+			gmlStrb.append("  node"+" "+"["+"\n"+"    id "+line.toString()+"\n"+"    label "+line.toString());
+			
 			gmlStrb.append("\n");
 			gmlStrb.append("  ]"+"\n");
 			
@@ -76,9 +80,9 @@ public class GenerateGMLFile {
 		//拼接边
 		for(String ss:arr2){
 			String[] temp=ss.split(" ");
-			gmlStrb.append("  edge"+"\n"+"  ["+"\n"+"   source "+temp[0]);
-			gmlStrb.append("\n"+"   target "+temp[1]);
-			gmlStrb.append("\n"+"   value 1");
+			gmlStrb.append("  edge"+" ["+"\n"+"    source "+temp[0]);
+			gmlStrb.append("\n"+"    target "+temp[1]);
+//			gmlStrb.append("\n"+"   value 1");//关于是否生成有向图，如果是无向图，则不需要这个值
 			gmlStrb.append("\n");
 			gmlStrb.append("  ]"+"\n");
 			 
@@ -92,6 +96,39 @@ public class GenerateGMLFile {
 		e.printStackTrace();
 	}
 		
+	}
+	/**
+	 * 有向图转化为无向图，关键是去除冗余的边。
+	 * 得到编表结对an
+	 */
+	public static void patchUndirectedGraph(){
+		File folder=new File("E:\\spam\\3.1_graphFetures\\graphs_follows\\");
+		String [] files=folder.list();
+		for(String ss:files){
+			getUndirectedGraph(ss);
+		}
+	}
+	public static void getUndirectedGraph(String directedFileName){
+		try {
+			String text=FileUtils.readFileToString(new File("E:\\spam\\3.1_graphFetures\\graphs_follows\\"+directedFileName));
+			String arr[]=text.split("\n");
+			Set<String> set=new HashSet<String>();
+			StringBuilder strb=new StringBuilder();
+			for(String ss:arr){
+				String [] arr2=ss.trim().split(" ");
+				String temp=arr2[1]+" "+arr2[0];
+				set.add(temp);
+				if(!set.contains(ss.trim())){
+					strb.append(ss);
+					strb.append("\n");
+				}
+				}
+			//System.out.println(strb);
+			FileUtils.write(new File("E:\\spam\\3.1_graphFetures\\graphs_follows_undirected\\"+directedFileName), strb);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

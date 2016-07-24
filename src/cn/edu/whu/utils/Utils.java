@@ -780,6 +780,7 @@ public class Utils {
 			while(it.hasNext()){
 				String line=it.nextLine();
 				String []arr=line.split(" ");
+				//String []arr=line.split("\t");
 				if(uidset.contains(arr[0].trim())){
 					strb.append(line);
 					strb.append("\n");
@@ -829,4 +830,58 @@ public class Utils {
     	 
     	 
      }
+     /**
+      * 鉴于基于pojo特征对象来合并扩展特征向量，有时十分的不方便
+      * 此方法在于，以uid合并两个文件中的特征向量为一个。并且认为这两个文件中的特征是不同的
+      */
+     public void mergeFeatures(String filepath1,String filepath2,String savepath){
+    	 Map<String,StringBuilder> result=new HashMap<String,StringBuilder>();
+    	 try {
+			String text1=FileUtils.readFileToString(new File(filepath1));
+			String text2=FileUtils.readFileToString(new File(filepath2));
+			String [] linearr1=text1.split("\n");
+			String[] linearr2=text2.split("\n");
+			//处理文件一的
+			for(String ss:linearr1){
+				String[] arr=ss.split(" ");
+				String uid=arr[0];
+				 result.put(uid.trim(), new StringBuilder(ss+" "));
+			}
+			for(String s:linearr2){
+				String[] arr2=s.split(" ");
+				
+				String uid2=arr2[0];
+				StringBuilder strb=new StringBuilder();
+				for(int i=1;i<arr2.length;i++){
+					strb.append(arr2[i]);
+					strb.append(" ");
+					
+				}
+				if(result.containsKey(uid2.trim())){
+					
+					result.put(uid2, result.get(uid2.trim()).append(strb));
+				}
+				
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	  Iterator<Map.Entry<String, StringBuilder>> it = result.entrySet().iterator();
+    	  StringBuilder resultStrb=new StringBuilder();
+    	     while (it.hasNext()) {
+    	      Map.Entry<String, StringBuilder> entry = it.next();
+    	      resultStrb.append(entry.getValue());
+    	      resultStrb.append("\n");
+    	     // System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
+    	     }
+    	     System.out.println(resultStrb);
+    	     try {
+				FileUtils.write(new File(savepath), resultStrb);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+     }
+   
 }

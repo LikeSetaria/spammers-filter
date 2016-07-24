@@ -38,8 +38,19 @@ public class GetLibSVM {
 	private static final String NORMAL_PATH="E:/normal/5_selectedFeatureVec/selectVec10.txt";
 	private static final String LIBSVMRESULT="E:/libSVM/实验十/sample10.txt";
 	private static final String LIBSVMGRAPHRESULT="E:/libSVM/graph/368followAndfriendGM.txt";
-	private static final String SPAM_GRAPH_PATH="E:/spam/3.1_graphFetures/graph_metric.txt";
-	private static final String NORMAL_GRAPH_PATH="E:/normal/3.1_graphFetures/graph_metric.txt";
+	
+	//加入一个gephi计算的新特征-平均聚类系数
+	private static final String SPAM_GRAPH_PATH="E:/spam/3.1_graphFetures/9graph_metric_follows.txt";
+	private static final String NORMAL_GRAPH_PATH="E:/normal/3.1_graphFetures/9graph_metric_follows.txt";
+	private static final String LIBSVM_GRAPH_RESULT="E:/libSVM/libSVMSample/9Features_Gfollows.txt";
+	//单独计算networkX计算的新的五个特征的分类效果
+	private static final String SPAM__NETX_GRAPH_PATH="E:/spam/3.1_graphFetures/341GraphFeatures_networkX.txt";
+	private static final String NORMAL_NETX_GRAPH_PATH="E:/normal/3.1_graphFetures/359GraphFeatures_networkX.txt";
+	private static final String LIBSVM_NETX_GRAPH_RESULT="E:/libSVM/libSVMSample/GraphFeatures_networkX.txt";
+	//合并networkX和gephi算的特征
+	private static final String SPAM__NETX_GEPHI_GRAPH_PATH="E:/spam/3.1_graphFetures/networkX_gephi_follows.txt";
+	private static final String NORMAL_NETX_GEPHI_GRAPH_PATH="E:/normal/3.1_graphFetures/networkX_gephi_follows.txt";
+	private static final String LIBSVM_NETX_GEPHI_GRAPH_RESULT="E:/libSVM/libSVMSample/networkX_gephi_follows.txt";
 	
 	private static final String SPAM_FINAL_PATH="E:/spam/spamSample/featureVec/selectAllVec_Gfollows.txt";
 	private static final String NORMAL_FINAL_PATH="E:/normal/normalSample/featureVec/selectAllVec_Gfollows.txt";
@@ -47,8 +58,10 @@ public class GetLibSVM {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//createLibSVM(SELECTED_PATH,NORMAL_PATH,LIBSVMRESULT);
-		//createLibSVM(SPAM_GRAPH_PATH,NORMAL_GRAPH_PATH,LIBSVMGRAPHRESULT);
-		createLibSVM(SPAM_FINAL_PATH,NORMAL_FINAL_PATH,LIBSVMFINALRESULT);
+		//createLibSVM(SPAM_GRAPH_PATH,NORMAL_GRAPH_PATH,LIBSVM_GRAPH_RESULT);
+		//createLibSVM(SPAM_FINAL_PATH,NORMAL_FINAL_PATH,LIBSVMFINALRESULT);
+		//createLibSVM(SPAM__NETX_GRAPH_PATH,NORMAL_NETX_GRAPH_PATH,LIBSVM_NETX_GRAPH_RESULT);
+		createLibSVM(SPAM__NETX_GEPHI_GRAPH_PATH,NORMAL_NETX_GEPHI_GRAPH_PATH,LIBSVM_NETX_GEPHI_GRAPH_RESULT);
 	}
 	//1代表正类，即normal部分，2代表负类，即selected部分
 	public static void createLibSVM(String path1,String path2,String save){
@@ -69,6 +82,7 @@ public class GetLibSVM {
 				strb=new StringBuilder();
 				String line=it1.nextLine();
 				String[] arr1=line.trim().split(" ");
+				//String[] arr1=line.trim().split("\t");
 				strb.append("1  ");
 				for(int j=1;j<arr1.length;j++){
 					strb.append(i+":"+arr1[j]+" ");
@@ -85,6 +99,7 @@ public class GetLibSVM {
 				strb=new StringBuilder();
 				String line=it2.nextLine();
 				String[] arr1=line.trim().split(" ");
+				//String[] arr1=line.trim().split("\t");
 				strb.append("2  ");
 				for(int j=1;j<arr1.length;j++){
 					strb.append(m+":"+arr1[j]+" ");

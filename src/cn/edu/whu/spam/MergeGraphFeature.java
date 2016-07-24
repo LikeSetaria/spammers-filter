@@ -20,9 +20,16 @@ public class MergeGraphFeature {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		mergeFeature();
+		//mergeFeatureFF();
 	}
-	public static void mergeFeature(){
+	public static void mergeNetXGephi(){
+		
+	}
+	/**
+	 * 合并图特征，这个主要是合并朋友关系图和粉丝关系图的特征
+	 * 
+	 */
+	public static void mergeFeatureFF(){
 		Utils utils=new Utils();
 		Map<String,GraphFeature>result=new HashMap<String,GraphFeature>();
 		//String savePath="E:/spam/3.1_graphFetures/graph_metric.txt";

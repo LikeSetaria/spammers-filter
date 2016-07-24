@@ -34,7 +34,11 @@ public class SplitCrossValidationFile {
 		 //splitTxt("E:\\libSVM\\libSVMSample\\scale\\allFeatures_Gfollows","E:\\libSVM\\libSVMSample\\allFeatures_Gfollows",10);
 		 //splitTxt("E:\\libSVM\\libSVMSample\\scale\\onlyFollowsGraphMetrice.txt","E:\\libSVM\\libSVMSample\\onlyGraphMetrice_Gfollows",10);
 		// splitTxt("E:\\libSVM\\libSVMSample\\scale\\noGraphMetrice.txt","E:\\libSVM\\libSVMSample\\noGraphMetrice",10);
-		 splitTxt("E:\\libSVM\\libSVMSample\\scale\\allFeaturesRemTriRela_Gfollows.txt","E:\\libSVM\\libSVMSample\\allFeaturesRemTriRela_Gfollows",10);
+		 //splitTxt("E:\\libSVM\\libSVMSample\\scale\\allFeaturesRemTriRela_Gfollows.txt","E:\\libSVM\\libSVMSample\\allFeaturesRemTriRela_Gfollows",10);
+		 //splitTxt("E:\\libSVM\\libSVMSample\\scale\\GraphMetrice7.txt","E:\\libSVM\\libSVMSample\\GraphMetrice7",10);
+		 //splitTxt("E:\\libSVM\\libSVMSample\\scale\\GraphFeatures_networkX.txt","E:\\libSVM\\libSVMSample\\GraphFeatures_networkX",10);
+		 splitTxt("E:\\libSVM\\libSVMSample\\scale\\networkX_gephi_follows.txt","E:\\libSVM\\libSVMSample\\networkX_gephi_follows",10);
+		
 
 
 		    

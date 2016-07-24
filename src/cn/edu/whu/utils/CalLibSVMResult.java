@@ -15,7 +15,7 @@ public class CalLibSVMResult {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
       Utils utils=new Utils();
-      String result1=utils.readFileToString("E:\\libSVM\\libSVMSample\\libSVM_result\\allFeaturesRemTriRela_Gfollows.txt");
+      String result1=utils.readFileToString("E:\\libSVM\\libSVMSample\\libSVM_result\\networkX_gephi_follows.txt");
       String[] arr=result1.split("\n");
       StringBuilder strb=new StringBuilder();
       int count=1;

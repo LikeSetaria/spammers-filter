@@ -200,7 +200,8 @@ public class Test {
 //		  utils.copyFile("D:/人工赛选/weibos/"+a, "D:/人工赛选/341weibos/"+a);
 //		}
 //		
-		
+		//utils.saveResultBySet( utils.readToSet("E:\\normal\\3.1_graphFetures\\graph_metric_follows.txt"),"E:\\normal\\3.1_graphFetures\\359uid.txt");
+		//utils.selectUIDF("E:\\normal\\3.1_graphFetures\\359normalUID.txt", "E:\\normal\\3.1_graphFetures\\9graph_metric_follows.txt", "E:\\normal\\3.1_graphFetures\\9graph_metric_follows2.txt");
 //		File file=new File("I://人工赛选//weibos");
 //		String[] arr=file.list();
 //		StringBuilder strb=new StringBuilder();
@@ -290,11 +291,48 @@ public class Test {
 //	}
 //	utils.saveResultBySet(set, "E:/normal/人工赛选/myNormalUID373.txt");
 //	System.out.println(arr.length);
-	//	utils.selectUIDF("E:/spam/3.1_graphFetures/341uid.txt", "E:/spam/4_extractFetures/attentionRate6.txt", "E:/spam/spamSample/attentionRate.txt");
+		//utils.selectUIDF("F:\\赛选的渐变UID.txt", "E:\\spam\\3_UltimateSelected\\uidfriends_selected.txt", "F:\\uidfollows.txt");
 		//getuid();
 		//getAllFriendsUID();
-
+//		try {
+//			process.extractItemByUID("E:\\spam\\3_UltimateSelected\\profiles.txt", "F:\\赛选的渐变UID.txt", "F:/profilestt.txt");
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		//utils.selectUIDF("E:/spam/3.1_graphFetures/341uid.txt", "E:\\spam\\3.1_graphFetures\\allGraphFeature_networkX.txt", "E:/spam/3.1_graphFetures/341GraphFeatures_networkX.txt");
+		utils.mergeFeatures("E:\\normal\\3.1_graphFetures\\359GraphFeatures_networkX.txt","E:\\normal\\3.1_graphFetures\\7graph_metric_follows.txt","E:\\normal\\3.1_graphFetures\\networkX_gephi_follows.txt");
 	}
+	public static  void getChangingUID() throws IOException{
+		String str1=FileUtils.readFileToString(new File("F:\\Liuuid.txt"));
+		String str2=FileUtils.readFileToString(new File( "F:\\uidGuo.txt"));
+		Set<String> set1=new HashSet<>();
+		Set<String> set2=new HashSet<>();
+		
+		String[] arr1=str1.split("\n");
+		String[] arr2=str2.split("\n");
+		for(String ss:arr1){
+			String [] arr=ss.trim().split(" ");
+			//System.out.println(arr[1]);
+			if(Integer.valueOf(arr[1])==1||arr[1]=="1")
+				set1.add(arr[0].trim());
+			
+		}
+		for(String ss:arr2){
+			String [] arr=ss.trim().split("\\s");
+	 // System.out.println(arr[0]);
+			if(arr.length>1)
+				set2.add(arr[0].trim());
+			
+		}
+		for(String s:set1){
+			if(set2.contains(s.trim())){
+				System.out.println(s);
+			}
+		}
+		//System.out.println(set2.size()+"set1"+set1.size());
+	}
+	
 	public static  void getAllFriendsUID(){
 		Utils utils=new Utils();
 		Set<String> set=new HashSet<>();
@@ -367,9 +405,32 @@ public class Test {
 //			System.out.println(name[0]+  " "+line[0].trim().replace("\\s", ""));
 //			}
 //		}
+	 
+	}
+	/**
+	 * 得到无向图
+	 */
+	public static void getUndirectedGML(){
+		String folderPath="E:\\normal\\3.1_graphFetures\\gephi_gml\\graphs_follows_gml\\";
+		String newfolderPath="E:\\normal\\3.1_graphFetures\\gephi_gml\\graphs_follows_gml\\undirected\\";
+		File folder =new File(folderPath);
+		String [] arr=folder.list();
+		
+		for(String ss:arr){
+			try {
+				String text=FileUtils.readFileToString(new File(folderPath+ss));
+				String  newtext=text.replace("\n"+"   "+"value 1", "");
+				 
+				  FileUtils.write(new File(newfolderPath+ss), newtext);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		//System.out.println(folderPath+ss);
+		}
+		  
 		
 	}
-	
 	/**
 	 * spam fuid列表中关注出现重复现象，
 	 */
