@@ -675,6 +675,29 @@ public class Utils {
     	 return set;
     	 
      }
+     public  List<String> readToList(String filePath){
+   	  File file=new File(filePath);
+   	  List<String> list=new ArrayList<String>();
+   	  LineIterator it=null;
+   	   try {
+			it=FileUtils.lineIterator(file);
+			String line;
+			while(it.hasNext()){
+				line=it.nextLine();
+				String [] arr=line.split(" ");
+				list.add(arr[0]);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+   	   finally{
+   		   LineIterator.closeQuietly(it);
+   	   }
+   	   
+   	 return list;
+   	 
+    }
      /**
       * 计算一个字符串中，某个字符出现的次数，如：@是大法官圣诞节还是@司法所，统计其中@字符的次数
       */

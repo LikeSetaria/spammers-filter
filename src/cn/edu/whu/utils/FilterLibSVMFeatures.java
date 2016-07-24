@@ -46,9 +46,18 @@ public class FilterLibSVMFeatures {
     	//int[] ar={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33};
     	//图特征和三角形关系
     	//int[] ar={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,23,24,25,26,27,28,29,30,31,32,33};
-    	int [] ar={7,8};
-    	FilterLibSVMFeatures fls=new FilterLibSVMFeatures("E:\\libSVM\\libSVMSample\\9Features_Gfollows.txt");
-    	fls.handle("E:/libSVM/libSVMSample/9.txt",ar);
+    	//int [] ar={7,8};
+    	/*
+    	 * 下面设计实现bagging装袋投票集成
+    	 */
+    	//基于微博文行为分析特征
+    	//int[] ar={1,2,3,7,8,21,22,23,24,25,26,27,28,29,30,31,32,33};
+    	//基于一般行为分析特征
+    	//int[] ar={4,5,6,9,10,11,12,13,14,15,16,17,18,19,20,22,23,27,28,29,30,31,32,33};
+    	//基于用户属性特征
+    	int[] ar={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,24,25,26};
+    	FilterLibSVMFeatures fls=new FilterLibSVMFeatures("E:\\libSVM\\libSVMSample\\noGraphMetrice.txt");
+    	fls.handle("E:/libSVM/libSVMSample/bagging/attributeFeatures.txt",ar);
     }
     private void  handle(String save,int[] ind){
     	File file=new File(libSVMFilePath);
@@ -67,6 +76,7 @@ public class FilterLibSVMFeatures {
 				for(int j=ind.length-1;j>=0;j--){
 					//这里有个值得注意点地方。就是由于每次删除，数组标号都会变化，但仍是连续的从0开始
 					//所以想循环的删除下标就会有问题，删除的不是自己想要的。所以这里从大的下标号开始删除
+					
 				    list.remove(ind[j]);
 				}
 				result.append(tranListToString(list));
