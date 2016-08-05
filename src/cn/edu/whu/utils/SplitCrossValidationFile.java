@@ -39,8 +39,13 @@ public class SplitCrossValidationFile {
 		 //splitTxt("E:\\libSVM\\libSVMSample\\scale\\GraphFeatures_networkX.txt","E:\\libSVM\\libSVMSample\\GraphFeatures_networkX",10);
 		// splitTxt("E:\\libSVM\\libSVMSample\\scale\\networkX_gephi_follows.txt","E:\\libSVM\\libSVMSample\\networkX_gephi_follows",10);
 		//结果集成
-		 splitTxt("E:\\libSVM\\libSVMSample\\scale\\bagging_scale\\weiboTextBehaviorFeatures_scale.txt","E:\\libSVM\\libSVMSample\\bagging\\weiboTextBehaviorFeatures",10);
-		
+		// splitTxt("E:\\libSVM\\libSVMSample\\scale\\bagging_scale\\weiboTextBehaviorFeatures_scale.txt","E:\\libSVM\\libSVMSample\\bagging\\weiboTextBehaviorFeatures",10);
+		//结合所有的特征最终集成
+		// splitTxt("E:\\libSVM\\libSVMSample\\scale\\allFeatures_gephi_networkX_scale.txt","E:\\libSVM\\libSVMSample\\allFeatures_gephi_networkX",10);
+		/*
+		 *重新制作baseline
+		 */
+		splitTxt("E:\\libSVM\\libSVMSample\\scale\\graph_features_plus4NewRem1516_scale.txt","E:\\libSVM\\libSVMSample\\graph_features_plus4NewRem1516",10);
 
 
 		    

@@ -15,7 +15,7 @@ public class CalLibSVMResult {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
       Utils utils=new Utils();
-      String result1=utils.readFileToString("E:\\libSVM\\libSVMSample\\libSVM_result\\bagging_result\\GraphMetrice.txt");
+      String result1=utils.readFileToString("E:\\libSVM\\libSVMSample\\libSVM_result\\graph_features_plus4NewRem1516.txt");
       String[] arr=result1.split("\n");
       StringBuilder strb=new StringBuilder();
       int count=1;

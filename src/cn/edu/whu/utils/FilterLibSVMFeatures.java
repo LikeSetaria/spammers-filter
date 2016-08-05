@@ -39,7 +39,7 @@ public class FilterLibSVMFeatures {
     	//平均时间间隔处
     	//int[] ar={20};
     	//微博三角关系
-    	//int[] ar={21};
+    	//int[] ar={4,21};
     	//微博源
     	//int[] ar={30,31,32,33};
     	//图特征
@@ -55,9 +55,33 @@ public class FilterLibSVMFeatures {
     	//基于一般行为分析特征
     	//int[] ar={4,5,6,9,10,11,12,13,14,15,16,17,18,19,20,22,23,27,28,29,30,31,32,33};
     	//基于用户属性特征
-    	int[] ar={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,24,25,26};
-    	FilterLibSVMFeatures fls=new FilterLibSVMFeatures("E:\\libSVM\\libSVMSample\\noGraphMetrice.txt");
-    	fls.handle("E:/libSVM/libSVMSample/bagging/attributeFeatures.txt",ar);
+    	//int[] ar={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,24,25,26};
+    	//平均聚类系数算了两次，删除一次
+    	//int []ar={38};
+    	
+    	/**
+    	 * 重新做对比实验。目的是排除自己除图以外的新的特征
+    	 */
+    	//int [] ar={8,9,10,11,12,13,14,15,16,17,18,19,29,30,31,32};//除去时间间隔特征和微波源丰富度特征
+    	//整理图特征有一些重复计算的去掉，比如nx.eigenvector_centrality_numpy(G)与gephi计算的eigenvector_centrality重复。平均聚集系数也去掉一个，留gephi计算的哪一个
+    	//int[] ar={2,3};
+    	//int [] ar={1,2,3,4,5,6,7,20,21,22,23,24,25,26,27,28};
+    //	int ar[]={4};
+//    	FilterLibSVMFeatures fls=new FilterLibSVMFeatures("E:\\normal\\normalSample\\featureVec\\selectVec.txt");
+//    	fls.handle("E:\\normal\\normalSample\\featureVec\\TimeIntervalSource.txt",ar);
+    	//重新设计，分类对比实验
+    	//attentionRate commentRate repostRate atRate topicRate textURLrate weiboFromRepostRate triRealtion
+    	//profileURL ifProfile frinedsNum followsNum friendsNumDivfollowsNum userNameLen profileLen weiboAge
+    	//1topicRate textURLrate weiboFromRepostRate
+    	//int ar[]={1,2,3,4,8,9,10,11,12,13,14,15,16};
+    	//2 commentRate repostRate atRate
+    	//int ar[]={1,5,6,7,8,9,10,11,12,13,14,15,16};
+    	//3 其它 profile
+    	//int ar[]={2,3,4,5,6,7,8,9,10,14,15,16};
+    	//int ar[]={1,2,3,4,5,6,7,8,11,12,13};
+    	int ar[]={15,16};
+    	FilterLibSVMFeatures fls=new FilterLibSVMFeatures("E:\\libSVM\\libSVMSample\\graph_features_plus4New.txt");
+    	fls.handle("E:\\libSVM\\libSVMSample\\graph_features_plus4NewRem1516.txt",ar);
     }
     private void  handle(String save,int[] ind){
     	File file=new File(libSVMFilePath);

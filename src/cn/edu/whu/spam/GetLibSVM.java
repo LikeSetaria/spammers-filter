@@ -51,17 +51,50 @@ public class GetLibSVM {
 	private static final String SPAM__NETX_GEPHI_GRAPH_PATH="E:/spam/3.1_graphFetures/networkX_gephi_follows.txt";
 	private static final String NORMAL_NETX_GEPHI_GRAPH_PATH="E:/normal/3.1_graphFetures/networkX_gephi_follows.txt";
 	private static final String LIBSVM_NETX_GEPHI_GRAPH_RESULT="E:/libSVM/libSVMSample/networkX_gephi_follows.txt";
-	
+	//下面的图关系只使用了，gephi计算的几个
 	private static final String SPAM_FINAL_PATH="E:/spam/spamSample/featureVec/selectAllVec_Gfollows.txt";
 	private static final String NORMAL_FINAL_PATH="E:/normal/normalSample/featureVec/selectAllVec_Gfollows.txt";
 	private static final String LIBSVMFINALRESULT="E:/libSVM/libSVMSample/allFeatures_Gfollows.txt";
+	//合并所有的图特征和一般的关系
+	private static final String SPAM_last_PATH="E:/spam/spamSample/featureVec/allFeatures_gephi_networkX.txt";
+	private static final String NORMAL_last_PATH="E:/normal/normalSample/featureVec/allFeatures_gephi_networkX.txt";
+	private static final String LIBSVMlastRESULT="E:/libSVM/libSVMSample/allFeatures_gephi_networkX.txt";
+	/*
+	 * 去除时间间隔特征和微博源特征作为baseline。准备另一个实验
+	 */
+	private static final String SPAM_remTimeAndSource_PATH="E:/spam/spamSample/featureVec/selectVec_RemoveTimeAndSource.txt";
+	private static final String NORMAL_remTimeAndSource_last_PATH="E:/normal/normalSample/featureVec/selectVec_RemoveTimeAndSource.txt";
+	private static final String LIBSVM_remTimeAndSource_RESULT="E:/libSVM/libSVMSample/BASELINE.txt";
+	//
+	private static final String SPAM_TimeAndSource_PATH="E:/spam/spamSample/featureVec/uid_graphFeatures7.txt";
+	private static final String NORMAL_TimeAndSource_PATH="E:/normal/normalSample/featureVec/uid_graphFeatures7.txt";
+	private static final String LIBSVM_TimeAndSource_RESULT="E:/libSVM/libSVMSample/uid_graphFeatures7.txt";
+	//增加cloness,between 中心性
+	private static final String SPAM_12graph_PATH="E:/spam/spamSample/featureVec/allFeatures_12graph.txt";
+	private static final String NORMAL_12graph_PATH="E:/normal/normalSample/featureVec/allFeatures_12graph.txt";
+	private static final String LIBSVM_12graph_RESULT="E:/libSVM/libSVMSample/allFeatures_12graph.txt";
+	//rich_club 中的K取平均值
+	private static final String SPAM_12graph_richClub_PATH="E:/spam/spamSample/featureVec/allFeatures_12graph_plusRichClub.txt";
+	private static final String NORMAL_12graph_richClub_PATH="E:/normal/normalSample/featureVec/allFeatures_12graph_plusRichClub.txt";
+	private static final String LIBSVM_12graph_richClub_RESULT="E:/libSVM/libSVMSample/AAA.txt";
+	//图特征中，添加四个ego network特征
+	private static final String SPAM_12graph_4ego_PATH="E:/spam/spamSample/featureVec/graph_features_plus4New.txt";
+	private static final String NORMAL_12graph_4ego_PATH="E:/normal/normalSample/featureVec/graph_features_plus4New.txt";
+	private static final String LIBSVM_12graph_4ego_RESULT="E:/libSVM/libSVMSample/16graph_features_plus4New.txt";
+	//整体上
+	private static final String SPAM_all_4ego_PATH="E:/spam/spamSample/featureVec/GraphFeature_4_new_Fea.txt";
+	private static final String NORMAL_all_4ego_PATH="E:/normal/normalSample/featureVec/GraphFeature_4_new_Fea.txt";
+	private static final String LIBSVM_all_4ego_RESULT="E:/libSVM/libSVMSample/GraphFeature_4_new_Fea.txt";
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//createLibSVM(SELECTED_PATH,NORMAL_PATH,LIBSVMRESULT);
 		//createLibSVM(SPAM_GRAPH_PATH,NORMAL_GRAPH_PATH,LIBSVM_GRAPH_RESULT);
 		//createLibSVM(SPAM_FINAL_PATH,NORMAL_FINAL_PATH,LIBSVMFINALRESULT);
 		//createLibSVM(SPAM__NETX_GRAPH_PATH,NORMAL_NETX_GRAPH_PATH,LIBSVM_NETX_GRAPH_RESULT);
-		createLibSVM(SPAM__NETX_GEPHI_GRAPH_PATH,NORMAL_NETX_GEPHI_GRAPH_PATH,LIBSVM_NETX_GEPHI_GRAPH_RESULT);
+		//createLibSVM(SPAM_last_PATH,NORMAL_last_PATH,LIBSVMlastRESULT);
+		//createLibSVM(SPAM_12graph_PATH,NORMAL_12graph_PATH,LIBSVM_12graph_RESULT);
+		//规范化所有的
+		createLibSVM(SPAM_all_4ego_PATH,NORMAL_all_4ego_PATH,LIBSVM_all_4ego_RESULT);
 	}
 	//1代表正类，即normal部分，2代表负类，即selected部分
 	public static void createLibSVM(String path1,String path2,String save){

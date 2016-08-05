@@ -18,10 +18,15 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -44,28 +49,12 @@ import cn.edu.whu.utils.Utils;
  *���Է�����
  */
 public class Test {
-	 private static String WEIBO_USER_FILEPATH="D:\\Whuer\\Major\\Refs4Spammers";
-	 
-	 private final static String  FOLLOWS_USER_TXT="E:/follows_users_10W_realated.txt";
-	 private final static String  FOLLOWS_USER_RESULTS="E:/temp/relation_resultsExtracted.txt";
-	@SuppressWarnings({ "static-access" })
+	 @SuppressWarnings({ "static-access" })
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		Utils utils=new Utils();
-		FileFilter filter=new FileFilter();
-		Test test=new Test();
-		PreprocessText process=new PreprocessText();
-		/*//����getFileList()����
-      
-      Map<String, File> map=utils.getFileList(WEIBO_USER_FILEPATH);
-      for(Iterator i = map.keySet().iterator(); i.hasNext();){
-    	   Object obj = i.next();
-    	   System.out.println(obj);
-    	   System.out.println("key=" + obj + " value=" + map.get(obj));
-      }
-      for(Map.Entry<String, File> entry :map.entrySet()){
-    	  System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
-      }*/
+		new FileFilter();
+		new Test();
+		new PreprocessText();
 		
 		//����copyFile()����
 		/*
@@ -300,8 +289,160 @@ public class Test {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		//utils.selectUIDF("E:/spam/3.1_graphFetures/341uid.txt", "E:\\spam\\3.1_graphFetures\\allGraphFeature_networkX.txt", "E:/spam/3.1_graphFetures/341GraphFeatures_networkX.txt");
-		utils.mergeFeatures("E:\\normal\\3.1_graphFetures\\359GraphFeatures_networkX.txt","E:\\normal\\3.1_graphFetures\\7graph_metric_follows.txt","E:\\normal\\3.1_graphFetures\\networkX_gephi_follows.txt");
+		//utils.selectUIDF("E:/spam/3.1_graphFetures/341uid.txt", "E:\\spam\\3.1_graphFetures\\communityNums.txt", "E:\\spam\\3.1_graphFetures\\communityNums22.txt");
+//		utils.mergeFeatures("E:\\normal\\normalSample\\featureVec\\12graphFeatures.txt","E:\\normal\\normalSample\\featureVec\\normal_GraphFeature_rcc_avg.txt",
+//				"E:\\normal\\normalSample\\featureVec\\12graph_plusRichClub.txt");
+//		utils.mergeFeatures("E:\\spam\\spamSample\\featureVec\\12graphFeatures.txt","E:\\spam\\spamSample\\featureVec\\spam_GraphFeature_rcc_avg.txt",
+//				"E:\\spam\\spamSample\\featureVec\\12graph_plusRichClub.txt");
+		//utils.mergeFeatures("E:\\normal\\normalSample\\featureVec\\selectVec_RemoveTimeAndSource.txt","E:\\normal\\normalSample\\featureVec\\graph_features_plus4New.txt",
+				//"E:\\normal\\normalSample\\featureVec\\allFeatures_plus4NewGraph.txt");
+		utils.mergeFeatures("E:\\spam\\spamSample\\featureVec\\selectVec_RemoveTimeAndSource.txt","E:\\spam\\spamSample\\featureVec\\graph_features_plus4New.txt",
+				"E:\\spam\\spamSample\\featureVec\\allFeatures_plus4NewGraph.txt");
+		//calDee();
+		//directedNodeEdgeNums();
+		//communityNums();
+		remove();
+	}
+	 
+	 public   static  void remove(){
+		 try {
+			 StringBuilder strb=new StringBuilder();
+			String[] linearrspam=FileUtils.readFileToString(new File("E:\\normal\\normalSample\\featureVec\\12graph_plusRichClub.txt")).split("\n");
+			for(String ss:linearrspam){
+				String []arr=ss.split(" +");
+				for(int i=0;i<arr.length;i++){
+					if(i!=4){
+						strb.append(arr[i]);
+						strb.append(" ");
+					}
+					
+				}
+				strb.append("\n");
+			}
+			System.out.println(strb);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	 }
+	 public static void communityNums(){
+		 try {
+			String[] linearrspam=FileUtils.readFileToString(new File("E:\\spam\\3.1_graphFetures\\communityNums.txt")).split("\n");
+			String[] linearrnormal=FileUtils.readFileToString(new File("E:\\normal\\3.1_graphFetures\\communityNums.txt")).split("\n");
+			double countspam=0.0;
+			double countnormal=0.0;
+			for(String ss:linearrspam){
+				String[] arr=ss.split(" ");
+				countspam+=Double.valueOf(arr[1]);
+				
+			}
+			for(String ss:linearrnormal){
+				String[] arr=ss.split(" ");
+				countnormal+=Double.valueOf(arr[1]);
+				System.out.println(arr[1]);
+			}
+			System.out.println("spam: "+countspam/(double)linearrspam.length );
+			System.out.println("normal: "+countnormal/(double)linearrnormal.length);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	 }
+	public static void directedNodeEdgeNums(){
+		try {
+			int Nodecount=0;
+			int edgeCount=0;   int filenum=0;
+			Utils utils=new Utils();
+			Set<String> spamuid=new HashSet<>();
+			String basepath="E:\\spam\\3.1_graphFetures\\gephi_gml\\graphs_follows_gml\\";
+			 spamuid=utils.readToSet( "E:\\spam\\3.1_graphFetures\\341uid.txt");
+			String[] patharr=new File("E:\\spam\\3.1_graphFetures\\gephi_gml\\graphs_follows_gml\\").list();
+			for(String filename:patharr){
+				String[] getuid=filename.split(".gml");
+				//System.out.println(getuid[0]);
+			if(spamuid.contains(getuid[0].trim())){
+				filenum++;
+			String[] linearrspam=FileUtils.readFileToString(new File(basepath+filename)).split("\n");
+			for(String ss:linearrspam)
+			   {
+			   if(ss.contains("node"))
+				   Nodecount++;
+			   if(ss.contains("edge"))
+				   edgeCount++;
+			    }
+			     }
+			
+			}
+			System.out.println(filenum);
+			System.out.println(Nodecount);
+			 System.out.println(edgeCount);	
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public static  void calDee(){
+		try {
+			int followeeCountSpam=0;
+			int followeeEdgeSpam=0;
+			int followeeCountNormal=0;
+			int followeeEdgeNormal=0;
+			List<Integer> listspam=new ArrayList<>();
+			List<Integer> listnormal=new ArrayList<>();
+			List<Integer> listnormalEDGE=new ArrayList<>();
+			List<Integer> listspamEDGE=new ArrayList<>();
+			
+			String[] linearrspam=FileUtils.readFileToString(new File("C:\\Users\\bczhang\\Desktop\\yq\\edge_node_spam341.txt")).split("\n");
+			String[] linearrnormal=FileUtils.readFileToString(new File("C:\\Users\\bczhang\\Desktop\\yq\\edge_node_normall359.txt")).split("\n");
+			for(String sss:linearrspam){
+				String[] arr=sss.split(" ");
+				listspam.add(Integer.valueOf(arr[1].trim()));
+				listspamEDGE.add(Integer.valueOf(arr[2].trim()));
+				if(followeeCountSpam<Integer.valueOf(arr[1].trim()))
+				followeeCountSpam=Integer.valueOf(arr[1].trim());
+				//followeeEdgeSpam+=Integer.valueOf(arr[2].trim());
+			}
+			for(String ss:linearrnormal){
+				String[] arr=ss.split(" ");
+				
+				listnormal.add(Integer.valueOf(arr[1].trim()));
+				listnormalEDGE.add(Integer.valueOf(arr[2].trim()));
+				if(followeeCountNormal<Integer.valueOf(arr[1].trim()))
+				followeeCountNormal=Integer.valueOf(arr[1].trim());
+				//followeeEdgeNormal+=Integer.valueOf(arr[2].trim());
+			}
+			Collections.sort(listspam, new Comparator<Integer>() {
+	            public int compare(Integer arg0, Integer arg1) {
+	                return -arg0.compareTo(arg1);
+	            }
+	        });
+			Collections.sort(listnormal, new Comparator<Integer>() {
+	            public int compare(Integer arg0, Integer arg1) {
+	                return -arg0.compareTo(arg1);
+	            }
+	        });
+			Collections.sort(listspamEDGE, new Comparator<Integer>() {
+	            public int compare(Integer arg0, Integer arg1) {
+	                return -arg0.compareTo(arg1);
+	            }
+	        });
+			Collections.sort(listnormalEDGE, new Comparator<Integer>() {
+	            public int compare(Integer arg0, Integer arg1) {
+	                return -arg0.compareTo(arg1);
+	            }
+	        });
+			for(int i=0;i<listnormal.size();i++){
+			//System.out.println(listnormal.get(i)+" "+listnormalEDGE.get(i));
+			System.out.println(listnormalEDGE.get(i));
+			//System.out.println(listnormal);
+			}
+			System.out.println(followeeCountSpam+" "+followeeEdgeSpam);
+			System.out.println(followeeCountNormal+" "+followeeEdgeNormal);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public static  void getChangingUID() throws IOException{
 		String str1=FileUtils.readFileToString(new File("F:\\Liuuid.txt"));
@@ -670,7 +811,6 @@ public class Test {
 			it1=FileUtils.lineIterator(file1);
 			it2=FileUtils.lineIterator(file2);
 			String line;
-			int count=0;
 			User u;
 			BigDecimal   b   =   null;  
 			while(it1.hasNext()){
@@ -694,7 +834,6 @@ public class Test {
 			while(it2.hasNext()){
 				line2=it2.nextLine();
 				if(map.containsKey(line2)){
-					count++;
 					//System.out.println(map.get(line2));
 					result.put(line2, map.get(line2));
 				}
@@ -765,7 +904,6 @@ public static void readFile2(String path) throws FileNotFoundException {
     FileChannel fcin = new RandomAccessFile(fin, "r").getChannel();  
     ByteBuffer rBuffer = ByteBuffer.allocate(bufSize);                        
     String enterStr = "\n";  
-    long len = 0L;  
     try {  
         byte[] bs = new byte[bufSize];  
         String tempString = null;  
@@ -779,7 +917,7 @@ public static void readFile2(String path) throws FileNotFoundException {
             int endIndex = 0;//缓冲区结束  
             //按行读缓冲区数据  
             while ((endIndex = tempString.indexOf(enterStr, fromIndex)) != -1) {  
-                String line = tempString.substring(fromIndex, endIndex);//转换一行            
+                tempString.substring(fromIndex, endIndex);
                // System.out.print(line);                    
                 fromIndex = endIndex + 1;  
             }  

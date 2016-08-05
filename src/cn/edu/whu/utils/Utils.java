@@ -803,6 +803,7 @@ public class Utils {
 			while(it.hasNext()){
 				String line=it.nextLine();
 				String []arr=line.split(" ");
+				 
 				//String []arr=line.split("\t");
 				if(uidset.contains(arr[0].trim())){
 					strb.append(line);
@@ -866,12 +867,12 @@ public class Utils {
 			String[] linearr2=text2.split("\n");
 			//处理文件一的
 			for(String ss:linearr1){
-				String[] arr=ss.split(" ");
+				String[] arr=ss.trim().split(" ");
 				String uid=arr[0];
-				 result.put(uid.trim(), new StringBuilder(ss+" "));
+				 result.put(uid.trim(), new StringBuilder(ss.trim()+" "));
 			}
 			for(String s:linearr2){
-				String[] arr2=s.split(" ");
+				String[] arr2=s.trim().split(" ");
 				
 				String uid2=arr2[0];
 				StringBuilder strb=new StringBuilder();
@@ -879,10 +880,11 @@ public class Utils {
 					strb.append(arr2[i]);
 					strb.append(" ");
 					
+					
 				}
 				if(result.containsKey(uid2.trim())){
 					
-					result.put(uid2, result.get(uid2.trim()).append(strb));
+					result.put(uid2.trim(), result.get(uid2.trim()).append(strb));
 				}
 				
 			}
@@ -896,9 +898,9 @@ public class Utils {
     	      Map.Entry<String, StringBuilder> entry = it.next();
     	      resultStrb.append(entry.getValue());
     	      resultStrb.append("\n");
-    	     // System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
+    	      //System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
     	     }
-    	     System.out.println(resultStrb);
+    	    // System.out.println(resultStrb);
     	     try {
 				FileUtils.write(new File(savepath), resultStrb);
 			} catch (IOException e) {

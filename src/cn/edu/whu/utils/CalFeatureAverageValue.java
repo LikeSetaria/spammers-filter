@@ -24,32 +24,45 @@ public class CalFeatureAverageValue {
 		// TODO Auto-generated method stub
 		
 		CalFeatureAverageValue cal=new CalFeatureAverageValue();
-		cal.getAverageValue("E:\\spam\\spamSample\\featureVec\\average_Gfollows.txt");
+		//cal.getAverageValue("E:\\spam\\spamSample\\featureVec\\spam_ColAndBet_cen.txt",3);
+		//cal.getAverageValue("E:\\normal\\normalSample\\featureVec\\normal_GraphFeature_rcc_avg.txt",2);
+		//cal.getAverageValue("E:\\normal\\normalSample\\featureVec\\12graph_plusRichClub.txt",14);
+		cal.getAverageValue("E:\\normal\\normalSample\\featureVec\\selectVec_RemoveTimeAndSource.txt");
 	}
-	
-	public String getAverageValue(String libsvmFilePath){
+	/**
+	 * 
+	 * @param libsvmFilePath 特征向量 形如：1747538987 0.167663373923 0.0444211207127 0.485405042716 0.167663373923 -0.173971194773
+	 * @param vecLength 特征向量的长度，包括uid 如上面的长度就是6
+	 * @return
+	 */
+	public double[] getAverageValue(String featuresFilePath){
 		DecimalFormat   df=new   java.text.DecimalFormat("#.######"); 
+		double	result[]=null;
 		try {
-			String text=FileUtils.readFileToString(new File(libsvmFilePath));
+			String text=FileUtils.readFileToString(new File(featuresFilePath));
 			String[] linearr=text.split("\n");
-			double[] result=new double[39];
-			//System.out.println(result.length);
+			int vecLength=linearr[0].trim().split(" +").length;
+			double[] acc=new double[vecLength];
+		   	result  =new double[vecLength];
 			for(String ss:linearr){
 				String[] arr=ss.trim().split(" +");
-				//System.out.println(arr.length);
+			//	if(arr[0].equals("1.0")){
 				for(int i=0;i<arr.length;i++){
-					//System.out.println(Double.valueOf(arr[i]));
-					result[i]=Double.valueOf(arr[i])+result[i];
+				
+					acc[i]=Double.valueOf(arr[i])+acc[i];
+				//}
+			}
 				}
+			for(int i=0;i<acc.length; i++){
+				result[i]=acc[i]/(double)linearr.length;
+				System.out.print(df.format(acc[i]/(double)linearr.length)+" ");
 			}
-			for(double d:result){
-				System.out.print(df.format(d/linearr.length)+" ");
-			}
+			 System.out.println();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "";
+		return result;
 	}
 
 }
