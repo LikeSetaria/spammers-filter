@@ -95,6 +95,59 @@ public class GFeature {
     private String Modularity;
     private String wheightedDegree;
     private String AverageClusteringCoefficient;
+    public String getAverage_neighbor_degree() {
+		return average_neighbor_degree;
+	}
+
+
+	public void setAverage_neighbor_degree(String average_neighbor_degree) {
+		this.average_neighbor_degree = average_neighbor_degree;
+	}
+
+
+	public String getMedian_neighbor_degree() {
+		return median_neighbor_degree;
+	}
+
+
+	public void setMedian_neighbor_degree(String median_neighbor_degree) {
+		this.median_neighbor_degree = median_neighbor_degree;
+	}
+
+
+	public String getEmbeddedness() {
+		return embeddedness;
+	}
+
+
+	public void setEmbeddedness(String embeddedness) {
+		this.embeddedness = embeddedness;
+	}
+
+
+	public String getStructural_holes() {
+		return structural_holes;
+	}
+
+
+	public void setStructural_holes(String structural_holes) {
+		this.structural_holes = structural_holes;
+	}
+
+
+	public String getUser_type() {
+		return user_type;
+	}
+
+
+	public void setUser_type(String user_type) {
+		this.user_type = user_type;
+	}
+	private String average_neighbor_degree;
+    private String median_neighbor_degree;
+    private String embeddedness;
+    private String structural_holes;
+    private String user_type;
     public String getCloseness_centrality() {
 		return closeness_centrality;
 	}

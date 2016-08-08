@@ -18,6 +18,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,7 +39,9 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 
-
+import cn.edu.whu.dao.GFeatureDao;
+import cn.edu.whu.daoImpl.GFeatureDaoImpl;
+import cn.edu.whu.pojo.GFeature;
 import cn.edu.whu.pojo.Relation;
 import cn.edu.whu.pojo.User;
 import cn.edu.whu.utils.PreprocessText;
@@ -176,18 +179,20 @@ public class Test {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-//		
-//		File folder=new File("D:/人工赛选/weibos");
+		
+//		File folder=new File("E:\\normal\\2_UltimateNormal\\weibos");
 //		String[] arr=folder.list();
 //		Set<String> set=new HashSet<>();
-//		set=utils.readToSet2("D:/人工赛选/spam_both_selected.txt");
+//		set=utils.readToSet2("E:\\normal\\3.1_graphFetures\\359normalUID.txt");
 //		System.out.println(set.size());
 //		for(String a:arr){
 //			String[] sarr=a.split(".txt");
-//			System.out.println(sarr[0]);
-//			if(set.contains(sarr[0]))
-//		  utils.copyFile("D:/人工赛选/weibos/"+a, "D:/人工赛选/341weibos/"+a);
-//		}
+//			
+//			if(set.contains(sarr[0])){
+//		  utils.copyFile("E:\\normal\\2_UltimateNormal\\weibos\\"+a, "D:/人工赛选/NormalWeibos/"+a);
+//		  System.out.println(sarr[0]);}
+//			}
+		
 //		
 		//utils.saveResultBySet( utils.readToSet("E:\\normal\\3.1_graphFetures\\graph_metric_follows.txt"),"E:\\normal\\3.1_graphFetures\\359uid.txt");
 		//utils.selectUIDF("E:\\normal\\3.1_graphFetures\\359normalUID.txt", "E:\\normal\\3.1_graphFetures\\9graph_metric_follows.txt", "E:\\normal\\3.1_graphFetures\\9graph_metric_follows2.txt");
@@ -296,12 +301,30 @@ public class Test {
 //				"E:\\spam\\spamSample\\featureVec\\12graph_plusRichClub.txt");
 		//utils.mergeFeatures("E:\\normal\\normalSample\\featureVec\\selectVec_RemoveTimeAndSource.txt","E:\\normal\\normalSample\\featureVec\\graph_features_plus4New.txt",
 				//"E:\\normal\\normalSample\\featureVec\\allFeatures_plus4NewGraph.txt");
-		utils.mergeFeatures("E:\\spam\\spamSample\\featureVec\\selectVec_RemoveTimeAndSource.txt","E:\\spam\\spamSample\\featureVec\\graph_features_plus4New.txt",
-				"E:\\spam\\spamSample\\featureVec\\allFeatures_plus4NewGraph.txt");
+		//utils.mergeFeatures("E:\\spam\\spamSample\\featureVec\\selectVec_RemoveTimeAndSource.txt","E:\\spam\\spamSample\\featureVec\\graph_features_plus4New.txt",
+			//	"E:\\spam\\spamSample\\featureVec\\allFeatures_plus4NewGraph.txt");
 		//calDee();
 		//directedNodeEdgeNums();
 		//communityNums();
-		remove();
+		//remove();
+		GFeatureDao gfdao=new GFeatureDaoImpl();
+		try {
+			System.out.println(gfdao.findById("1792987320"));
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		List<GFeature>list=new ArrayList<GFeature>();
+		try {
+			list=gfdao.findAll();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for(GFeature gf:list){
+			if(gf.getUser_type().equals("normal"))
+		   System.out.print(gf.getUid());
+		}
 	}
 	 
 	 public   static  void remove(){
