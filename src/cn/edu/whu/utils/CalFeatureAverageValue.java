@@ -27,7 +27,8 @@ public class CalFeatureAverageValue {
 		//cal.getAverageValue("E:\\spam\\spamSample\\featureVec\\spam_ColAndBet_cen.txt",3);
 		//cal.getAverageValue("E:\\normal\\normalSample\\featureVec\\normal_GraphFeature_rcc_avg.txt",2);
 		//cal.getAverageValue("E:\\normal\\normalSample\\featureVec\\12graph_plusRichClub.txt",14);
-		cal.getAverageValue("E:\\normal\\normalSample\\featureVec\\selectVec_RemoveTimeAndSource.txt");
+		//cal.getAverageValue("E:\\normal\\normalSample\\featureVec\\selectVec_RemoveTimeAndSource.txt");
+		cal.getAverageValue("E:\\normal\\3.1_graphFetures\\normal_interaction_networkX.txt");
 	}
 	/**
 	 * 
@@ -48,7 +49,6 @@ public class CalFeatureAverageValue {
 				String[] arr=ss.trim().split(" +");
 			//	if(arr[0].equals("1.0")){
 				for(int i=0;i<arr.length;i++){
-				
 					acc[i]=Double.valueOf(arr[i])+acc[i];
 				//}
 			}

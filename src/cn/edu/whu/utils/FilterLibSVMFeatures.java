@@ -73,15 +73,16 @@ public class FilterLibSVMFeatures {
     	//attentionRate commentRate repostRate atRate topicRate textURLrate weiboFromRepostRate triRealtion
     	//profileURL ifProfile frinedsNum followsNum friendsNumDivfollowsNum userNameLen profileLen weiboAge
     	//1topicRate textURLrate weiboFromRepostRate
-    	//int ar[]={1,2,3,4,8,9,10,11,12,13,14,15,16};
+    	int ar[]={1,2,3,4,8,9,10,11,12,13,14,15,16};
     	//2 commentRate repostRate atRate
     	//int ar[]={1,5,6,7,8,9,10,11,12,13,14,15,16};
     	//3 其它 profile
+    	 //int ar[]={2,3,4,5,6,7,8};
     	//int ar[]={2,3,4,5,6,7,8,9,10,14,15,16};
     	//int ar[]={1,2,3,4,5,6,7,8,11,12,13};
-    	int ar[]={15,16};
-    	FilterLibSVMFeatures fls=new FilterLibSVMFeatures("E:\\libSVM\\libSVMSample\\graph_features_plus4New.txt");
-    	fls.handle("E:\\libSVM\\libSVMSample\\graph_features_plus4NewRem1516.txt",ar);
+    	//int ar[]={15,16};
+    	FilterLibSVMFeatures fls=new FilterLibSVMFeatures("C:\\Users\\bczhang\\Desktop\\FeaturesIntegration\\UID_Features\\spam_baseline_features.txt");
+    	fls.handle("C:\\Users\\bczhang\\Desktop\\FeaturesIntegration\\UID_Features\\SPAM_CONTENT_FEATURES.txt",ar);
     }
     private void  handle(String save,int[] ind){
     	File file=new File(libSVMFilePath);
@@ -100,7 +101,6 @@ public class FilterLibSVMFeatures {
 				for(int j=ind.length-1;j>=0;j--){
 					//这里有个值得注意点地方。就是由于每次删除，数组标号都会变化，但仍是连续的从0开始
 					//所以想循环的删除下标就会有问题，删除的不是自己想要的。所以这里从大的下标号开始删除
-					
 				    list.remove(ind[j]);
 				}
 				result.append(tranListToString(list));

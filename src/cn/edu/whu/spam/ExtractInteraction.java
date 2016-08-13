@@ -5,7 +5,9 @@ package cn.edu.whu.spam;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +33,69 @@ static  Set<String> profileset=new HashSet<>();
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		Utils utils=new Utils();
-		//getFromToSet("E:\\spam\\3_UltimateSelected\\weibos\\1081204670.txt");
+	
+			  
+		//patch("E:\\spam\\3_UltimateSelected\\341spamWeibos\\");
+		getUidF("F:/fromTo.txt");
+	}
+	public static  void getUidF(String path){
+	Utils utils=new Utils();
+		Map<String,String>idname=new HashMap<>();
+		Set<String > ssset=new HashSet<>();
+		 File file=new File("D:\\Whuer\\FudanData\\weibo_users.txt");
+		 File file2=new File("F:/NormalFromTo2.txt");
+    	 LineIterator it=null;
+    	 LineIterator it2=null;
+			  try {
+				it = FileUtils.lineIterator(file);
+				it2 = FileUtils.lineIterator(file2);
+				while(it.hasNext()){
+					String line =it.nextLine();
+					String [] arr=line.split(",");
+					if(arr.length>4){
+					idname.put(arr[1], arr[4]);
+					}
+				}
+				StringBuilder strb=null;
+				StringBuilder result=new StringBuilder();
+				while(it2.hasNext()){
+					strb=new StringBuilder();
+					String line2 =it2.nextLine();
+					String [] arr2=line2.trim().split(" +");
+					String id=arr2[0];
+					if(ssset.contains(id))
+						continue;
+					strb.append(id);
+					ssset.add(id);
+					strb.append(" ");
+					if(ssset.contains(arr2[0]))
+					for(int i=0;i<arr2.length;i++){
+						if(idname.containsKey(arr2[i])&&arr2.length>1){
+							strb.append(idname.get(arr2[i]));
+							strb.append(" ");
+						}
+					}
+					System.out.println(strb);
+					result.append(strb.toString());
+					result.append("\n");
+				}
+				FileUtils.write(new File("F:/normal_interaction_relation.txt"), result);
+				
+					 
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				} finally{
+			   LineIterator.closeQuietly(it);
+		}
+	}
+	/**
+	 * 提取交互关系，主要是每个用户的 @的人 和转发中@中的 人
+	 * @param folderPath
+	 * @throws IOException
+	 */
+	public  static void patch(String folderPath) throws IOException{
+		Utils utils=new Utils();
 		
 		utils.saveResultBySet(set, "F:spamUserNameSet.txt");
 		 File file=new File("D:\\Whuer\\FudanData\\weibo_users.txt");
@@ -54,10 +118,6 @@ static  Set<String> profileset=new HashSet<>();
 				} finally{
 			   LineIterator.closeQuietly(it);
 		}
-			  
-			  patch("E:\\spam\\3_UltimateSelected\\341spamWeibos\\");
-	}
-	public  static void patch(String folderPath) throws IOException{
 		File folder=new File(folderPath);
 		String[] files=folder.list();
 		String basePath="E:\\spam\\3_UltimateSelected\\341SpamWeibos\\";

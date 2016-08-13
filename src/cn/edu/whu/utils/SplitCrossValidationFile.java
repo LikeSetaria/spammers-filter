@@ -45,7 +45,7 @@ public class SplitCrossValidationFile {
 		/*
 		 *重新制作baseline
 		 */
-		splitTxt("E:\\libSVM\\libSVMSample\\scale\\graph_features_plus4NewRem1516_scale.txt","E:\\libSVM\\libSVMSample\\graph_features_plus4NewRem1516",10);
+		splitTxt("E:\\libSVM\\libSVMSample\\scale\\interaction_neighbors_graphFeatures_scale.txt","E:\\libSVM\\libSVMSample\\interaction_neighbors_graphFeatures",10);
 
 
 		    

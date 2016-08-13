@@ -295,8 +295,10 @@ public class Test {
 //			e.printStackTrace();
 //		}
 		//utils.selectUIDF("E:/spam/3.1_graphFetures/341uid.txt", "E:\\spam\\3.1_graphFetures\\communityNums.txt", "E:\\spam\\3.1_graphFetures\\communityNums22.txt");
-//		utils.mergeFeatures("E:\\normal\\normalSample\\featureVec\\12graphFeatures.txt","E:\\normal\\normalSample\\featureVec\\normal_GraphFeature_rcc_avg.txt",
-//				"E:\\normal\\normalSample\\featureVec\\12graph_plusRichClub.txt");
+	//utils.mergeFeatures("E:\\normal\\normalSample\\interaction\\graph_interaction_feature.txt","E:\\normal\\normalSample\\interaction\\normal_interaction_networkX.txt",
+				//"E:\\normal\\normalSample\\interaction\\12interaction_graphFeatures.txt");
+	utils.mergeFeatures("E:\\normal\\normalSample\\interaction\\12interaction_graphFeatures.txt","E:\\normal\\normalSample\\featureVec\\12graph_plusRichClub.txt",
+			"E:\\normal\\normalSample\\interaction\\interaction_neighbors_graphFeatures.txt");
 //		utils.mergeFeatures("E:\\spam\\spamSample\\featureVec\\12graphFeatures.txt","E:\\spam\\spamSample\\featureVec\\spam_GraphFeature_rcc_avg.txt",
 //				"E:\\spam\\spamSample\\featureVec\\12graph_plusRichClub.txt");
 		//utils.mergeFeatures("E:\\normal\\normalSample\\featureVec\\selectVec_RemoveTimeAndSource.txt","E:\\normal\\normalSample\\featureVec\\graph_features_plus4New.txt",
@@ -307,25 +309,8 @@ public class Test {
 		//directedNodeEdgeNums();
 		//communityNums();
 		//remove();
-		GFeatureDao gfdao=new GFeatureDaoImpl();
-		try {
-			System.out.println(gfdao.findById("1792987320"));
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		List<GFeature>list=new ArrayList<GFeature>();
-		try {
-			list=gfdao.findAll();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		for(GFeature gf:list){
-			if(gf.getUser_type().equals("normal"))
-		   System.out.print(gf.getUid());
-		}
-	}
+		
+			}
 	 
 	 public   static  void remove(){
 		 try {

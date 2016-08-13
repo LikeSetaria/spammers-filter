@@ -73,9 +73,9 @@ public class GFeatureDaoImpl implements GFeatureDao {
 		// TODO Auto-generated method stub
 		Connection conn=null;
 		PreparedStatement ps=null;
-		String sql="update GRAPH_FEATURE set USERID=?,BET_CENTRALITY=?,CLO_CENTRALITY=?,DEGREE_CENTRALITY=?,RICH_CLUB_COFF=?,DEGREE_ASS_COFF=?"
-				+ "CENTRALITY=?,AVERAGEDEGREE=?DENSITY=?,PATHLENGTH=?,MODULARITY=?,WHEIGHTEDDEGREE=?,AVERAGECLUSCOFF=?,average_neighbor_degree=?,"
-				+ "median_neighbor_degree=?,embeddedness=?,structural_holes=?,USER_TYPE=? where userid=?";
+		String sql="update GRAPH_FEATURE set USERID=?,BET_CENTRALITY=?,CLO_CENTRALITY=?,DEGREE_CENTRALITY=?,RICH_CLUB_COFF=?,DEGREE_ASS_COFF=?,"
+				+ "CENTRALITY=?,AVERAGEDEGREE=?,DENSITY=?,PATHLENGTH=?,MODULARITY=?,WHEIGHTEDDEGREE=?,AVERAGECLUSCOFF=?,average_neighbor_degree=?,"
+				+ "median_neighbor_degree=?,embeddedness=?,structural_holes=?,USER_TYPE=? where USERID=?";
 		try{
 		 conn = DBUtils.getConnection();
 		             ps = conn.prepareStatement(sql);
@@ -89,14 +89,15 @@ public class GFeatureDaoImpl implements GFeatureDao {
 		             ps.setDouble(8, Double.valueOf(gf.getAverageDegree()));
 		             ps.setDouble(9, Double.valueOf(gf.getDensity()));
 		             ps.setDouble(10, Double.valueOf(gf.getPathLength()));
-		             ps.setDouble(11, Double.valueOf(gf.getPathLength()));
-		             ps.setDouble(12, Double.valueOf(gf.getModularity()));
-		             ps.setDouble(13, Double.valueOf(gf.getWheightedDegree()));
-		             ps.setDouble(14, Double.valueOf(gf.getAverageClusteringCoefficient()));
-		             ps.setDouble(15, Double.valueOf(gf.getAverage_neighbor_degree()));
-		             ps.setDouble(16, Double.valueOf(gf.getMedian_neighbor_degree()));
-		             ps.setDouble(17, Double.valueOf(gf.getEmbeddedness()));
-		             ps.setString(18, gf.getStructural_holes());
+		             ps.setDouble(11, Double.valueOf(gf.getModularity()));
+		             ps.setDouble(12, Double.valueOf(gf.getWheightedDegree()));
+		             ps.setDouble(13, Double.valueOf(gf.getAverageClusteringCoefficient()));
+		             ps.setDouble(14, Double.valueOf(gf.getAverage_neighbor_degree()));
+		             ps.setDouble(15, Double.valueOf(gf.getMedian_neighbor_degree()));
+		             ps.setDouble(16, Double.valueOf(gf.getEmbeddedness()));
+		             ps.setDouble(17, Double.valueOf(gf.getStructural_holes()));
+		             ps.setString(18, gf.getUser_type());
+		             ps.setString(19, gf.getUid());
 		             ps.executeUpdate();
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -159,14 +160,14 @@ public class GFeatureDaoImpl implements GFeatureDao {
 	             gf.setAverageDegree(String.valueOf(rs.getFloat(8)));
 	             gf.setDensity(String.valueOf(rs.getFloat(9)));
 	             gf.setPathLength(String.valueOf(rs.getFloat(10)));
-	             gf.setPathLength(String.valueOf(rs.getFloat(11)));
-	             gf.setModularity(String.valueOf(rs.getFloat(12)));
-	             gf.setWheightedDegree(String.valueOf(rs.getFloat(13)));
-	             gf.setAverageClusteringCoefficient(String.valueOf(rs.getFloat(14)));
-	             gf.setAverage_neighbor_degree(String.valueOf(rs.getFloat(15)));
-	             gf.setMedian_neighbor_degree(String.valueOf(rs.getFloat(16)));
-	             gf.setEmbeddedness(String.valueOf(rs.getFloat(17)));
-	             gf.setStructural_holes(String.valueOf(rs.getString(18)));
+	             gf.setModularity(String.valueOf(rs.getFloat(11)));
+	             gf.setWheightedDegree(String.valueOf(rs.getFloat(12)));
+	             gf.setAverageClusteringCoefficient(String.valueOf(rs.getFloat(13)));
+	             gf.setAverage_neighbor_degree(String.valueOf(rs.getFloat(14)));
+	             gf.setMedian_neighbor_degree(String.valueOf(rs.getFloat(15)));
+	             gf.setEmbeddedness(String.valueOf(rs.getFloat(16)));
+	             gf.setStructural_holes(String.valueOf(rs.getString(17)));
+	             gf.setUser_type(rs.getString(18));
             }
        }catch(SQLException e){
            e.printStackTrace();
