@@ -19,10 +19,13 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -297,8 +300,8 @@ public class Test {
 		//utils.selectUIDF("E:/spam/3.1_graphFetures/341uid.txt", "E:\\spam\\3.1_graphFetures\\communityNums.txt", "E:\\spam\\3.1_graphFetures\\communityNums22.txt");
 	//utils.mergeFeatures("E:\\normal\\normalSample\\interaction\\graph_interaction_feature.txt","E:\\normal\\normalSample\\interaction\\normal_interaction_networkX.txt",
 				//"E:\\normal\\normalSample\\interaction\\12interaction_graphFeatures.txt");
-	utils.mergeFeatures("E:\\normal\\normalSample\\interaction\\12interaction_graphFeatures.txt","E:\\normal\\normalSample\\featureVec\\12graph_plusRichClub.txt",
-			"E:\\normal\\normalSample\\interaction\\interaction_neighbors_graphFeatures.txt");
+	//utils.mergeFeatures("E:\\normal\\normalSample\\interaction\\12interaction_graphFeatures.txt","E:\\normal\\normalSample\\featureVec\\12graph_plusRichClub.txt",
+			//"E:\\normal\\normalSample\\interaction\\interaction_neighbors_graphFeatures.txt");
 //		utils.mergeFeatures("E:\\spam\\spamSample\\featureVec\\12graphFeatures.txt","E:\\spam\\spamSample\\featureVec\\spam_GraphFeature_rcc_avg.txt",
 //				"E:\\spam\\spamSample\\featureVec\\12graph_plusRichClub.txt");
 		//utils.mergeFeatures("E:\\normal\\normalSample\\featureVec\\selectVec_RemoveTimeAndSource.txt","E:\\normal\\normalSample\\featureVec\\graph_features_plus4New.txt",
@@ -309,8 +312,114 @@ public class Test {
 		//directedNodeEdgeNums();
 		//communityNums();
 		//remove();
+//		File folder=new File("E:/normal/3.1_graphFetures/gephi_gml/graph_interaction_gml/");
+//		String[] list=folder.list();
+//		for(String ss:list){
+//			File f=new File(folder+"\\"+ss);
+//			if(f.length()<=1024){
+//			//System.out.println(f.length());
+//			System.out.println(ss);
+//			}
+//		}
 		
-			}
+		//去除一些图解狗非常系数的样本
+//		Set<String> set=new HashSet<>();
+//		Set<String> spamvecset=new HashSet<>();
+//		try {
+//			String[] spamLit=FileUtils.readFileToString(new File("F:/normalLittleFileUID.txt")).split("\n");
+//			String[] spamvec=FileUtils.readFileToString(new File("E:\\normal\\normalSample\\interaction\\12interaction_graphFeatures.txt")).split("\n");
+//			for(String ss:spamLit){
+//				set.add(ss.trim());
+//			}
+//			for(String s:spamvec){
+//				spamvecset.add(s);
+//			}
+//			StringBuilder strb=new StringBuilder();
+//			for(String tem:spamvec){
+//				String [] arr=tem.split(" ");
+//				if(!set.contains(arr[0].trim())){
+//					strb.append(tem);
+//					strb.append("\n");
+//				}
+//			}
+//			FileUtils.write(new File("F:/normal.txt"), strb);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		//utils.selectUIDF("E:\\normal\\expandSample\\both_normal_uid.txt", "E:\\spam\\expandSample\\expand_normal_interation_uid.txt", "E:\\normal\\expandSample\\expand_normal_interation_uid.txt");
+	 
+//         Map<String ,Double> map=new HashMap<>();
+//			String arr1[];
+//			try {
+//				arr1 = FileUtils.readFileToString(new File("E:\\spam\\expandSample\\spam_source.txt")).split("\n");
+//				String arr2[]=FileUtils.readFileToString(new File("E:\\spam\\expandSample\\spam_vec.txt")).split("\n");
+//				for(String ss:arr1){
+//					String arr[]=ss.split(" ");
+//					map.put(arr[1], Double.parseDouble(arr[2]));
+//				}
+//				Map<String,Double> map2=utils.sortMapByValue2(map);
+//	   
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		
+//        
+//	File folder=new File("D:\\人工赛选\\第二次筛选\\normal_weibos\\");
+//	String[] list=folder.list();
+//	Set<String>set=new HashSet<>();
+//	for(String ss:list){
+//		set.add(ss);
+//	}
+// int count=0;
+//	for(String s:set){
+//		
+//		File f=new File("D:\\人工赛选\\第二次筛选\\normal_weibos\\"+s);
+//		
+//		if(f.length()>51200){
+//			System.out.println(s);
+//			count++;
+//		}
+//		if(count>830)
+//			break;
+//	}
+//        
+//	LineIterator it=null;
+//	try {
+//		it=FileUtils.lineIterator(new File("D:\\DOWNLOAD\\BaiduYunDownload\\SMP-cup2016\\unlabeled_statuses\\unlabeled_statuses.txt"));
+//		while(it.hasNext()){
+//			String str=it.nextLine();
+//			
+//			System.out.println(str);
+//		}
+//	} catch (IOException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+//		  String dateString = "2016-01-02 11:11:11";
+//		   try {
+//			Date dateParse = sdf.parse(dateString);
+//			Date dateParse2 = sdf2.parse(dateString);
+//			System.out.println((dateParse.getTime()-dateParse2.getTime())/60000.0);
+//			System.out.println(dateParse2.getTime());
+//		} catch (ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		   
+//		utils.mergeFeatures("E:\\normal\\expandSample\\graph_features\\gephi_graph_interaction_feature.txt","E:\\normal\\expandSample\\graph_features\\networkX_graph_interaction_feature.txt",
+//			"E:\\normal\\expandSample\\graph_features\\graph_interaction_feature.txt");
+		utils.selectUIDF("E:\\spam\\expandSample\\both_spam_uid.txt", "E:\\spam\\3_UltimateSelected\\uidfollows_selected.txt", "E:\\spam\\expandSample\\uid_followee.txt");
+
+			}//end main
+
+	 
+	 
+
+	 
 	 
 	 public   static  void remove(){
 		 try {

@@ -71,7 +71,8 @@ public class ExtractTrait {
 
 
 		//提取not exist用户的行为特征
-	//	ext.extractFeatures("E:/spam/3_UltimateSelected/weibos", "E:/spam/4_extractFetures/behaviorFeatures9.txt");
+		//ext.extractFeatures("E:/spam/3_UltimateSelected/weibos", "E:/spam/4_extractFetures/behaviorFeatures9.txt");
+		//ext.extractFeatures("E:/portrait/weibo/fWEIBOS", "E:/portrait/fbehavior.txt");
 		//提取normal用户的行为特征
 		//ext.extractFeatures("E:/normal/2_UltimateNormal/weibos", "E:/normal/3_extractFetures/behaviorFeatures9.txt");
 	   
@@ -79,7 +80,7 @@ public class ExtractTrait {
 		//ext.analyseProfile("E:/normal/2_UltimateNormal/profiles.txt", "E:/normal/3_extractFetures/profilesTrait3.txt");
 		//ext.analyseProfile("E:/spam/3_UltimateSelected/profiles.txt", "E:/spam/4_extractFetures/profilesTrait3.txt");
 		
-		ext.extractWeibo("D:/Whuer/FudanData/weibodata.csv","F:/weibo/normal/ALLfriend");
+		//ext.extractWeibo("D:/Whuer/FudanData/weibodata.csv","F:/weibo/normal/ALLfriend");
 	}
 	/**
      *根据ID抽取相关的条目。
@@ -310,6 +311,7 @@ public class ExtractTrait {
 			 content = new String(Files.readAllBytes(path));
 			 //这个数组中存储的是一个用户的所有的微博
 			String[]  strb=content.split("\\n");
+			//System.out.println(strb[0]);
 			weiboTotal=strb.length;
 			//System.out.println("total Nums Of weibo "+strb.length);
 			StringBuilder weibotext=new StringBuilder();
@@ -327,9 +329,9 @@ public class ExtractTrait {
 				//原文本以逗号为分割，但是可能text中含有英文逗号，所以对于这些特殊的需要规范化处理
 				if(arr.length>5){
 					for(int i=5;i<arr.length;i++){
-						tem.append(arr[i]);
+						tem.append(arr[i].replaceAll(" ", ""));
 					}
-					arr2[5]=tem.toString();
+					arr2[5]=tem.toString().replaceAll(" ", "");
 				}
 				//微博中没有爬到转发的源微博，所以对于博文只有“转发微博”的过滤掉，不计算这样的微博相似性
 				if(arr2[5]!=null&&!(arr2[5].trim().equals(("转发微博")))){
@@ -358,8 +360,8 @@ public class ExtractTrait {
 			double atRate=(double)atNums/(double)weiboTotal;
 			double topicRate=(double)topicNums/(double)weiboTotal;
 			String[] weibo=weibotext.toString().split("\n");
-			double weibosimilarity=0.0;//相似性作用不大，暂时注释掉
-			//double weibosimilarity=calWeiboSimilarity(weibo)/weiboTotal;
+			//double weibosimilarity=0.0;//相似性作用不大，暂时注释掉
+			double weibosimilarity=calWeiboSimilarity(weibo)/weiboTotal;
 			//训练的时候要特征要相似，否则效果可能很不好。所以这里要对时间间隔这个特征进行规范化，比如处理这一维的最大值
 			String intervalRate=calTimeTrait2(timeList);
 			String sourceRichness=getRich.getRM_YuleAndSimpson(sourceArr);
@@ -567,14 +569,18 @@ public class ExtractTrait {
          double rate=0.0;
          DecimalFormat   fm=new   java.text.DecimalFormat("#.######"); 
          List<Long> timelist=new LinkedList<Long>();
-         DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-         String standardTime="2016-01-01 00:00";
+         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+         String standardTime="2016-09-01 00:00";
          Date standardDate=new Date();
          
          Date date=new Date();
+         
          try{//获得标准时间的日期格式
         	 standardDate=df.parse(standardTime);
+        	 
          for(String ss:list){
+        	 if(ss.contains("今天")||ss.contains("分钟"))
+        		 continue;
         	 date = df.parse(ss); 
         	 //格式化的时间是精确到分钟，所以这里只需要精确到分钟加入到list
         	 timelist.add(date.getTime());

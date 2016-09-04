@@ -7,8 +7,10 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -28,10 +30,11 @@ public class GenerateGMLFile {
 		// TODO Auto-generated method stub
 		//得到无向图，边节点关系
 		//patchUndirectedGraph("E:\\normal\\3.1_graphFetures\\interaction_graph\\","E:\\normal\\3.1_graphFetures\\interaction_graph_undirected\\");
-		patchHandle("E:/normal/3.1_graphFetures/interaction_graph_undirected/","E:/normal/3.1_graphFetures/gephi_gml/graph_interaction_undirected_gml/");
+		//patchUndirectedGraph("E:\\normal\\expandSample\\interaction_graph\\","E:\\normal\\expandSample\\interaction_graph_undirected\\");
+		//patchHandle("E:/normal/3.1_graphFetures/interaction_graph_undirected/","E:/normal/3.1_graphFetures/gephi_gml/graph_interaction_undirected_gml/");
+		patchHandle("E:\\normal\\expandSample\\interaction_graph\\","E:\\normal\\expandSample\\gephi_gml\\interaction_graph_weighted_gml\\");
 	}
-	/**
-	 * 
+	/** 
 	 * @param relationFolderPath 关系文件夹，里面是用户边 的文件。文件夹路径要以/结尾
 	 * @param gmlSaveFloderPath 生成的gml文件保存的位置,文件夹路径要以/结尾
 	 */
@@ -57,6 +60,12 @@ public class GenerateGMLFile {
 		//String graphStr=utils.readFileToString("E:/spam/3.1_graphFetures/graphs_follows/1032153895.txt");
 		String graphStr=utils.readFileToString(path);
 		
+		//得到权重关系map
+		Map<String,Integer> weightedNumMap=new HashMap<>();
+		String interaction_graph[]=utils.readFileToString("E:\\normal\\expandSample\\interaction_graph\\"+fileName).split("\n");
+		for(String ss:interaction_graph){
+			weightedNumMap.put(ss.trim(), weightedNumMap.get(ss.trim())==null?1:weightedNumMap.get(ss.trim())+1);
+		}
 		String[] uidarr=fileName.split(".txt");
 		String uid=uidarr[0];
 		if(graphStr.length()!=0){//过滤掉空文件
@@ -95,7 +104,8 @@ public class GenerateGMLFile {
 			if(!set.contains(ss.trim())){
 			gmlStrb.append("  edge"+" ["+"\n"+"    source "+temp[0]);
 			gmlStrb.append("\n"+"    target "+temp[1]);
-			gmlStrb.append("\n"+"   value 1");//关于是否生成有向图，如果是无向图，则不需要这个值
+			//gmlStrb.append("\n"+"   value 1");//关于是否生成有向图，如果是无向图，则不需要这个值
+			gmlStrb.append("\n"+"   value "+weightedNumMap.get(temp[0]+" "+temp[1]));//扩展计算权重
 			gmlStrb.append("\n");
 			gmlStrb.append("  ]"+"\n");
 			}

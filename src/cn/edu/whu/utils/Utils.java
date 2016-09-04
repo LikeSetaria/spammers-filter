@@ -557,7 +557,7 @@ public class Utils {
     	 Collections.sort(list,new Comparator<Map.Entry<String ,Double>>(){    		 
 			@Override
 			public int compare(java.util.Map.Entry<String, Double> arg0, java.util.Map.Entry<String, Double> arg1) {
-				double result = arg0.getValue() - arg1.getValue();
+				double result = arg1.getValue() - arg0.getValue();
 			      if(result > 0)
 			       return 1;
 			      else if(result == 0)
@@ -569,7 +569,9 @@ public class Utils {
     	     Map<String,Double> newMap = new LinkedHashMap<String,Double>();  
             for (int i = 0; i < list.size(); i++) {  
                 newMap.put(list.get(i).getKey(), list.get(i).getValue());
-               System.out.println(list.get(i).getKey()+"   "+list.get(i).getValue());
+              System.out.println(list.get(i).getKey()+"   "+list.get(i).getValue());
+              // System.out.println(list.get(i).getKey());
+               
             }  
             return newMap; 
      }
@@ -802,7 +804,7 @@ public class Utils {
 			int count=0;
 			while(it.hasNext()){
 				String line=it.nextLine();
-				String []arr=line.split(" ");
+				String []arr=line.split(" +");
 				 
 				//String []arr=line.split("\t");
 				if(uidset.contains(arr[0].trim())){

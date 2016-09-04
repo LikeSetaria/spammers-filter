@@ -28,7 +28,8 @@ public class CalFeatureAverageValue {
 		//cal.getAverageValue("E:\\normal\\normalSample\\featureVec\\normal_GraphFeature_rcc_avg.txt",2);
 		//cal.getAverageValue("E:\\normal\\normalSample\\featureVec\\12graph_plusRichClub.txt",14);
 		//cal.getAverageValue("E:\\normal\\normalSample\\featureVec\\selectVec_RemoveTimeAndSource.txt");
-		cal.getAverageValue("E:\\normal\\3.1_graphFetures\\normal_interaction_networkX.txt");
+		//cal.getAverageValue("E:\\normal\\3.1_graphFetures\\normal_interaction_networkX.txt");
+		cal.getAverageValue("E:\\spam\\expandSample\\graph_features\\gephi_graph_interaction_feature.txt");
 	}
 	/**
 	 * 

@@ -90,9 +90,15 @@ public class GetLibSVM {
 	private static final String NORMAL_interaction_PATH="E:/normal/normalSample/interaction/12interaction_graphFeatures.txt";
 	private static final String LIBSVM_interaction_RESULT="E:/libSVM/libSVMSample/12interaction_graphFeatures.txt";
 	//交互图关系特征级邻居关系特征interaction_neighbors_graphFeatures.txt
-	private static final String SPAM_inter_neighbors_PATH="E:/spam/spamSample/interaction/interaction_neighbors_graphFeatures.txt";
-	private static final String NORMAL_inter_neighbors_PATH="E:/normal/normalSample/interaction/interaction_neighbors_graphFeatures.txt";
-	private static final String LIBSVM_inter_neighbors_RESULT="E:/libSVM/libSVMSample/interaction_neighbors_graphFeatures.txt";
+//	private static final String SPAM_inter_neighbors_PATH="E:/spam/spamSample/interaction/interaction_neighbors_graphFeatures.txt";
+//	private static final String NORMAL_inter_neighbors_PATH="E:/normal/normalSample/interaction/interaction_neighbors_graphFeatures.txt";
+//	private static final String LIBSVM_inter_neighbors_RESULT="E:/libSVM/libSVMSample/interaction_neighbors_graphFeatures.txt";
+//	private static final String SPAM_inter_neighbors_PATH="F:/spam.txt";
+//	private static final String NORMAL_inter_neighbors_PATH="F:/normal.txt";
+//	private static final String LIBSVM_inter_neighbors_RESULT="F:/lit_interaction.txt";
+	private static final String SPAM_1000interaction_graph_PATH="E:\\spam\\spamSample\\interaction\\1000interaction_graph_feature.txt";
+	private static final String NORMAL_1000interaction_graph_PATH="E:\\normal\\normalSample\\interaction\\1000interaction_graph_feature.txt";
+	private static final String LIBSVM_1000interaction_graph_RESULT="E:/libSVM/libSVMSample/1000interaction_graph_feature.txt";
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//createLibSVM(SELECTED_PATH,NORMAL_PATH,LIBSVMRESULT);
@@ -102,7 +108,7 @@ public class GetLibSVM {
 		//createLibSVM(SPAM_last_PATH,NORMAL_last_PATH,LIBSVMlastRESULT);
 		//createLibSVM(SPAM_12graph_PATH,NORMAL_12graph_PATH,LIBSVM_12graph_RESULT);
 		//规范化所有的
-		createLibSVM(SPAM_inter_neighbors_PATH,NORMAL_inter_neighbors_PATH,LIBSVM_inter_neighbors_RESULT);
+		createLibSVM(SPAM_1000interaction_graph_PATH,NORMAL_1000interaction_graph_PATH,LIBSVM_1000interaction_graph_RESULT);
 	}
 	//1代表正类，即normal部分，2代表负类，即selected部分
 	public static void createLibSVM(String path1,String path2,String save){

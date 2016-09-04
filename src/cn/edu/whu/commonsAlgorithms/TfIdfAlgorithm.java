@@ -151,6 +151,7 @@ public class TfIdfAlgorithm {
         return words;
     }
     
+   
     /**
      * 
     * @Title: segStr
@@ -372,22 +373,22 @@ public class TfIdfAlgorithm {
     public static void main(String[] args){
     	
     	System.out.println("tf--------------------------------------");
-    	Map<String, Map<String, Double>> allTfMap=TfIdfAlgorithm.allTf("d://dir");
+    	Map<String, Map<String, Double>> allTfMap=TfIdfAlgorithm.allTf("E:\\portrait\\train\\weibos\\weiboText\\");
     	Set<String> fileList=allTfMap.keySet();
       	for(String filePath : fileList){
      		Map<String, Double> tfMap=allTfMap.get(filePath);
      		Set<String> words=tfMap.keySet();
-     		for(String word: words){
-     			System.out.println("fileName:"+filePath+"     word:"+word+"      tf:"+tfMap.get(word));
-     		}
+//     		for(String word: words){
+//     			System.out.println("fileName:"+filePath+"     word:"+word+"      tf:"+tfMap.get(word));
+//     		}
      	}
       	
       	System.out.println("idf--------------------------------------");
     	Map<String, Double> idfMap=TfIdfAlgorithm.idf(allSegsMap);
     	Set<String> words=idfMap.keySet();
-      	for(String word : words){
-     		System.out.println("word:"+word+"     tf:"+idfMap.get(word));
-     	}
+//      	for(String word : words){
+//     		System.out.println("word:"+word+"     tf:"+idfMap.get(word));
+//     	}
     	
       	System.out.println("tf-idf--------------------------------------");
       	Map<String, Map<String, Double>> tfIdfMap=TfIdfAlgorithm.tfIdf(allTfMap, idfMap);

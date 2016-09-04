@@ -15,7 +15,8 @@ public class CalLibSVMResult {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
       Utils utils=new Utils();
-      String result1=utils.readFileToString("E:\\libSVM\\libSVMSample\\libSVM_result\\interaction_neighbors_graphFeatures.txt");
+      String result1=utils.readFileToString("E:\\libSVM\\libSVMSample\\libSVM_result\\1000interaction_graph_feature.txt");
+     // String result1=utils.readFileToString("E:\\portrait\\result\\train\\libSVM\\All.txt");
       String[] arr=result1.split("\n");
       StringBuilder strb=new StringBuilder();
       int count=1;
@@ -30,7 +31,6 @@ public class CalLibSVMResult {
     		  if(count%5==0)
     		  strb.append("\n");
     		  count++;
-    		   
     		  result+=Double.parseDouble(arr2[2].split("%")[0]);
     		    //System.out.println(result);
     	  }
@@ -38,8 +38,6 @@ public class CalLibSVMResult {
       strb.append("\n");
       strb.append("\n");
       strb.append("平均准确率："+result/10);
-      System.out.println(strb);
-    
+      System.out.println(strb);    
 	}
-
 }

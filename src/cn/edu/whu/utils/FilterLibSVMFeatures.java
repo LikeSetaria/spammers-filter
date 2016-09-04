@@ -73,7 +73,7 @@ public class FilterLibSVMFeatures {
     	//attentionRate commentRate repostRate atRate topicRate textURLrate weiboFromRepostRate triRealtion
     	//profileURL ifProfile frinedsNum followsNum friendsNumDivfollowsNum userNameLen profileLen weiboAge
     	//1topicRate textURLrate weiboFromRepostRate
-    	int ar[]={1,2,3,4,8,9,10,11,12,13,14,15,16};
+    	//int ar[]={1,2,3,4,8,9,10,11,12,13,14,15,16};
     	//2 commentRate repostRate atRate
     	//int ar[]={1,5,6,7,8,9,10,11,12,13,14,15,16};
     	//3 其它 profile
@@ -81,8 +81,9 @@ public class FilterLibSVMFeatures {
     	//int ar[]={2,3,4,5,6,7,8,9,10,14,15,16};
     	//int ar[]={1,2,3,4,5,6,7,8,11,12,13};
     	//int ar[]={15,16};
-    	FilterLibSVMFeatures fls=new FilterLibSVMFeatures("C:\\Users\\bczhang\\Desktop\\FeaturesIntegration\\UID_Features\\spam_baseline_features.txt");
-    	fls.handle("C:\\Users\\bczhang\\Desktop\\FeaturesIntegration\\UID_Features\\SPAM_CONTENT_FEATURES.txt",ar);
+    	int ar[]={8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24};
+    	FilterLibSVMFeatures fls=new FilterLibSVMFeatures("E:\\portrait\\features\\mbehavior.txt");
+    	fls.handle("E:\\portrait\\features\\mbehavior_base.txt",ar);
     }
     private void  handle(String save,int[] ind){
     	File file=new File(libSVMFilePath);
