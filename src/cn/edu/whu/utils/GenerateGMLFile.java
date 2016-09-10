@@ -30,9 +30,9 @@ public class GenerateGMLFile {
 		// TODO Auto-generated method stub
 		//得到无向图，边节点关系
 		//patchUndirectedGraph("E:\\normal\\3.1_graphFetures\\interaction_graph\\","E:\\normal\\3.1_graphFetures\\interaction_graph_undirected\\");
-		//patchUndirectedGraph("E:\\normal\\expandSample\\interaction_graph\\","E:\\normal\\expandSample\\interaction_graph_undirected\\");
+		//patchUndirectedGraph("E:\\normal\\SecondPhase\\thirdExpandSample\\zbc_followee_graphs\\","E:\\normal\\SecondPhase\\thirdExpandSample\\zbc_followee_graphs_undirected_gml\\");
 		//patchHandle("E:/normal/3.1_graphFetures/interaction_graph_undirected/","E:/normal/3.1_graphFetures/gephi_gml/graph_interaction_undirected_gml/");
-		patchHandle("E:\\normal\\expandSample\\interaction_graph\\","E:\\normal\\expandSample\\gephi_gml\\interaction_graph_weighted_gml\\");
+		patchHandle("E:\\normal\\SecondPhase\\thirdExpandSample\\zbc_followee_graphs_undirected\\","E:\\normal\\SecondPhase\\thirdExpandSample\\zbc_followee_graphs_undirected_gml\\");
 	}
 	/** 
 	 * @param relationFolderPath 关系文件夹，里面是用户边 的文件。文件夹路径要以/结尾
@@ -49,10 +49,79 @@ public class GenerateGMLFile {
 			//getGraphFile(filepath,"E:/spam/120DataSet/gephi_gml/graphs_follows_gml/");
 			//getGraphFile(filepath,"E:/spam/3.1_graphFetures/gephi_gml/graphs_follows_gml_undirected/");
 			getGraphFile(filepath,relationFolderPath,gmlSaveFloderPath);
-			System.out.println(filepath);
+			//System.out.println(filepath);
 		}
 	}
-	//
+	/**
+	 * 由一般的图得到gml格式通用的图格式
+	 * @param fileName
+	 * @param relationFolderPath
+	 * @param savePath
+	 */
+	public static void getGraphFile(String fileName,String relationFolderPath,String savePath,String weightGraphPath){
+		StringBuilder gmlStrb=new StringBuilder("");
+		String path=relationFolderPath+fileName;
+		String graphStr=utils.readFileToString(path);
+		//得到边权重关系map，如交互关系图可能需要得到边的权重的，
+		Map<String,Integer> weightedNumMap=new HashMap<>();
+		String interaction_graph[]=utils.readFileToString(weightGraphPath+fileName).split("\n");
+		for(String ss:interaction_graph){
+			weightedNumMap.put(ss.trim(), weightedNumMap.get(ss.trim())==null?1:weightedNumMap.get(ss.trim())+1);
+		}
+		String[] uidarr=fileName.split(".txt");
+		String uid=uidarr[0];
+		if(graphStr.length()!=0){//过滤掉空文件
+		String[] arr=graphStr.split("\\s");
+		String[] arr2=graphStr.split("\n");
+		Set<String> nodeSet=new HashSet<>();
+		for(String ss:arr){
+			if(!nodeSet.contains(ss.trim())){
+				nodeSet.add(ss.trim());
+			}
+		}
+		System.out.println("总共含有节点数:"+nodeSet.size());
+		Iterator it=nodeSet.iterator();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");//设置日期格式
+		String date=df.format(new Date());// new Date()为获取当前系统时间
+		gmlStrb.append("graph"+" "+"["+"\n");
+		while(it.hasNext()){
+			Object line=it.next();
+			gmlStrb.append("  node"+" "+"["+"\n"+"    id "+line.toString()+"\n"+"    label "+line.toString());
+			gmlStrb.append("\n");
+			gmlStrb.append("  ]"+"\n");
+			
+		}
+		//拼接边 过滤重复的边，
+		Set<String> set=new HashSet<String>();
+		for(String ss:arr2){
+			String[] temp=ss.split(" ");
+			if(!set.contains(ss.trim())){
+			gmlStrb.append("  edge"+" ["+"\n"+"    source "+temp[0]);
+			gmlStrb.append("\n"+"    target "+temp[1]);
+			//gmlStrb.append("\n"+"   value 1");//关于是否生成有向图，如果是无向图，则不需要这个值
+			gmlStrb.append("\n"+"   value "+weightedNumMap.get(temp[0]+" "+temp[1]));//扩展计算权重
+			gmlStrb.append("\n");
+			gmlStrb.append("  ]"+"\n");
+			}
+			set.add(ss.trim());
+		}
+		gmlStrb.append("]");
+	// System.out.println(gmlStrb);
+	 try {
+		FileUtils.write(new File(savePath+uid+".gml"), gmlStrb);
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	 }//end 过滤掉空文件
+		else try {
+			FileUtils.write(new File(savePath+uid+".gml"), gmlStrb);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	public static void getGraphFile(String fileName,String relationFolderPath,String savePath){
 		StringBuilder gmlStrb=new StringBuilder("");
 		//String path="E:/spam/120DataSet/120graphs_follows/"+fileName;
@@ -60,12 +129,7 @@ public class GenerateGMLFile {
 		//String graphStr=utils.readFileToString("E:/spam/3.1_graphFetures/graphs_follows/1032153895.txt");
 		String graphStr=utils.readFileToString(path);
 		
-		//得到权重关系map
-		Map<String,Integer> weightedNumMap=new HashMap<>();
-		String interaction_graph[]=utils.readFileToString("E:\\normal\\expandSample\\interaction_graph\\"+fileName).split("\n");
-		for(String ss:interaction_graph){
-			weightedNumMap.put(ss.trim(), weightedNumMap.get(ss.trim())==null?1:weightedNumMap.get(ss.trim())+1);
-		}
+		//得到边权重关系map，如交互关系图可能需要得到边的权重的，
 		String[] uidarr=fileName.split(".txt");
 		String uid=uidarr[0];
 		if(graphStr.length()!=0){//过滤掉空文件
@@ -100,12 +164,10 @@ public class GenerateGMLFile {
 		Set<String> set=new HashSet<String>();
 		for(String ss:arr2){
 			String[] temp=ss.split(" ");
-			
 			if(!set.contains(ss.trim())){
 			gmlStrb.append("  edge"+" ["+"\n"+"    source "+temp[0]);
 			gmlStrb.append("\n"+"    target "+temp[1]);
-			//gmlStrb.append("\n"+"   value 1");//关于是否生成有向图，如果是无向图，则不需要这个值
-			gmlStrb.append("\n"+"   value "+weightedNumMap.get(temp[0]+" "+temp[1]));//扩展计算权重
+			gmlStrb.append("\n"+"   value 1");//关于是否生成有向图，如果是无向图，则不需要这个值
 			gmlStrb.append("\n");
 			gmlStrb.append("  ]"+"\n");
 			}
@@ -150,7 +212,11 @@ public class GenerateGMLFile {
 			if(text.length()!=0){
 			for(String ss:arr){
 				String [] arr2=ss.trim().split(" ");
-				String temp=arr2[1]+" "+arr2[0];
+				if(arr2.length<2){
+					System.out.println("notice the file of"+directedFileName+"  broken edge of"+ss);
+					continue;
+				}
+				String temp=arr2[1]+" "+arr2[0];//判断是否存在有向重复边，比较简单，就是把原图的边指向对调，加入到集合中，不重复的就可以
 				set.add(temp);
 				if(!set.contains(ss.trim())){
 					strb.append(ss);
@@ -165,6 +231,7 @@ public class GenerateGMLFile {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
 		}
 	}
 

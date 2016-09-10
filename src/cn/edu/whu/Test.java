@@ -412,8 +412,8 @@ public class Test {
 //		   
 //		utils.mergeFeatures("E:\\normal\\expandSample\\graph_features\\gephi_graph_interaction_feature.txt","E:\\normal\\expandSample\\graph_features\\networkX_graph_interaction_feature.txt",
 //			"E:\\normal\\expandSample\\graph_features\\graph_interaction_feature.txt");
-		utils.selectUIDF("E:\\spam\\expandSample\\both_spam_uid.txt", "E:\\spam\\3_UltimateSelected\\uidfollows_selected.txt", "E:\\spam\\expandSample\\uid_followee.txt");
-
+		utils.selectUIDF("E:\\normal\\expandSample\\thirdExpandSample\\zbc_selected_normal_uid.txt", "E:\\normal\\2_UltimateNormal\\uidfollows.txt", "E:\\normal\\expandSample\\zbc_selected_uid_followee.txt");
+   
 			}//end main
 
 	 
