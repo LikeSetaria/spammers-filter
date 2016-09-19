@@ -39,7 +39,7 @@ static  Set<String> set=new HashSet<>();
 			  
 		//patch("D:\\人工赛选\\第二次筛选\\筛选结果\\zbc_spam_reduced筛选\\spam_reduced_weibos\\");
 		//patch("D:\\人工赛选\\第二次筛选\\筛选结果\\zbc_normal_reduced_part1\\");
-		getUidF("E:\\spam\\expandSample\\expand_normal_interation_username.txt","E:\\spam\\expandSample\\expand_normal_interation_username_rem.txt");
+		//getUidF("E:\\normal\\expandSample\\thirdExpandSample\\zbc_select_normal_uid_name.txt","E:\\normal\\expandSample\\thirdExpandSample\\zbc_select_normal_uid_interactions.txt");
 		
 		
 		//statistics("E:\\spam\\3.1_graphFetures\\spam_interaction_relation_Friend.txt");

@@ -47,8 +47,9 @@ public class GetRelationGraph {
 	   // getEdge("2681435251 1958261192 2688917021 2671349093 2619436064 2610779417 1956423350 2546883162 1942634172 2483937564 2099988610 1706035271 2362705467 ");
 	 //  getEdge("1032153895 1605409293 2247195144 2335611615 2341463241 2499615414 1870625223 1222746542 2506800343 1789618721 2478190263 2324540472 2475256131 2094088250 1846979645 2371191785 1404641472 2161590657 2619137670 1708736515 2456575254 2239743665 2546120490 2348546092 1882036482 2456348813 2617188474 1913787020 1683381032 2092518217 2341924857 2275914794 2507787431 1762201170 1764016622 1917578731 1089278210 2118730102 2561135144 1760553712 1970712423 1912748833 1736346195 2248977990 2588470544 2527514793 2121679193 2597461194 2194418964 2590499382 1166432124 1037321977 1651317627 2458816064 1801065963 1401526545 2132396244 2197915224 2490536961 1950882643 2597419482 1879527257 1788215537 2512976435 2558305044 2329639004 1698804317 1569904293 1855808282 2345435190 1730761202 1882036421 1834910930 2628069144 1063774800 2518461243 2298996762 2548856162 2012632914 2177020732 2484892551 2533021810 2118754051 1763544170 2369328852 2012174510 1684621410 1549171853 2058230391 2190448124 1140481175 2296933610 2487576965 1994680735 2248924417 2619049894 1076881300 1288113654 2309921197 2010401653 2105070574 ");
 //		getAllEdgeFile("E:/spam/3.1_graphFetures/spam_interaction_unweighted_relation.txt","E:/spam/3.1_graphFetures/interaction_graph/");
-		getAllEdgeFile("E:\\normal\\expandSample\\thirdExpandSample\\zbc_selected_uid_followee_part2.txt","E:\\normal\\expandSample\\thirdExpandSample\\zbc_followee_graphs_part2\\");
+		getAllEdgeFile("E:\\normal\\SecondPhase\\thirdExpandSample\\zbc_select_normal_uid_interactions.txt","E:\\normal\\SecondPhase\\thirdExpandSample\\zbc_interaction_graphs\\");
 		//getUnweightRelation("E:\\normal\\3.1_graphFetures\\normal_interaction_relation.txt");
+	//	getTempRelationFile("E:\\normal\\SecondPhase\\thirdExpandSample\\zbc_select_normal_uid_interactions.txt");
 	}
 	public static  void initNode(String path){
 		String UIDStr;
@@ -142,8 +143,8 @@ public class GetRelationGraph {
 	 public  static void  getEdge(String uidfLine,String saveFolder){
 		 //得到所有的边关系
 		 
-		 File weiboRelation=new File("D:/Whuer/FudanData/weibo_follows.csv");
-		// File weiboRelation=new File("D:/Whuer/FormerData/200_user_OFS");
+		 //File weiboRelation=new File("D:/Whuer/FudanData/weibo_follows.csv");
+		 File weiboRelation=new File("D:/Weibo_relation.txt");
 		 String[] arr=uidfLine.split(" ");
 		 LineIterator it=null;
 		 StringBuilder edgeStr=new StringBuilder();
@@ -284,6 +285,42 @@ public class GetRelationGraph {
 			}
 			System.out.println(resultstrb);
 			FileUtils.write(new File("E:\\normal\\3.1_graphFetures\\normal_interaction_unweighted_relation.txt"), resultstrb);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+       }
+       /**
+        * 关系文件中有两百多万个用户的关系，之前虽然只针对几百或者几千的用户进行关系提取，但也遍历所有的两亿多行的关系，效率极其低下，每分钟才能处理一个
+        * 其实可以预处理一下
+        */
+       public static void getTempRelationFile(String filePath){
+    	   //得到所有的uid集合
+    	   Set<String> allUid=new HashSet<>();
+    	   try {
+			String lines[]=FileUtils.readFileToString(new File(filePath)).split("\n");
+			for(String line:lines){
+				String[] arr=line.trim().split(" +");
+				for(String ss:arr)
+					allUid.add(ss);
+			}
+			//System.out.println(allUid.size());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	   //把与uid集合中所有有关的边，都写到一个临时文件中，目的是在这个临时文件中进行搜索
+    	   File tempFile=new File("D:/Weibo_relation.txt");
+    	   LineIterator it=null;
+    	   try {
+			it=FileUtils.lineIterator(new File("D:/Whuer/FudanData/weibo_follows.csv"));
+			while(it.hasNext()){
+				//System.out.println(it.next());
+				String []ar=it.nextLine().split(",");
+				if(allUid.contains(ar[0])||allUid.contains(ar[1])){
+					FileUtils.writeStringToFile(tempFile, it.nextLine()+"\n", true);
+				}
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

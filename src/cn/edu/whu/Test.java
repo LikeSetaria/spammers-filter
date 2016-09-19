@@ -410,12 +410,15 @@ public class Test {
 //			e.printStackTrace();
 //		}
 //		   
-//		utils.mergeFeatures("E:\\normal\\expandSample\\graph_features\\gephi_graph_interaction_feature.txt","E:\\normal\\expandSample\\graph_features\\networkX_graph_interaction_feature.txt",
-//			"E:\\normal\\expandSample\\graph_features\\graph_interaction_feature.txt");
-		utils.selectUIDF("E:\\normal\\expandSample\\thirdExpandSample\\zbc_selected_normal_uid.txt", "E:\\normal\\2_UltimateNormal\\uidfollows.txt", "E:\\normal\\expandSample\\zbc_selected_uid_followee.txt");
-   
-			}//end main
-
+		//utils.mergeFeatures("E:\\normal\\SecondPhase\\thirdExpandSample\\gephi_graph_interaction_features.txt","E:\\normal\\SecondPhase\\thirdExpandSample\\networkX_graph_interaction_features.txt",
+		//"E:\\normal\\SecondPhase\\thirdExpandSample\\graph_interaction_features.txt");
+		//utils.mergeFeatures("E:\\spam\\expandSample\\graph_features\\gephi_graph_followee_feature.txt","E:\\spam\\expandSample\\graph_features\\networkX_graph_followee_feature.txt",
+		//		"E:\\spam\\expandSample\\graph_features\\graph_followee_feature.txt");
+		//utils.selectUIDF("E:\\spam\\1000spamUid.txt", "E:\\spam\\4_extractFetures\\attentionRate6.txt", "E:\\spam\\temp\\attentionRate6.txt");
+		//utils.selectUIDF("E:/normal/3.1_graphFetures/new27spam.txt", "E:/normal/3.1_graphFetures/graph_metric_friends.txt", "E:/normal/3.1_graphFetures/graph_metric_friends27.txt");
+		 utils.mergeFeatures("E:\\Weka\\complete\\1000spam_baseline_neighbor.txt", "E:\\Weka\\interaction\\1000spam_interaction_graph_feature.txt", "E:\\weka\\complete\\1000spam_baseline_neighbor_interaction.txt");
+	 }//end main
+ 
 	 
 	 
 

@@ -15,6 +15,8 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 
+import com.mysql.jdbc.StringUtils;
+
 /**
  * @author bczhang
  *此类用以生成gml文件
@@ -29,10 +31,10 @@ public class GenerateGMLFile {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//得到无向图，边节点关系
-		//patchUndirectedGraph("E:\\normal\\3.1_graphFetures\\interaction_graph\\","E:\\normal\\3.1_graphFetures\\interaction_graph_undirected\\");
-		//patchUndirectedGraph("E:\\normal\\SecondPhase\\thirdExpandSample\\zbc_followee_graphs\\","E:\\normal\\SecondPhase\\thirdExpandSample\\zbc_followee_graphs_undirected_gml\\");
+		//patchUndirectedGraph("E:\\normal\\SecondPhase\\thirdExpandSample\\zbc_interaction_graphs\\","E:\\normal\\SecondPhase\\thirdExpandSample\\zbc_interaction_graphs_undirected\\");
+		//patchUndirectedGraph("E:\\spam\\expandSample\\followee_graph\\","E:\\spam\\expandSample\\followee_graph_undirected\\");
 		//patchHandle("E:/normal/3.1_graphFetures/interaction_graph_undirected/","E:/normal/3.1_graphFetures/gephi_gml/graph_interaction_undirected_gml/");
-		patchHandle("E:\\normal\\SecondPhase\\thirdExpandSample\\zbc_followee_graphs_undirected\\","E:\\normal\\SecondPhase\\thirdExpandSample\\zbc_followee_graphs_undirected_gml\\");
+		patchHandle("E:\\normal\\SecondPhase\\thirdExpandSample\\zbc_followee_graphs\\","E:\\normal\\SecondPhase\\thirdExpandSample\\zbc_followee_graphs_gmlAAAA\\");
 	}
 	/** 
 	 * @param relationFolderPath 关系文件夹，里面是用户边 的文件。文件夹路径要以/结尾
@@ -141,7 +143,7 @@ public class GenerateGMLFile {
 				nodeSet.add(ss.trim());
 			}
 		}
-		System.out.println("总共含有节点数:"+nodeSet.size());
+		//System.out.println("总共含有节点数:"+nodeSet.size());
 		Iterator it=nodeSet.iterator();
 		
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");//设置日期格式
@@ -152,6 +154,11 @@ public class GenerateGMLFile {
 		//拼接节点
 		while(it.hasNext()){
 			Object line=it.next();
+			
+			if(StringUtils.isNullOrEmpty((String) line)){
+				System.out.println("存在空单节点，已处理"+line);
+				continue;
+			}
 			
 			gmlStrb.append("  node"+" "+"["+"\n"+"    id "+line.toString()+"\n"+"    label "+line.toString());
 			
@@ -164,6 +171,10 @@ public class GenerateGMLFile {
 		Set<String> set=new HashSet<String>();
 		for(String ss:arr2){
 			String[] temp=ss.split(" ");
+			if(temp[1].length()<3){//处理爬去的坏的节点，即有些节边只有一个节点的情况
+				System.out.println("...存在单节点边，已处理"+ss);
+				continue;
+			}
 			if(!set.contains(ss.trim())){
 			gmlStrb.append("  edge"+" ["+"\n"+"    source "+temp[0]);
 			gmlStrb.append("\n"+"    target "+temp[1]);

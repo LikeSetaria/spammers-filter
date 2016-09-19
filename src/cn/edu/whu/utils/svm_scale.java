@@ -362,9 +362,9 @@ class svm_scale
 	}
 
 	public static void main(String argv[]) throws IOException
-	{String ar[]={"-l","-1","-u","1","E:/libSVM/libSVMSample/graph_features_plus4NewRem1516.txt"};
+	{String ar[]={"-l","-1","-u","1","E:\\libSVM\\SecondPhase\\1000_baseline.txt"};
 		svm_scale s = new svm_scale();
 		s.run(ar);
-		FileUtils.write(new File("E:/libSVM/libSVMSample/graph_features_plus4NewRem1516_scale.txt"), sb);
+		FileUtils.write(new File("E:\\libSVM\\SecondPhase\\1000_baseline_scale.txt"), sb);
 	}
 }

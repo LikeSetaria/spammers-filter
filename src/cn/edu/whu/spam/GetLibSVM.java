@@ -99,6 +99,9 @@ public class GetLibSVM {
 	private static final String SPAM_1000interaction_graph_PATH="E:\\spam\\spamSample\\interaction\\1000interaction_graph_feature.txt";
 	private static final String NORMAL_1000interaction_graph_PATH="E:\\normal\\normalSample\\interaction\\1000interaction_graph_feature.txt";
 	private static final String LIBSVM_1000interaction_graph_RESULT="E:/libSVM/libSVMSample/1000interaction_graph_feature.txt";
+	private static final String SPAM_1000baseline_graph_PATH="E:\\Weka\\baseline\\spam_baseline.txt";
+	private static final String NORMAL_1000baseline_graph_PATH="E:\\Weka\\baseline\\1000_normal_baseline.txt";
+	private static final String LIBSVM_1000baseline_graph_RESULT="E:\\libSVM\\SecondPhase\\1000_baseline.txt";
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//createLibSVM(SELECTED_PATH,NORMAL_PATH,LIBSVMRESULT);
@@ -108,7 +111,7 @@ public class GetLibSVM {
 		//createLibSVM(SPAM_last_PATH,NORMAL_last_PATH,LIBSVMlastRESULT);
 		//createLibSVM(SPAM_12graph_PATH,NORMAL_12graph_PATH,LIBSVM_12graph_RESULT);
 		//规范化所有的
-		createLibSVM(SPAM_1000interaction_graph_PATH,NORMAL_1000interaction_graph_PATH,LIBSVM_1000interaction_graph_RESULT);
+		createLibSVM(SPAM_1000baseline_graph_PATH,NORMAL_1000baseline_graph_PATH,LIBSVM_1000baseline_graph_RESULT);
 	}
 	//1代表正类，即normal部分，2代表负类，即selected部分
 	public static void createLibSVM(String path1,String path2,String save){

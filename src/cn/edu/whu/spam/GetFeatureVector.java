@@ -37,45 +37,51 @@ public class GetFeatureVector {
 //	private static final String  PROFILETRAIT_NORMAL_PATH="E:/normal/3_extractFetures/profilesTrait6.txt";
 //	private static final String TRIREALTION_SELECTED_PATH="E:/spam/4_extractFetures/tri_uidFriends6.txt";
 //  private static final String TRIREALTION_NORMAL_PATH="E:/normal/3_extractFetures/tri_uidFriends6.txt";
-	private static final String  BEHAVIOR_FEATURES_SELECTED_FILE_PATH="E:/spam/spamSample/features/behaviorFeatures.txt";
-	private static final String  BEHAVIOR_FEATURES_NORMAL_FILE_PATH="E:/normal/normalSample/features/behaviorFeatures.txt";
-	private static final String  ATTENTIONRATE_SELECTED_FILE_PATH="E:/spam/spamSample/features/attentionRate.txt";
-	private static final String  ATTENTIONRATE_NORMAL_FILE_PATH="E:/normal/normalSample/features/attentionRate.txt";
-	private static final String  PROFILETRAIT_SELECTED_PATH="E:/spam/spamSample/features/profilesTrait.txt";
-	private static final String  PROFILETRAIT_NORMAL_PATH="E:/normal/normalSample/features/profilesTrait.txt";
-	private static final String TRIREALTION_SELECTED_PATH="E:/spam/spamSample/features/tri_uidFriends.txt";
-	private static final String TRIREALTION_NORMAL_PATH="E:/normal/normalSample/features/tri_uidFriends.txt";
-	private static final String NORMAL_GRAPH_METRICE_PATH="E:/normal/normalSample/features/graph_metric_follows359.txt";
-	private static final String SPAM_GRAPH_METRICE_PATH="E:/spam/spamSample/features/graph_metric_follows341.txt";
+//	private static final String  BEHAVIOR_FEATURES_SELECTED_FILE_PATH="E:/spam/spamSample/features/behaviorFeatures.txt";
+//	private static final String  BEHAVIOR_FEATURES_NORMAL_FILE_PATH="E:/normal/normalSample/features/behaviorFeatures.txt";
+//	private static final String  ATTENTIONRATE_SELECTED_FILE_PATH="E:/spam/spamSample/features/attentionRate.txt";
+//	private static final String  ATTENTIONRATE_NORMAL_FILE_PATH="E:/normal/normalSample/features/attentionRate.txt";
+//	private static final String  PROFILETRAIT_SELECTED_PATH="E:/spam/spamSample/features/profilesTrait.txt";
+//	private static final String  PROFILETRAIT_NORMAL_PATH="E:/normal/normalSample/features/profilesTrait.txt";
+//	private static final String TRIREALTION_SELECTED_PATH="E:/spam/spamSample/features/tri_uidFriends.txt";
+//	private static final String TRIREALTION_NORMAL_PATH="E:/normal/normalSample/features/tri_uidFriends.txt";
+//	private static final String NORMAL_GRAPH_METRICE_PATH="E:/normal/normalSample/features/graph_metric_follows359.txt";
+//	private static final String SPAM_GRAPH_METRICE_PATH="E:/spam/spamSample/features/graph_metric_follows341.txt";
+	private static final String  BEHAVIOR_FEATURES_NORMAL_FILE_PATH="E:/spam/temp/behaviorFeatures9.txt";
+	private static final String  ATTENTIONRATE_NORMAL_FILE_PATH="E:/spam/temp/attentionRate6.txt";
+	private static final String  PROFILETRAIT_NORMAL_PATH="E:/spam/temp/profilesTrait6.txt";
+  private static final String TRIREALTION_NORMAL_PATH="E:/spam/temp/tri_uidFriends6.txt";
 	static Map<String,FeatureVector> result=new HashMap<String ,FeatureVector>();
     static Map<String,String> saveMap=new HashMap<>();
+    
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//得到select部分的特征向量
-		initRelationFeature(ATTENTIONRATE_SELECTED_FILE_PATH,PROFILETRAIT_SELECTED_PATH,TRIREALTION_SELECTED_PATH);
-		initBehaviorFeatures(BEHAVIOR_FEATURES_SELECTED_FILE_PATH);
-		initGraphFeature(SPAM_GRAPH_METRICE_PATH);
+		initRelationFeature(ATTENTIONRATE_NORMAL_FILE_PATH,PROFILETRAIT_NORMAL_PATH,TRIREALTION_NORMAL_PATH);
+		initBehaviorFeatures(BEHAVIOR_FEATURES_NORMAL_FILE_PATH);
+		//initGraphFeature(SPAM_GRAPH_METRICE_PATH);
 		//standardizeIntervalRate();已经更改时间间隔特征选取方式，不再需要再次进行规范化
 		//display();
 		//removeNomalUID("E:/spam/5_selectedFeatureVec/spamRemoveNormalUID.txt");//去除1984；余10874-1984=8890条
 		//save("E:/spam/5_selectedFeatureVec/selectVec10.txt");
-		save("E:/spam/spamSample/featureVec/selectAllVec_Gfollows.txt");
+		//save("E:/spam/spamSample/featureVec/selectAllVec_Gfollows.txt");
+		save("E:/spam/temp/spam_baseline.txt");
 		//得到normal
 		
-		result.clear();
-		saveMap.clear();
-		
-		initRelationFeature(ATTENTIONRATE_NORMAL_FILE_PATH,PROFILETRAIT_NORMAL_PATH,TRIREALTION_NORMAL_PATH);
-		initBehaviorFeatures(BEHAVIOR_FEATURES_NORMAL_FILE_PATH);
-		initGraphFeature(NORMAL_GRAPH_METRICE_PATH);
-		//removeNomalUID("E:/normal/5_selectedFeatureVec/PunishRemovePartUID.txt");//正类为了平衡，也得去除一些，正类10207;所以得剪去1317
-		//standardizeIntervalRate();
-		//display();
-		//save("E:/normal/5_selectedFeatureVec/selectVec10.txt");
-		save("E:/normal/normalSample/featureVec/selectAllVec_Gfollows.txt");
+//		result.clear();
+//		saveMap.clear();
+//		
+//		initRelationFeature(ATTENTIONRATE_NORMAL_FILE_PATH,PROFILETRAIT_NORMAL_PATH,TRIREALTION_NORMAL_PATH);
+//		initBehaviorFeatures(BEHAVIOR_FEATURES_NORMAL_FILE_PATH);
+//		initGraphFeature(NORMAL_GRAPH_METRICE_PATH);
+//		//removeNomalUID("E:/normal/5_selectedFeatureVec/PunishRemovePartUID.txt");//正类为了平衡，也得去除一些，正类10207;所以得剪去1317
+//		//standardizeIntervalRate();
+//		//display();
+//		//save("E:/normal/5_selectedFeatureVec/selectVec10.txt");
+//		save("E:/normal/normalSample/featureVec/selectAllVec_Gfollows.txt");
 	}
 	/**
 	 * 初始化用户图特征
